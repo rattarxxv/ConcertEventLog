@@ -2009,12 +2009,18 @@ async function wrapCanvas(year){
   g.fillStyle = '#fff'; g.font = '700 96px ' + FD; g.fillText('IN SHOWS', 80, 270);
   g.font = '700 300px ' + FD; g.fillText(String(list.length), 70, 600);
   g.font = '600 46px ' + FB; g.globalAlpha = 0.85; g.fillText(list.length === 1 ? 'show' : 'shows', 90, 670); g.globalAlpha = 1;
-  const stats = [['Artists', String(by.size)], ['Venues', String(vby.size)], ['Countries', String(countries.size || 0)], ['Spent', sums.size ? moneyFmt(cur, sums.get(cur) || 0) : '–']];
-  stats.forEach(([l, v], i) => {
+  /* other currencies are listed under the main one, never converted */
+  const others = Array.from(sums.entries()).filter(([k]) => k !== cur).sort((a, b) => b[1] - a[1]).map(([k, v]) => '+ ' + moneyFmt(k, v)).join('  ');
+  const stats = [['Artists', String(by.size)], ['Venues', String(vby.size)], ['Countries', String(countries.size || 0)], ['Spent', sums.size ? moneyFmt(cur, sums.get(cur) || 0) : '–', others]];
+  stats.forEach(([l, v, extra], i) => {
     const x = 80 + (i % 2) * 470, y = 740 + Math.floor(i / 2) * 190;
     g.fillStyle = 'rgba(255,255,255,.1)'; rr(g, x, y, 440, 160, 28); g.fill();
-    g.fillStyle = 'rgba(255,255,255,.75)'; g.font = '600 32px ' + FB; g.fillText(l, x + 32, y + 56);
-    g.fillStyle = '#fff'; g.fillText(fitText(g, v, 380, 68, '700', FD, 36), x + 32, y + 128);
+    g.fillStyle = 'rgba(255,255,255,.75)'; g.font = '600 32px ' + FB; g.fillText(l, x + 32, y + (extra ? 48 : 56));
+    g.fillStyle = '#fff';
+    if (extra) {
+      g.fillText(fitText(g, v, 380, 56, '700', FD, 30), x + 32, y + 108);
+      g.fillStyle = 'rgba(255,255,255,.85)'; g.fillText(fitText(g, extra, 380, 26, '600', FD, 16), x + 32, y + 142);
+    } else g.fillText(fitText(g, v, 380, 68, '700', FD, 36), x + 32, y + 128);
   });
   let y = 1180;
   if (topA) {
