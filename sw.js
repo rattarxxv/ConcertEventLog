@@ -1,8 +1,8 @@
 // Offline support + show-reminders for Concert & Event Log.
-const CACHE = 'concert-log-local-v21';
+const CACHE = 'concert-log-local-v22';
 const FIRED = 'cl-fired';   // reminders already shown (shared with the page)
 const SHELL = ['./', './index.html', './manifest.webmanifest',
-  './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-512.png', './icons/apple-touch-icon.png', './icons/favicon-32.png'];
+  './icon-192.png', './icon-512.png', './maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -90,7 +90,7 @@ async function checkReminders(){
       if (await cache.match(key)) continue;
       await cache.put(key, new Response('1'));
       const msg = reminderMsg(c, r);
-      await self.registration.showNotification(msg.title, {body:msg.body, icon:'icons/icon-192.png', tag:r.key, data:{id:c.id}});
+      await self.registration.showNotification(msg.title, {body:msg.body, icon:'icon-192.png', tag:r.key, data:{id:c.id}});
     }
   }
 }
