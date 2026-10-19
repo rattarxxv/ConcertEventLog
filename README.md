@@ -11,24 +11,11 @@
 | `manifest.webmanifest`, `icons/` | ชื่อแอปและไอคอนตอนติดตั้งลงหน้าจอ |
 | `sw.js` | ให้เปิดแอปได้ตอนไม่มีเน็ต |
 
-## ขั้นที่ 1: ขึ้นเว็บด้วย GitHub Pages
-
-1. ที่ github.com กด **New repository** ตั้งชื่อ เช่น `concert-log` เลือก **Public** แล้วกด Create
-2. กด **uploading an existing file** ลากไฟล์ทั้งหมดขึ้นไป (รวมโฟลเดอร์ `icons`) แล้วกด Commit
-3. **Settings → Pages**
-   - Source: **Deploy from a branch**
-   - Branch: **main** / **(root)** แล้วกด Save
-4. รอ 1–2 นาที เว็บจะอยู่ที่ `https://<username>.github.io/concert-log/`
-
-## ขั้นที่ 2: ติดตั้งลงมือถือ
+## ติดตั้งลงมือถือ
 
 1. เปิดลิงก์ใน **Chrome**
 2. กด ⋮ → **Install app** (หรือ **Add to Home screen**)
 3. จะได้ไอคอนรูปตั๋ว เปิดแบบเต็มจอเหมือนแอป
-
-## ย้ายข้อมูลเดิมจาก Claude
-
-แตะไอคอนเมฆมุมขวาบน → **Restore from a backup file** → เลือก `concert-log-backup-from-claude.json`
 
 ## การสำรองข้อมูล (สำคัญ)
 
