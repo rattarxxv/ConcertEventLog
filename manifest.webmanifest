@@ -1,6 +1,6 @@
 {
   "name": "Concert & Event Log",
-  "short_name": "Concert Log",
+  "short_name": "Concert & Event Log",
   "description": "Your concert and event tickets, stamps and memories, saved on your phone, backed up to Google Drive.",
   "start_url": "./",
   "scope": "./",
@@ -9,8 +9,21 @@
   "background_color": "#34303A",
   "theme_color": "#34303A",
   "icons": [
-    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
-    {"src": "maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ]
 }

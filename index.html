@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Concert Log">
+<meta name="apple-mobile-web-app-title" content="Concert &amp; Event Log">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -653,7 +653,7 @@ dialog.sheet::backdrop{background:rgba(16,14,18,.62)}
   <section class="install-card" id="installCard" hidden aria-labelledby="installTitle">
     <img class="ic-icon" src="icon-192.png" alt="" width="64" height="64">
     <div class="ic-tx">
-      <h2 id="installTitle">Install Concert Log</h2>
+      <h2 id="installTitle">Install Concert &amp; Event Log</h2>
       <p>Get it on your home screen. It opens full screen, works offline, and your tickets stay on your phone only.</p>
     </div>
     <button type="button" class="ic-btn" id="installBtn">
@@ -885,7 +885,7 @@ dialog.sheet::backdrop{background:rgba(16,14,18,.62)}
     <p class="hint"><b>Back up to Google Drive</b> opens your phone's share menu. Pick <b>Drive</b>, choose a folder, then tap Save.</p>
     <p class="hint"><b>To restore</b>, tap Restore and pick the backup file from Drive or Downloads. Tickets with the same entry are replaced by the backup copy, others are kept.</p>
     <p class="hint">Your tickets are stored only in this browser on this phone. Clearing Chrome's data or changing phones removes them, so keep a recent backup in Drive.</p>
-    <p class="hint app-ver">App version 2026.10.19-install-icon</p>
+    <p class="hint app-ver">App version 2026.10.19-name</p>
   </div>
 </dialog>
 
@@ -3824,7 +3824,7 @@ async function importBackup(file){
     if (!r.createdAt) r.createdAt = Date.now();
     r.updatedAt = Date.now();
     await local.put(r);
-    n++;
+    if (r.kind !== 'stampLogo') n++;
   }
   await reloadLocal();
   render();
@@ -3853,7 +3853,7 @@ function updateInstallUI(){
   $('#installLabel').textContent = installEvt ? 'Install app' : 'How to install';
 }
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; updateInstallUI(); });
-window.addEventListener('appinstalled', () => { installEvt = null; updateInstallUI(); toast('Installed. Open Concert Log from your home screen.'); });
+window.addEventListener('appinstalled', () => { installEvt = null; updateInstallUI(); toast('Installed. Open Concert & Event Log from your home screen.'); });
 $('#installBtn').addEventListener('click', async () => {
   if (installEvt) {
     const evt = installEvt;

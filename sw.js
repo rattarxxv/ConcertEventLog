@@ -1,5 +1,5 @@
 // Offline support + show-reminders for Concert & Event Log.
-const CACHE = 'concert-log-local-v22';
+const CACHE = 'concert-log-local-v24';
 const FIRED = 'cl-fired';   // reminders already shown (shared with the page)
 const SHELL = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
