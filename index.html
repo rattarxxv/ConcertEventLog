@@ -329,6 +329,21 @@ dialog.photo-dlg::backdrop{background:#000}
 
 .dt-stamp.is-locked{opacity:.6}
 
+/* install card */
+.install-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px 14px;align-items:center;margin-top:16px;padding:16px;border-radius:20px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 26%,var(--sheet)) 0%,color-mix(in srgb,var(--pin) 18%,var(--sheet)) 100%);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+.install-card[hidden]{display:none}
+.ic-icon{width:64px;height:64px;border-radius:16px;box-shadow:0 8px 18px -10px rgba(0,0,0,.6)}
+.ic-tx h2{margin:0 0 2px;font-family:var(--display);font-weight:700;font-size:1.2rem}
+.ic-tx p{margin:0;font-size:.88rem;color:var(--text-soft);line-height:1.45}
+.ic-btn{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:10px;min-height:58px;border:0;border-radius:16px;background:var(--accent);color:var(--accent-ink);font-family:var(--display);font-weight:700;font-size:1.15rem;letter-spacing:.02em;cursor:pointer;box-shadow:0 12px 24px -12px color-mix(in srgb,var(--accent) 80%,transparent)}
+.ic-btn:active{transform:scale(.985)}
+.ic-btn:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.ic-how{grid-column:1 / -1;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--text) 6%,transparent);font-size:.9rem}
+.ic-how[hidden]{display:none}
+.ic-how p{margin:0 0 4px}
+.ic-how p:last-child{margin:0}
+.ic-later{grid-column:1 / -1;justify-self:center;padding:2px 8px}
+
 /* detail: vertical ticket */
 .ticket{--lc:#FF6B9E;--notch:var(--sheet);position:relative;display:flex;flex-direction:column;background:var(--tk);color:var(--tk-ink);border-radius:16px}
 .art{position:relative;aspect-ratio:16/10;border-radius:16px 16px 0 0;overflow:hidden;background:var(--lc)}
@@ -626,6 +641,22 @@ dialog.sheet::backdrop{background:rgba(16,14,18,.62)}
     </div>
     <div class="filters" id="filters" role="group" aria-label="Filter by type" hidden></div>
   </header>
+  <section class="install-card" id="installCard" hidden aria-labelledby="installTitle">
+    <img class="ic-icon" src="icons/icon-192.png" alt="" width="64" height="64">
+    <div class="ic-tx">
+      <h2 id="installTitle">Install Concert Log</h2>
+      <p>Get it on your home screen. It opens full screen, works offline, and your tickets stay on your phone only.</p>
+    </div>
+    <button type="button" class="ic-btn" id="installBtn">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+      <span id="installLabel">Install app</span>
+    </button>
+    <div class="ic-how" id="installHow" hidden>
+      <p><b>Android (Chrome):</b> tap <b>⋮</b> at the top right, then <b>Install app</b> or <b>Add to Home screen</b>.</p>
+      <p><b>iPhone (Safari):</b> tap <b>Share</b> <span aria-hidden="true">⬆︎</span>, then <b>Add to Home Screen</b>.</p>
+    </div>
+    <button type="button" class="link-btn ic-later" id="installLater">Not now</button>
+  </section>
   <main id="main" aria-live="polite"></main>
   <p class="foot-note" id="footNote" hidden>Saved on this phone only. Keep a backup in Google Drive.</p>
 </div>
@@ -839,12 +870,13 @@ dialog.sheet::backdrop{background:rgba(16,14,18,.62)}
         Back up to Google Drive</button>
       <button type="button" class="btn btn-ghost" data-bk="save">Save a backup file on this phone</button>
       <label class="btn btn-ghost">Restore from a backup file<input type="file" id="importFile" accept=".json,.txt,application/json,text/plain" class="vh"></label>
+      <button type="button" class="btn btn-ghost" id="installAgain" hidden>Install app on this phone</button>
       <button type="button" class="btn btn-danger" data-bk="wipe" id="wipeBtn">Delete all tickets on this phone</button>
     </div>
     <p class="hint"><b>Back up to Google Drive</b> opens your phone's share menu. Pick <b>Drive</b>, choose a folder, then tap Save.</p>
     <p class="hint"><b>To restore</b>, tap Restore and pick the backup file from Drive or Downloads. Tickets with the same entry are replaced by the backup copy, others are kept.</p>
     <p class="hint">Your tickets are stored only in this browser on this phone. Clearing Chrome's data or changing phones removes them, so keep a recent backup in Drive.</p>
-    <p class="hint app-ver">App version 2026.10.14-wipe</p>
+    <p class="hint app-ver">App version 2026.10.19-install</p>
   </div>
 </dialog>
 
@@ -3797,6 +3829,42 @@ $('#importFile').addEventListener('change', async e => {
   catch (err) { $('#bkDlg').close(); toast("That file isn't a Concert & Event Log backup."); }
 });
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+
+/* ---------- big Install button ---------- */
+let installEvt = null;
+const isInstalled = () => (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+function updateInstallUI(){
+  const card = $('#installCard');
+  const later = Date.now() - lsGet('cl.installLater') < 7 * 864e5;
+  card.hidden = isInstalled() || later;
+  $('#installAgain').hidden = isInstalled();
+  if (card.hidden) return;
+  /* Chrome hands us its install prompt; elsewhere we show how to do it by hand */
+  $('#installLabel').textContent = installEvt ? 'Install app' : 'How to install';
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; updateInstallUI(); });
+window.addEventListener('appinstalled', () => { installEvt = null; updateInstallUI(); toast('Installed. Open Concert Log from your home screen.'); });
+$('#installBtn').addEventListener('click', async () => {
+  if (installEvt) {
+    const evt = installEvt;
+    installEvt = null;
+    try { await evt.prompt(); const r = await evt.userChoice; if (r && r.outcome === 'dismissed') toast('You can install it any time from this card.'); } catch (e) {}
+    updateInstallUI();
+  } else {
+    const how = $('#installHow');
+    how.hidden = !how.hidden;
+  }
+});
+$('#installLater').addEventListener('click', () => { lsSet('cl.installLater', Date.now()); updateInstallUI(); });
+/* bring the card back from the Backup sheet, even after Not now */
+$('#installAgain').addEventListener('click', () => {
+  lsSet('cl.installLater', 0);
+  $('#bkDlg').close();
+  updateInstallUI();
+  const card = $('#installCard');
+  if (!card.hidden && card.scrollIntoView) card.scrollIntoView({behavior:'smooth', block:'center'});
+});
+updateInstallUI();
 
 boot();
 })();
