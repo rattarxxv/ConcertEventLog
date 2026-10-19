@@ -1,5 +1,5 @@
 // Offline support + show-reminders for Concert & Event Log.
-const CACHE = 'concert-log-local-v24';
+const CACHE = 'concert-log-local-v27';
 const FIRED = 'cl-fired';   // reminders already shown (shared with the page)
 const SHELL = ['./', './index.html', './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
@@ -62,16 +62,36 @@ const isDate = s => /^\d{4}-\d{2}-\d{2}$/.test(s || '');
 const timeOf = c => /^\d{2}:\d{2}$/.test((c && c.time) || '') ? c.time : '';
 const str = v => typeof v === 'string' ? v : '';
 function remindersOf(c){
-  if (!c || c.deleted || !Array.isArray(c.remind) || !isDate(c.date)) return [];
-  const [y, m, d] = c.date.split('-').map(Number), t = timeOf(c);
-  const [hh, mm] = t ? t.split(':').map(Number) : [9, 0];
-  const base = new Date(y, m - 1, d, hh, mm).getTime();
-  return c.remind.filter(n => Number.isFinite(n)).map(n => ({key:c.id + ':' + n + ':' + base, at:base - n * 60000, min:n}));
+  if (!c || c.deleted || c.kind === 'stampLogo') return [];
+  const out = [];
+  const add = (date, time, mins, keyBase, extra) => {
+    const [y, m, d] = date.split('-').map(Number);
+    const [hh, mm] = time ? time.split(':').map(Number) : [9, 0];
+    const base = new Date(y, m - 1, d, hh, mm).getTime();
+    mins.filter(n => Number.isFinite(n)).forEach(n => out.push(Object.assign({key:keyBase + ':' + n + ':' + base, at:base - n * 60000, min:n, time}, extra)));
+  };
+  if (Array.isArray(c.remind) && isDate(c.date)) add(c.date, timeOf(c), c.remind, c.id, {type:'show'});
+  if (Array.isArray(c.saleRemind) && Array.isArray(c.sales)) c.sales.forEach(s => {
+    if (!s || !isDate(s.date)) return;
+    const t = /^\d{2}:\d{2}$/.test(s.time || '') ? s.time : '';
+    add(s.date, t, c.saleRemind, c.id + ':sale:' + str(s.label), {type:'sale', label:str(s.label) || 'Ticket sale'});
+  });
+  return out;
 }
 function reminderMsg(c, r){
-  const a = str(c.artist) || 'Your show', t = timeOf(c);
+  const a = str(c.artist) || 'Your show', t = r.time;
   /* say how long is actually left, in case the alert arrives late */
   const left = r.at + r.min * 60000 - Date.now();
+  if (r.type === 'sale') {
+    const what = r.label + ' for ' + a;
+    let title;
+    if (!t) title = r.min >= 1440 ? 'Tomorrow: ' + what : 'Today: ' + what;
+    else if (left <= 0) title = what + ' is open now';
+    else if (left >= 20 * 3600e3) title = 'Tomorrow: ' + what;
+    else if (left >= 3600e3) { const h = Math.round(left / 3600e3); title = what + ' opens in ' + h + (h === 1 ? ' hour' : ' hours'); }
+    else title = what + ' opens in ' + Math.max(1, Math.round(left / 60000)) + ' min';
+    return {title, body:[str(c.title), t ? 'Sale opens at ' + t + '. Get ready!' : 'Get ready!'].filter(Boolean).join('\n')};
+  }
   let title;
   if (!t) title = r.min >= 1440 ? 'Tomorrow: ' + a : 'Today: ' + a;
   else if (left <= 0) title = a + ' is starting now';
