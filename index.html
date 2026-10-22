@@ -285,6 +285,12 @@ a.dt{text-decoration:none}
 .pos-zoom input{min-height:auto;padding:0;border:0;background:none;accent-color:var(--accent)}
 .pos-preview{display:grid;gap:6px;justify-items:start}
 .pos-mini{position:relative;width:180px;aspect-ratio:1.37;border-radius:10px 0 0 10px;overflow:hidden;background:var(--field)}
+.pos-cpl{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.pos-cpl[hidden],.pos-preview[hidden]{display:none}
+.pos-cpl figure{margin:0;display:grid;gap:6px;justify-items:start}
+.pos-hero{position:relative;width:200px;aspect-ratio:1.6;border-radius:14px;overflow:hidden;background:var(--field)}
+.pos-round{position:relative;width:76px;height:76px;border-radius:50%;overflow:hidden;background:var(--field);box-shadow:0 0 0 3px var(--sheet),0 0 0 6px color-mix(in srgb,var(--text) 18%,transparent)}
+.pos-hero img,.pos-round img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;user-select:none}
 
 /* ticket photos */
 .ph-edit{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
@@ -695,7 +701,8 @@ dialog.sheet::backdrop{background:rgba(4,14,22,.62)}
 .tix.ombre .tix-main.noimg{background:var(--lcg)}
 .ap-hero{background:var(--lcg,var(--lc))}
 .cav{position:relative;flex:none;display:inline-grid;place-items:center;width:var(--av,44px);height:var(--av,44px);border-radius:50%;padding:2px;background:linear-gradient(135deg,var(--cc),var(--cc2,var(--cc)));color:#fff;font-family:var(--display);font-weight:700;font-size:calc(var(--av,44px) * .34);line-height:1;letter-spacing:.02em;text-shadow:0 1px 3px rgba(0,0,0,.4)}
-.cav img{position:absolute;inset:2px;display:block;width:calc(100% - 4px);height:calc(100% - 4px);border-radius:50%;object-fit:cover;object-position:center 30%;border:2px solid var(--sheet)}
+.cav .cav-ph{position:absolute;inset:2px;border-radius:50%;overflow:hidden;border:2px solid var(--sheet)}
+.cav .cav-ph img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
 .fchip .cav,.dt-cpl .cav{margin-left:-6px}
 .cp-acts{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:-2px 0 12px}
 .ap-hero.has-photo{min-height:220px}
@@ -972,9 +979,13 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
     <p class="hint">Drag the picture to move it. Pinch or use the slider to zoom.</p>
     <div class="pos-frame" id="posFrame"><img id="posImg" alt="Cover being adjusted" draggable="false"></div>
     <label class="f pos-zoom"><span class="lbl">Zoom</span><input type="range" id="posZoom" min="1" max="3" step="0.01" value="1"></label>
-    <div class="pos-preview">
+    <div class="pos-preview" id="posTixPrev">
       <span class="sub">On the ticket</span>
       <div class="pos-mini"><img id="posMini" alt="" draggable="false"></div>
+    </div>
+    <div class="pos-cpl" id="posCplPrev" hidden>
+      <figure><span class="sub">Couple page</span><div class="pos-hero"><img id="posHero" alt="" draggable="false"></div></figure>
+      <figure><span class="sub">Profile</span><div class="pos-round"><img id="posRound" alt="" draggable="false"></div></figure>
     </div>
   </div>
   <div class="sheet-foot">
@@ -1064,7 +1075,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version 2026.10.22-gcal</p>
+    <p class="hint app-ver">App version 2026.10.22-photo</p>
   </div>
 </dialog>
 
@@ -1514,7 +1525,8 @@ function couplesList(){
     const c2 = hexOk(x.c2) ? x.c2 : (def && (old || !hexOk(x.c) || x.c.toUpperCase() === def.c.toUpperCase()) ? def.c2 : mixHex(c, '#FFFFFF', 0.45));
     const photoId = typeof x.photoId === 'string' && /^[0-9a-f]{32}$/.test(x.photoId) ? x.photoId : '';
     const photoData = !photoId && typeof x.photo === 'string' && x.photo.indexOf('data:image/') === 0 ? x.photo : '';
-    out.push({k:x.k, n, c, c2, alt, photoId, photoData, photo:photoId ? '/_blob/' + photoId : (photoData || null),
+    const pos = (photoId || photoData) ? posOk(x.pos) : null;
+    out.push({k:x.k, n, c, c2, alt, photoId, photoData, photo:photoId ? '/_blob/' + photoId : (photoData || null), pos,
       keys:Array.from(new Set([x.k, n].concat(alt).map(norm).filter(t => t.length >= 4)))});
   }
   return (cplCache = out);
@@ -1527,23 +1539,32 @@ function mixHex(a, b, t){
 }
 /* a couple's two colours as CSS variables (--cc, --cc2) for dots, chips and cards */
 const ccStyle = x => '--cc:' + x.c + ';--cc2:' + x.c2;
+/* a couple photo's framing: where its focus is (x, y in %) and how far it is zoomed; faces sit a little high by default */
+const CPL_POS = {x:50, y:30, z:1};
+function posOk(p){
+  if (!p || typeof p !== 'object') return null;
+  const q = {x:clampPct(p.x), y:clampPct(p.y), z:clampZoom(p.z)};
+  return q.x === CPL_POS.x && q.y === CPL_POS.y && q.z === CPL_POS.z ? null : q;
+}
+const cplPos = x => (x && x.pos) || CPL_POS;
 /* what gets saved for a couple */
 function rawOf(x){
   const r = {k:x.k, n:x.n, c:x.c, c2:x.c2, alt:x.alt || []};
   if (x.photoId) r.photoId = x.photoId; else if (x.photoData || x.photo) r.photo = x.photoData || x.photo;
+  if (r.photoId || r.photo) { const q = posOk(x.pos); if (q) r.pos = q; }
   return r;
 }
 /* profile picture: the couple photo in a ring of their two colours, or their initials */
 const initialsOf = n => { const caps = (String(n).match(/[A-Z]/g) || []).join(''); return (caps.length >= 2 ? caps.slice(0, 2) : String(n).slice(0, 2)).toUpperCase(); };
 function avatarHTML(x, size){
-  return `<span class="cav" style="${ccStyle(x)};--av:${size}px" aria-hidden="true">${x.photo ? `<img src="${esc(x.photo)}" alt="" loading="lazy" decoding="async">` : esc(initialsOf(x.n))}</span>`;
+  return `<span class="cav" style="${ccStyle(x)};--av:${size}px" aria-hidden="true">${x.photo ? `<span class="cav-ph"><img src="${esc(x.photo)}" alt="" loading="lazy" decoding="async" style="${coverStyleOf(cplPos(x))}"></span>` : esc(initialsOf(x.n))}</span>`;
 }
 const dotOrAvatar = (x, size) => x.photo ? avatarHTML(x, size) : `<i class="cdot" style="${ccStyle(x)}"></i>`;
 async function setCouplePhoto(k, file){
   const list = couplesList().map(rawOf), it = list.find(x => x.k === k);
   if (!it) return;
   const oldId = it.photoId;
-  delete it.photoId; delete it.photo;
+  delete it.photoId; delete it.photo; delete it.pos;
   if (file) {
     if (store.mode === 'cloud' && store.assets) {
       const blob = await makeJpeg(file, 1200, 0.86);
@@ -1579,8 +1600,9 @@ function cpReturn(){
   if (p.back === 'editor') {
     const saved = couplesList().find(x => x.k === p.k), row = cmState.list.find(x => x.k === p.k);
     if (saved && row) {
-      delete row.photoId; delete row.photo;
+      delete row.photoId; delete row.photo; delete row.pos;
       if (saved.photoId) row.photoId = saved.photoId; else if (saved.photoData) row.photo = saved.photoData;
+      if (saved.pos) row.pos = saved.pos;
     }
     renderCm();
     if (!$('#coupleDlg').open) $('#coupleDlg').showModal();
@@ -1658,8 +1680,8 @@ function openCouple(k){
     </li>`;
   };
   $('#artistTitle').textContent = x.n;
-  const heroImg = x.photo ? `<img src="${esc(x.photo)}" alt="" style="object-position:center 30%">` : (coverC ? `<img src="${esc(imgSrc(coverC))}" alt=""${coverStyle(coverC)}>` : '');
-  const photoActs = canEditPhotos() ? `<div class="cp-acts"><button type="button" class="btn btn-ghost btn-sm" data-cp-photo="${esc(k)}">${x.photo ? 'Change profile photo' : 'Add profile photo'}</button>${x.photo ? `<button type="button" class="link-btn" data-cp-photo-del="${esc(k)}">Remove photo</button>` : ''}</div>` : '';
+  const heroImg = x.photo ? `<img src="${esc(x.photo)}" alt="" style="${coverStyleOf(cplPos(x))}">` : (coverC ? `<img src="${esc(imgSrc(coverC))}" alt=""${coverStyle(coverC)}>` : '');
+  const photoActs = canEditPhotos() ? `<div class="cp-acts"><button type="button" class="btn btn-ghost btn-sm" data-cp-photo="${esc(k)}">${x.photo ? 'Change profile photo' : 'Add profile photo'}</button>${x.photo ? `<button type="button" class="btn btn-ghost btn-sm" data-cp-adjust="${esc(k)}">Adjust photo</button>` : ''}${x.photo ? `<button type="button" class="link-btn" data-cp-photo-del="${esc(k)}">Remove photo</button>` : ''}</div>` : '';
   $('#artistBody').innerHTML = `<div class="ap-hero${x.photo ? ' has-photo' : ''}" style="${lcStyle(x)}">
       ${heroImg}
       <div class="ap-tx"><small>COUPLE</small><h3>${esc(x.n)}</h3>${yrs.length ? `<p>Following since ${esc(yrs[0])}</p>` : ''}</div>
@@ -2282,7 +2304,7 @@ async function wrapCanvas(year){
   list.forEach(c => { const k = norm(c.artist); if (!k) return; const e = by.get(k) || {name:str(c.artist).trim(), n:0, c}; e.n++; if (!imgSrc(e.c) && imgSrc(c)) e.c = c; by.set(k, e); });
   const topA = Array.from(by.values()).sort((a, b) => b.n - a.n)[0];
   const cby = new Map();
-  list.forEach(c => couplesOf(c).forEach(k => { const x = coupleBy(k); const e = cby.get(k) || {name:x.n, col:x.c, col2:x.c2, photo:x.photo, n:0, c}; e.n++; if (!imgSrc(e.c) && imgSrc(c)) e.c = c; cby.set(k, e); }));
+  list.forEach(c => couplesOf(c).forEach(k => { const x = coupleBy(k); const e = cby.get(k) || {name:x.n, col:x.c, col2:x.c2, photo:x.photo, pos:cplPos(x), n:0, c}; e.n++; if (!imgSrc(e.c) && imgSrc(c)) e.c = c; cby.set(k, e); }));
   const topC0 = Array.from(cby.values()).sort((a, b) => b.n - a.n)[0];
   /* the top couple only takes the spot when no other artist was seen more often */
   const topC = topC0 && (!topA || topC0.n >= topA.n) ? topC0 : null;
@@ -2330,7 +2352,7 @@ async function wrapCanvas(year){
     const im = await loadImg(topC && topC.photo ? topC.photo : imgSrc(topX.c));
     g.save(); g.beginPath(); g.arc(170, y + 90, 90, 0, Math.PI * 2); g.clip();
     g.fillStyle = (topC && topC.col) || '#EE9DB7'; g.fillRect(80, y, 180, 180);
-    if (im) drawCover(g, im, 80, y, 180, 180, topC && topC.photo ? {x:50, y:30, z:1} : topX.c.coverPos);
+    if (im) drawCover(g, im, 80, y, 180, 180, topC && topC.photo ? topC.pos : topX.c.coverPos);
     g.restore();
     if (topC) { const rg = g.createLinearGradient(74, y - 6, 266, y + 186); rg.addColorStop(0, topC.col); rg.addColorStop(1, topC.col2); g.strokeStyle = rg; g.lineWidth = 8; g.beginPath(); g.arc(170, y + 90, 96, 0, Math.PI * 2); g.stroke(); }
     g.fillStyle = 'rgba(255,255,255,.75)'; g.font = '600 32px ' + FB; g.fillText(topC ? 'Top couple' : 'Top artist', 300, y + 60);
@@ -2769,17 +2791,46 @@ $('#coverInput').addEventListener('change', e => {
   e.target.value = '';
   setCoverFile(file);
 });
-const posState = {x:50, y:50, z:1, iw:0, ih:0};
+const posState = {x:50, y:50, z:1, iw:0, ih:0, mode:'cover', k:null};
 function drawPos(){
   const st = coverStyleOf(posState);
-  $('#posImg').setAttribute('style', st);
-  $('#posMini').setAttribute('style', st);
+  ['#posImg', '#posMini', '#posHero', '#posRound'].forEach(q => $(q).setAttribute('style', st));
+}
+/* the dialog's title and previews follow what is being framed */
+function posLook(mode, src){
+  const cpl = mode === 'couple';
+  $('#posTitle').textContent = cpl ? 'Adjust couple photo' : 'Adjust cover';
+  $('#posImg').setAttribute('alt', cpl ? 'Couple photo being adjusted' : 'Cover being adjusted');
+  $('#posTixPrev').hidden = cpl;
+  $('#posCplPrev').hidden = !cpl;
+  if (cpl) { $('#posHero').src = src; $('#posRound').src = src; }
+}
+function openCouplePos(k){
+  const x = coupleBy(k);
+  if (!x || !x.photo || !canEditPhotos()) return;
+  const p = cplPos(x);
+  Object.assign(posState, {x:p.x, y:p.y, z:p.z, iw:0, ih:0, mode:'couple', k});
+  const img = $('#posImg');
+  img.onload = () => { posState.iw = img.naturalWidth; posState.ih = img.naturalHeight; };
+  img.src = x.photo;
+  posLook('couple', x.photo);
+  $('#posZoom').value = posState.z;
+  drawPos();
+  $('#posDlg').showModal();
+}
+async function saveCouplePos(k, p){
+  const list = couplesList().map(rawOf), it = list.find(x => x.k === k);
+  if (!it) return;
+  const q = posOk(p);
+  if (q) it.pos = q; else delete it.pos;
+  await saveCouples(list);
 }
 function openPos(){
   const src = form.file ? form.previewUrl : (form.removeImage ? null : (form.existing ? imgSrc(form.existing) : (form.dupCover ? imgSrc(form.dupCover) : null)));
   if (!src) return;
   const p = form.coverPos || {x:50, y:50, z:1};
-  Object.assign(posState, {x:clampPct(p.x), y:clampPct(p.y), z:clampZoom(p.z), iw:0, ih:0});
+  Object.assign(posState, {x:clampPct(p.x), y:clampPct(p.y), z:clampZoom(p.z), iw:0, ih:0, mode:'cover', k:null});
+  posLook('cover', src);
   const img = $('#posImg');
   img.onload = () => { posState.iw = img.naturalWidth; posState.ih = img.naturalHeight; };
   img.src = src;
@@ -2827,9 +2878,22 @@ function posTravel(fw, fh){
   frame.addEventListener('pointercancel', end);
   frame.addEventListener('wheel', e => { e.preventDefault(); posState.z = clampZoom(posState.z * Math.exp(-e.deltaY * 0.0015)); $('#posZoom').value = posState.z; drawPos(); }, {passive:false});
   $('#posZoom').addEventListener('input', e => { posState.z = clampZoom(e.target.value); drawPos(); });
-  $('#posReset').addEventListener('click', () => { Object.assign(posState, {x:50, y:50, z:1}); $('#posZoom').value = 1; drawPos(); });
-  $('#posDone').addEventListener('click', () => {
-    form.coverPos = {x:Math.round(posState.x * 10) / 10, y:Math.round(posState.y * 10) / 10, z:Math.round(posState.z * 100) / 100};
+  $('#posReset').addEventListener('click', () => { Object.assign(posState, posState.mode === 'couple' ? CPL_POS : {x:50, y:50, z:1}); $('#posZoom').value = posState.z; drawPos(); });
+  $('#posDone').addEventListener('click', async () => {
+    const p = {x:Math.round(posState.x * 10) / 10, y:Math.round(posState.y * 10) / 10, z:Math.round(posState.z * 100) / 100};
+    if (posState.mode === 'couple') {
+      const k = posState.k, btn = $('#posDone');
+      btn.disabled = true;
+      try {
+        await saveCouplePos(k, p);
+        $('#posDlg').close();
+        toast('Photo position saved');
+        if ($('#artistDlg').open) openCouple(k);
+      } catch (err) { toast(errMsg(err)); }
+      finally { btn.disabled = false; }
+      return;
+    }
+    form.coverPos = p;
     $('#posDlg').close();
     updateCoverPreview();
   });
@@ -4512,7 +4576,7 @@ function renderCm(){
   const n = new Map();
   store.items.forEach(c => couplesOf(c).forEach(k => n.set(k, (n.get(k) || 0) + 1)));
   $('#cmList').innerHTML = cmState.list.map((x, i) => {
-    const v = {n:x.n || '?', c:x.c, c2:x.c2, photo:x.photoId ? '/_blob/' + x.photoId : (x.photo || null)};
+    const v = {n:x.n || '?', c:x.c, c2:x.c2, photo:x.photoId ? '/_blob/' + x.photoId : (x.photo || null), pos:posOk(x.pos)};
     const nm = esc(x.n || 'this couple'), can = !!x.k && canEditPhotos();
     return `<li class="cm-row">
     <button type="button" class="cm-av" data-cm-photo="${i}"${can ? '' : ' disabled'} aria-label="${x.k ? (v.photo ? 'Change' : 'Add') + ' profile photo for ' + nm : 'Save this couple first, then add a photo'}">${avatarHTML(v, 54)}<span class="cm-cam" aria-hidden="true">${CAMICON}</span></button>
@@ -4552,6 +4616,7 @@ $('#cmSave').addEventListener('click', async () => {
     if (!k) { k = kn && !keys.has(kn) ? kn : newId(); keys.add(k); }
     const c = hexOk(x.c) ? x.c.toUpperCase() : '#9A93AE';
     const keepPhoto = x.photoId ? {photoId:x.photoId} : x.photo ? {photo:x.photo} : {};
+    if ((x.photoId || x.photo) && posOk(x.pos)) keepPhoto.pos = posOk(x.pos);
     out.push(Object.assign({k, n, c, c2:hexOk(x.c2) ? x.c2.toUpperCase() : mixHex(c, '#FFFFFF', 0.45), alt:Array.isArray(x.alt) ? x.alt : []}, keepPhoto));
   }
   const keep = $('#formDlg').open ? Array.from(document.querySelectorAll('#form input[name="couple"]:checked')).map(r => r.value) : null;
@@ -4576,12 +4641,15 @@ $('#upCouple').addEventListener('change', async e => {
   if (!cpPick) return;
   const k = cpPick.k;
   cpPick.busy = true;
+  let fresh = false;
   if (f) {
     toast('Saving photo…');
-    try { await setCouplePhoto(k, f); toast('Profile photo saved'); }
+    try { await setCouplePhoto(k, f); toast('Profile photo saved'); fresh = true; }
     catch (err) { toast(errMsg(err)); }
   }
+  const back = cpPick && cpPick.back;
   cpReturn();
+  if (fresh && back === 'page') openCouplePos(k);
 });
 $('#upCouple').addEventListener('cancel', () => { if (cpPick && !cpPick.busy) cpReturn(); });
 
@@ -4741,6 +4809,8 @@ async function restoreBackup(b, onProg){
       else if (ph) o.photo = ph;
       else if (old.photoId) o.photoId = old.photoId;
       else if (old.photo) o.photo = old.photo;
+      const op = ph ? posOk(x.pos) : posOk(old.pos);
+      if (op && (o.photoId || o.photo)) o.pos = op;
       byK.set(x.k, o);
     }
     await saveCouples(Array.from(byK.values()));
@@ -4856,6 +4926,8 @@ document.addEventListener('click', e => {
   if (e.target.closest('[data-couple-edit]')) { openCoupleEditor(); return; }
   const cmp = e.target.closest('[data-cm-photo]');
   if (cmp) { const x = cmState.list[Number(cmp.getAttribute('data-cm-photo'))]; if (x && x.k) pickCouplePhoto(x.k, 'editor'); return; }
+  const cpa = e.target.closest('[data-cp-adjust]');
+  if (cpa) { openCouplePos(cpa.getAttribute('data-cp-adjust')); return; }
   const cpp = e.target.closest('[data-cp-photo]');
   if (cpp) { pickCouplePhoto(cpp.getAttribute('data-cp-photo')); return; }
   const cpd = e.target.closest('[data-cp-photo-del]');
