@@ -5,21 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#EAF0F7" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0B2333" media="(prefers-color-scheme: dark)">
-<title>GL Concert &amp; Event Log</title>
+<title>Concert &amp; Event Log</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" sizes="32x32" href="bloom-favicon-32.png">
+<link rel="apple-touch-icon" href="bloom-apple-touch-icon.png">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="GL Log">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Concert &amp; Event Log">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600&family=Google+Sans+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Midnight Bloom: midnight teal, blush and rose gold, after the Blush Blossom Fan Fest 2026 poster */
+  /* Midnight Bloom: midnight teal, blush and rose gold, after the Blush Blossom Fan Fest 2026 poster.
+     One log for every fandom: concerts by any artist plus GL couple events. */
   --bg:#F3EEF7;
   --text:#102A3A;
   --text-soft:#566B78;
@@ -94,6 +94,8 @@ button{font:inherit}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 .wrap{max-width:1080px;margin:0 auto;padding:22px 18px 132px}
+.eyebrow{margin:8px 0 0;font-family:var(--display);font-weight:700;font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;width:fit-content;color:var(--pink-ink);background:var(--accent-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.eyebrow+h1{margin-top:2px}
 .top h1{font-family:var(--display);font-weight:700;font-size:clamp(2.2rem,10vw,3.5rem);line-height:1.08;margin:10px 0 6px;letter-spacing:-.01em;width:fit-content;max-width:100%;color:var(--text);background:var(--title);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .sum{margin:0;color:var(--text-soft);font-size:1rem;min-height:1.55em}
 .search{margin-top:16px}
@@ -738,6 +740,21 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 .bk-acts{display:flex;align-items:center;gap:14px;margin-top:12px}
 .bk-acts .btn{width:auto;flex:1}
 #bkProg{margin-top:10px}
+/* phone app: install sheet, update bar, version */
+.inst-hero{display:flex;align-items:center;gap:16px;margin:6px 0 14px}
+.inst-hero img{width:84px;height:84px;border-radius:22px;box-shadow:var(--shadow)}
+.inst-hero b{display:block;font-family:var(--display);font-size:1.3rem;line-height:1.2}
+.inst-hero small{display:block;margin-top:3px;color:var(--text-soft)}
+.inst-why{margin:0;color:var(--text);line-height:1.5}
+.inst-steps{margin-top:16px;padding:14px 16px;border-radius:14px;background:var(--field);border:1px solid var(--field-line)}
+.inst-steps>b{display:block;margin-bottom:6px}
+.inst-steps ol{margin:0;padding-left:20px;display:grid;gap:6px}
+.inst-steps p{margin:0}
+#installDlg .sheet-foot .btn{flex:1}
+.upd-bar{position:fixed;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:30;max-width:560px;margin:0 auto;align-items:center;gap:12px;padding:10px 10px 10px 16px;border-radius:14px;background:var(--sheet);color:var(--text);border:1px solid var(--field-line);box-shadow:var(--shadow)}
+.upd-bar:not([hidden]){display:flex}
+.upd-bar span{flex:1;font-size:.92rem}
+.app-ver{text-align:center;margin:18px 0 0}
 </style>
 </head>
 <body>
@@ -770,7 +787,8 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="tool-btn" id="themeBtn" aria-label="Switch to day mode"></button>
       <button type="button" class="tool-btn" id="moreBtn" aria-label="Backup, restore and display" title="Backup, restore and display"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.1 9.2 4.4 4.4 0 0 0 7 18z"/><path d="M12 11v5M9.8 13.8 12 16l2.2-2.2"/></svg></button>
     </div>
-    <h1>GL Concert &amp; Event Log</h1>
+    <p class="eyebrow">All fandoms</p>
+    <h1>Concert &amp; Event Log</h1>
     <p class="sum" id="sum"></p>
     <div class="view-seg" id="viewSeg" role="tablist" aria-label="View" hidden>
       <button type="button" role="tab" data-view="list" aria-selected="true">Tickets</button>
@@ -791,6 +809,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 <input type="file" id="upCam" accept="image/*" capture="environment" class="vh" tabindex="-1" aria-hidden="true">
 <input type="file" id="upPick" accept="image/*" multiple class="vh" tabindex="-1" aria-hidden="true">
 <input type="file" id="upCouple" accept="image/*" class="vh" tabindex="-1" aria-hidden="true">
+<input type="file" id="upLogo" accept="image/*" class="vh" tabindex="-1" aria-hidden="true">
 <input type="file" id="upBackup" accept=".json,.txt,application/json,text/plain" class="vh" tabindex="-1" aria-hidden="true">
 <div class="fab-wrap" id="fabWrap" hidden>
   <div class="fab-inner">
@@ -815,15 +834,15 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
         <div class="types" id="types"></div>
       </fieldset>
       <fieldset class="f">
-        <legend class="lbl">Couples</legend>
+        <legend class="lbl">GL couples (optional)</legend>
         <div class="cpls" id="cpls"></div>
-        <p class="hint">Pick every couple at this event.</p>
+        <p class="hint">For a GL event, pick every couple there and the artist fills in. Skip this for other artists.</p>
         <div class="cpl-tools"><button type="button" class="link-btn" data-couple-edit>Edit couples</button></div>
       </fieldset>
       <div class="f">
         <label class="lbl" for="artistInput">Artist</label>
         <div class="with-btn">
-          <input id="artistInput" name="artist" list="artistList" maxlength="120" autocomplete="off" placeholder="Fills in from the couples you pick">
+          <input id="artistInput" name="artist" list="artistList" maxlength="120" autocomplete="off" placeholder="Artist or band, or pick a couple above">
           <button type="button" class="btn btn-ghost btn-sm" id="findConcerts" hidden>
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
             Find shows</button>
@@ -913,6 +932,23 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
         </div>
         <p class="hint up-msg" id="phStatus" hidden></p>
         <p class="hint">Snap the real ticket, front and back. Up to 4 photos. If it has a QR code, don't share the photo before the show.</p>
+      </fieldset>
+      <fieldset class="f" id="lightFs">
+        <legend class="lbl">Lightstick color (optional)<span class="chip-name" id="chipName" hidden></span></legend>
+        <div class="chips" id="chips"></div>
+      </fieldset>
+      <fieldset class="f" id="logoFs">
+        <legend class="lbl">Stamp logo (optional)</legend>
+        <div class="lg-row">
+          <span class="lg-prev" id="lgPrev" aria-hidden="true"></span>
+          <div class="lg-tx">
+            <small id="lgText"></small>
+            <div class="lg-btns">
+              <button type="button" class="btn btn-ghost btn-sm" data-phadd="logo" id="lgUp">Upload logo</button>
+              <button type="button" class="link-btn" id="lgDel" hidden>Remove logo</button>
+            </div>
+          </div>
+        </div>
       </fieldset>
       <label class="f"><span class="lbl">Memories</span>
         <textarea name="note" rows="4" maxlength="4000" placeholder="Favorite song that night, who you went with, moments to remember"></textarea></label>
@@ -1018,18 +1054,36 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
     </section>
     <section class="bk-sec" id="bkRestoreSec">
       <h3 class="lbl">Restore</h3>
-      <p class="hint">Bring tickets back from a backup file. Backups from Concert &amp; Event Log work too: their couples are picked up from the artist names.</p>
+      <p class="hint">Bring tickets back from a backup file. Backups from Concert &amp; Event Log and GL Concert &amp; Event Log both work, so you can pour both into this one log. Tickets already here are updated, nothing else is removed.</p>
       <button type="button" class="btn btn-ghost" id="bkPick">Restore from a backup file</button>
       <div id="bkPreview" hidden></div>
     </section>
     <section class="bk-sec" id="bkInstall" hidden>
       <h3 class="lbl">App</h3>
-      <p class="hint">Add GL Concert &amp; Event Log to your home screen so it opens like an app.</p>
-      <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app</button>
+      <p class="hint">Add Concert &amp; Event Log to your home screen so it opens like an app and your tickets are kept safer.</p>
+      <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
+    <p class="hint app-ver">App version 2026.10.22-gcal</p>
   </div>
 </dialog>
+
+<dialog id="installDlg" class="sheet" aria-labelledby="installTitle">
+  <div class="sheet-head"><h2 id="installTitle">Install the app</h2><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div class="sheet-body">
+    <div class="inst-hero">
+      <img src="bloom-192.png" alt="" width="84" height="84">
+      <div><b>Concert &amp; Event Log</b><small>Every fandom, one ticket book</small></div>
+    </div>
+    <p class="inst-why">Put it on your home screen so it opens like an app, even offline. Installed, your tickets are kept safer and show reminders work best.</p>
+    <div class="inst-steps" id="instSteps" hidden></div>
+  </div>
+  <div class="sheet-foot">
+    <button type="button" class="btn btn-ghost" id="instLater">Not now</button>
+    <button type="button" class="btn btn-primary" id="instGo" autofocus>Install app</button>
+  </div>
+</dialog>
+<div class="upd-bar" id="updBar" role="status" hidden><span>A new version of the app is ready.</span><button type="button" class="btn btn-primary btn-sm" id="updBtn">Update now</button></div>
 
 <dialog id="coupleDlg" class="sheet" aria-labelledby="coupleTitle">
   <div class="sheet-head"><h2 id="coupleTitle">Couples</h2><button type="button" class="icon-btn" data-close aria-label="Close"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
@@ -1135,15 +1189,27 @@ const VENUES = [
 const $ = (s, r) => (r || document).querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const safeColor = c => /^#[0-9a-fA-F]{6}$/.test(c || '') ? c : DEFAULT_COLOR;
-/* tickets without a couple get a midnight tint */
+/* tickets with no couple and no lightstick colour get a midnight tint */
 const NEUTRAL_LC = '#2F5D72';
 /* aespa's lightstick colour as an aurora gradient: a solid base for glows, a gradient for stripes and dots */
 const AURORA = {base:'#7470FF', glow2:'#FF8AD8', grad:'linear-gradient(160deg,#7FE7FF 0%,#7470FF 38%,#C26BFF 68%,#FF8AD8 100%)'};
-/* a ticket's tint is the colour of its first couple */
-const colorOf = c => { const k = couplesOf(c)[0]; return k ? coupleBy(k) : null; };
-/* a couple gives two colours blended as an ombre; a plain colour or nothing gives one */
+/* the lightstick colour saved on a ticket: 'aurora', a hex colour, or null for none */
+const lightOf = c => {
+  const v = c && c.color;
+  if (v === 'aurora' || v === '#7470FF') return 'aurora';
+  return /^#[0-9a-fA-F]{6}$/.test(v || '') ? v : null;
+};
+/* a ticket's tint: its first couple's two colours, else its lightstick colour, else nothing */
+const colorOf = c => {
+  const k = couplesOf(c)[0];
+  if (k) return coupleBy(k);
+  const v = lightOf(c);
+  if (v === 'aurora') return {c:AURORA.base, c2:AURORA.glow2, g:AURORA.grad, light:'aurora'};
+  return v ? {c:v, c2:v, light:v} : null;
+};
+/* a couple gives two colours blended as an ombre; a lightstick gives one (or the aurora); nothing gives midnight */
 const lcStyle = col => col && typeof col === 'object'
-  ? `--lc:${col.c};--lc2:${col.c2};--lcg:linear-gradient(135deg,${col.c} 0%,${col.c2} 100%)`
+  ? `--lc:${col.c};--lc2:${col.c2};--lcg:${col.g || `linear-gradient(135deg,${col.c} 0%,${col.c2} 100%)`}`
   : col === 'aurora'
   ? `--lc:${AURORA.base};--lc2:${AURORA.glow2};--lcg:${AURORA.grad}`
   : `--lc:${col || NEUTRAL_LC};--lc2:${col || NEUTRAL_LC};--lcg:${col || NEUTRAL_LC}`;
@@ -1248,8 +1314,46 @@ function gcalUrl(c){
   try { const tz = Intl.DateTimeFormat().resolvedOptions().timeZone; if (tz && T.hasTime) q.set('ctz', tz); } catch (e) {}
   return 'https://calendar.google.com/calendar/render?' + q.toString();
 }
-/* the phone app version swaps this for real reminders */
-function remindTile(c){ return ''; }
+/* ---------- reminders (notifications, phone app only) ---------- */
+const REMIND_T = [[1440, '1 day before'], [180, '3 hours before'], [60, '1 hour before']];
+const REMIND_D = [[1440, 'Day before, 9:00'], [0, 'On the day, 9:00']];
+function remindersOf(c){
+  if (!c || c.deleted || c.kind) return [];
+  const out = [];
+  const add = (date, time, mins, keyBase, extra) => {
+    const [y, m, d] = date.split('-').map(Number);
+    const [hh, mm] = time ? time.split(':').map(Number) : [9, 0];
+    const base = new Date(y, m - 1, d, hh, mm).getTime();
+    mins.filter(n => Number.isFinite(n)).forEach(n => out.push(Object.assign({key:keyBase + ':' + n + ':' + base, at:base - n * 60000, min:n, time}, extra)));
+  };
+  if (Array.isArray(c.remind) && isDate(c.date)) add(c.date, timeOf(c), c.remind, c.id, {type:'show'});
+  return out;
+}
+function reminderMsg(c, r){
+  const a = str(c.artist) || 'Your show', t = r.time;
+  /* say how long is actually left, in case the alert arrives late */
+  const left = r.at + r.min * 60000 - Date.now();
+  let title;
+  if (!t) title = r.min >= 1440 ? 'Tomorrow: ' + a : 'Today: ' + a;
+  else if (left <= 0) title = a + ' is starting now';
+  else if (left >= 20 * 3600e3) title = 'Tomorrow: ' + a;
+  else if (left >= 3600e3) { const h = Math.round(left / 3600e3); title = a + ' in ' + h + (h === 1 ? ' hour' : ' hours'); }
+  else title = a + ' in ' + Math.max(1, Math.round(left / 60000)) + ' min';
+  const body = [str(c.title), [t ? 'Starts ' + t : '', str(c.venue)].filter(Boolean).join(' at ')].filter(Boolean).join('\n');
+  return {title, body};
+}
+function remindTile(c){
+  if (!isUpcoming(c) || !store.canWrite || store.mode !== 'local') return '';
+  const opts = timeOf(c) ? REMIND_T : REMIND_D;
+  const on = Array.isArray(c.remind) ? c.remind : [];
+  const can = 'Notification' in window && 'serviceWorker' in navigator;
+  const note = !can ? "This browser can't show notifications. Use Google Calendar instead."
+    : Notification.permission === 'denied' ? 'Notifications are blocked for this site. Allow them in Chrome site settings.'
+    : 'Alerts may come late while the app is closed. Google Calendar never misses.';
+  return `<div class="dt wide dt-remind"><span class="dt-ic${on.length ? ' on' : ''}">${DICON.bell}</span><div class="dt-tx"><small>Notify me</small>
+    <div class="rm-chips">${opts.map(([mn, l]) => `<button type="button" class="rm-chip" data-remind="${mn}" aria-pressed="${on.indexOf(mn) !== -1}">${l}</button>`).join('')}</div>
+    <small class="rm-note">${note}</small></div></div>`;
+}
 function countdown(s, t){
   const n = daysUntil(s);
   if (n <= 0) return t ? 'Today ' + t : 'Today';
@@ -1296,7 +1400,7 @@ const local = {
   open(){
     if (this._db) return Promise.resolve(this._db);
     return new Promise((res, rej) => {
-      const r = indexedDB.open('gl-gmmtv-log', 1);
+      const r = indexedDB.open('concert-ticket-book', 1);
       r.onupgradeneeded = () => r.result.createObjectStore('concerts', {keyPath:'id'});
       r.onsuccess = () => { this._db = r.result; res(r.result); };
       r.onerror = () => rej(r.error);
@@ -1351,18 +1455,23 @@ async function boot(){
   catch (e) { store.mode = 'none'; store.canWrite = false; }
   store.loaded = true;
   render();
+  afterLocalBoot();
 }
 async function reloadLocal(){ setItems((await local.all()) || []); }
-/* old stamp-logo records (from the upload menu) stay out of the ticket list; couple logos are built in */
+/* stamp logos and the couple list live beside the tickets as small records; keep them out of the ticket list */
 function setItems(list){
-  const items = [];
+  const items = [], logos = new Map();
   let cset = null;
   for (const r of list) {
-    if (r && r.kind === 'stampLogo') continue;
+    if (r && r.kind === 'stampLogo') {
+      if (typeof r.logo === 'string' && r.logo.indexOf('data:image/') === 0 && str(r.artist).trim()) logos.set(norm(r.artist), {id:r.id, logo:r.logo, artist:str(r.artist).trim()});
+      continue;
+    }
     if (r && r.kind === 'coupleSet') { if (Array.isArray(r.list)) cset = r.list; }
     else items.push(r);
   }
   store.coupleSet = cset;
+  store.logos = logos;
   cplCache = null;
   store.items = items;
 }
@@ -1492,10 +1601,11 @@ function coupleNames(keys){
   const ns = keys.map(k => (coupleBy(k) || {}).n).filter(Boolean);
   return ns.length < 3 ? ns.join(' & ') : ns.slice(0, -1).join(', ') + ' & ' + ns[ns.length - 1];
 }
-/* stamp logo: the couple's own logo when the event has just one couple */
+/* stamp logo: the couple's built-in logo when the event has just one couple, else a logo uploaded for the artist */
 function logoFor(c){
   const ks = couplesOf(c);
-  return ks.length === 1 && COUPLE_LOGOS[ks[0]] ? {logo:COUPLE_LOGOS[ks[0]]} : null;
+  if (ks.length === 1 && COUPLE_LOGOS[ks[0]]) return {logo:COUPLE_LOGOS[ks[0]]};
+  return (store.logos && store.logos.get(norm(c.artist))) || null;
 }
 async function saveCouples(list){
   const rec = {kind:'coupleSet', list, updatedAt:Date.now()};
@@ -1690,7 +1800,7 @@ function tixHTML(c){
         ${(date || c.venue) ? `<div class="when">${date ? `<span>${ICON.cal}<i>${esc(date + (timeOf(c) ? ', ' + timeOf(c) : ''))}</i></span>` : ''}${c.venue ? `<span>${ICON.pin}<i>${esc(c.venue)}</i></span>` : ''}</div>` : ''}
       </div>
     </div>
-    <div class="tix-stub"><div class="tix-glass" aria-hidden="true">${src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async">` : ''}</div><div class="tix-top">${badgeHTML(c)}</div>${stubBody}</div>
+    <div class="tix-stub"><div class="tix-glass" aria-hidden="true">${src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async">` : ''}</div><div class="tix-top">${(colorOf(c) || {}).light ? '<i class="tix-dot"></i>' : ''}${badgeHTML(c)}</div>${stubBody}</div>
     ${isStamped(c) ? stampHTML(c) : ''}
   </article>`;
 }
@@ -1715,7 +1825,7 @@ function emptyHTML(w){
   return `<div class="empty">
     <div class="ghost" aria-hidden="true"><div class="ghost-art">${ICON.image}</div><div class="perf"></div><div class="ghost-stub"><i></i><i></i></div></div>
     <h2>No tickets yet</h2>
-    <p>${w ? "Add a GL event you've been to or one you're going to, with its couple, cover and seat." : "The owner hasn't added any events yet."}</p>
+    <p>${w ? "Add a concert or event you've been to or one you're going to, with its artist or GL couple, cover and seat." : "The owner hasn't added any events yet."}</p>
     ${w ? `<button class="btn btn-primary" type="button" data-act="add">${ICON.plus}Add first ticket</button>` : ''}
   </div>`;
 }
@@ -1751,10 +1861,9 @@ function render(){
 
   const upcoming = items.filter(isUpcoming);
   const past = items.filter(c => !isUpcoming(c));
-  const pairs = new Set();
-  past.forEach(c => couplesOf(c).forEach(k => pairs.add(k)));
+  const artists = new Set(past.map(i => norm(i.artist)).filter(Boolean)).size;
   let sum = '';
-  if (store.loaded && past.length) sum = plural(past.length, 'event') + (pairs.size ? ' with ' + plural(pairs.size, 'couple') : '');
+  if (store.loaded && past.length) sum = plural(past.length, 'event') + ' seen across ' + plural(artists, 'artist');
   if (store.loaded && upcoming.length) sum += (sum ? ', ' : '') + `${upcoming.length} coming up`;
   $('#sum').textContent = sum;
 
@@ -1827,7 +1936,7 @@ function startUpload(id, how){
   if (!c || !store.canWrite || upState.busy) return;
   if (photosOf(c).length >= 4) { toast('This show already has 4 photos. Remove one in Edit first.'); return; }
   upState.target = id; upState.msg = '';
-  try { sessionStorage.setItem('gl.upTarget', id); } catch (e) {}
+  try { sessionStorage.setItem('all.upTarget', id); } catch (e) {}
   const inp = $(how === 'cam' ? '#upCam' : '#upPick');
   inp.value = '';
   inp.click();
@@ -1844,7 +1953,7 @@ async function savePhotos(c, photos){
 }
 async function handleUpload(files){
   let id = upState.target;
-  if (!id) { try { id = sessionStorage.getItem('gl.upTarget'); } catch (e) {} }
+  if (!id) { try { id = sessionStorage.getItem('all.upTarget'); } catch (e) {} }
   const list = Array.from(files || []).filter(f => !f.type || f.type.indexOf('image/') === 0);
   if (!id || !list.length) return;
   upState.target = id; upState.busy = id;
@@ -1874,7 +1983,7 @@ async function handleUpload(files){
   }
   upState.busy = null;
   upState.msg = failed ? (added ? plural(added, 'photo') + ' saved, ' + failed + " couldn't be read." : "Couldn't save that photo. Try a JPG or PNG.") : (added ? plural(added, 'photo') + ' saved.' : '');
-  try { sessionStorage.removeItem('gl.upTarget'); } catch (e) {}
+  try { sessionStorage.removeItem('all.upTarget'); } catch (e) {}
   render();
 }
 /* The camera and gallery open with the edit sheet put away for a moment, then the sheet
@@ -1890,13 +1999,14 @@ function resumeForm(){
   renderPhotoEdit();
 }
 function suspendFormFor(how){
-  if (form.photos.length >= MAX_PHOTOS) return;
+  if (how === 'logo' && !$('#artistInput').value.trim()) { setErr($('#formErr'), 'Enter the artist first, then upload their logo.'); $('#artistInput').focus(); return; }
+  if (how !== 'logo' && form.photos.length >= MAX_PHOTOS) return;
   const body = $('#formDlg .sheet-body');
   form.scrollTop = body ? body.scrollTop : 0;
   form.suspended = true;
   form.picking = true;
   $('#formDlg').close();
-  const inp = $(how === 'cam' ? '#upCam' : '#upPick');
+  const inp = $(how === 'cam' ? '#upCam' : how === 'logo' ? '#upLogo' : '#upPick');
   inp.value = '';
   inp.click();
   /* if nothing was picked, bring the sheet back once the page has focus again */
@@ -1942,6 +2052,7 @@ function openDuplicate(src){
   f.elements.genDate.value = str(gen.date); f.elements.genTime.value = str(gen.time);
   form.dupCover = (src.coverId || src.coverData || src.coverFile) ? {coverId:src.coverId, coverData:src.coverData, coverFile:src.coverFile} : null;
   form.coverPos = src.coverPos ? Object.assign({}, src.coverPos) : null;
+  setLightRadio(src);
   renderCoupleChips(couplesOf(src)); form.couplesTouched = true; form.autoArtist = '';
   updateCoverPreview();
   const L = getLoc(src);
@@ -2145,7 +2256,7 @@ async function ticketCanvas(c){
     syy += 44;
   });
   if (isStamped(c)) await drawStampOn(g, c, X + MW, Y + TH * 0.46, 104);
-  g.font = '700 20px ' + FD; g.fillStyle = 'rgba(255,255,255,.55)'; g.textAlign = 'center'; g.fillText('GL CONCERT & EVENT LOG', W / 2, H - 34);
+  g.font = '700 20px ' + FD; g.fillStyle = 'rgba(255,255,255,.55)'; g.textAlign = 'center'; g.fillText('CONCERT & EVENT LOG', W / 2, H - 34);
   return cv;
 }
 const wrapState = {year:null};
@@ -2172,7 +2283,9 @@ async function wrapCanvas(year){
   const topA = Array.from(by.values()).sort((a, b) => b.n - a.n)[0];
   const cby = new Map();
   list.forEach(c => couplesOf(c).forEach(k => { const x = coupleBy(k); const e = cby.get(k) || {name:x.n, col:x.c, col2:x.c2, photo:x.photo, n:0, c}; e.n++; if (!imgSrc(e.c) && imgSrc(c)) e.c = c; cby.set(k, e); }));
-  const topC = Array.from(cby.values()).sort((a, b) => b.n - a.n)[0];
+  const topC0 = Array.from(cby.values()).sort((a, b) => b.n - a.n)[0];
+  /* the top couple only takes the spot when no other artist was seen more often */
+  const topC = topC0 && (!topA || topC0.n >= topA.n) ? topC0 : null;
   const topX = topC || topA;
   /* background: the cover of the year's top artist, darkened so the words stay readable */
   const bgIm = topX ? await loadImg(imgSrc(topX.c)) : null;
@@ -2196,12 +2309,12 @@ async function wrapCanvas(year){
   const sums = sumByCur(list), cur = sums.has('THB') || !sums.size ? 'THB' : Array.from(sums.keys())[0];
   g.textAlign = 'left'; g.textBaseline = 'alphabetic'; g.fillStyle = '#fff';
   g.font = '700 46px ' + FD; g.fillStyle = '#F2C3AE'; g.fillText('MY ' + year, 80, 170);
-  g.fillStyle = '#fff'; g.font = '700 96px ' + FD; g.fillText('IN GL EVENTS', 80, 270);
+  g.fillStyle = '#fff'; g.font = '700 96px ' + FD; g.fillText('IN SHOWS', 80, 270);
   g.font = '700 300px ' + FD; g.fillText(String(list.length), 70, 600);
-  g.font = '600 46px ' + FB; g.globalAlpha = 0.85; g.fillText(list.length === 1 ? 'event' : 'events', 90, 670); g.globalAlpha = 1;
+  g.font = '600 46px ' + FB; g.globalAlpha = 0.85; g.fillText(list.length === 1 ? 'show' : 'shows', 90, 670); g.globalAlpha = 1;
   /* other currencies are listed under the main one, never converted */
   const others = Array.from(sums.entries()).filter(([k]) => k !== cur).sort((a, b) => b[1] - a[1]).map(([k, v]) => '+ ' + moneyFmt(k, v)).join('  ');
-  const stats = [[cby.size ? 'Couples' : 'Artists', String(cby.size || by.size)], ['Venues', String(vby.size)], ['Countries', String(countries.size || 0)], ['Spent', sums.size ? moneyFmt(cur, sums.get(cur) || 0) : '–', others]];
+  const stats = [['Artists', String(by.size)], ['Venues', String(vby.size)], ['Countries', String(countries.size || 0)], ['Spent', sums.size ? moneyFmt(cur, sums.get(cur) || 0) : '–', others]];
   stats.forEach(([l, v, extra], i) => {
     const x = 80 + (i % 2) * 470, y = 740 + Math.floor(i / 2) * 190;
     g.fillStyle = 'rgba(255,255,255,.1)'; rr(g, x, y, 440, 160, 28); g.fill();
@@ -2244,7 +2357,7 @@ async function wrapCanvas(year){
     const x = cx0 + i * (size + gap), yy = Math.min(Math.max(y + 20, 1620), 1700);
     g.save(); rr(g, x, yy, size, size, 24); g.clip(); g.fillStyle = '#123447'; g.fillRect(x, yy, size, size); if (im) drawCover(g, im, x, yy, size, size, covers[i].coverPos); g.restore();
   }
-  g.font = '700 28px ' + FD; g.fillStyle = 'rgba(255,255,255,.55)'; g.textAlign = 'center'; g.fillText('GL CONCERT & EVENT LOG', W / 2, H - 70);
+  g.font = '700 28px ' + FD; g.fillStyle = 'rgba(255,255,255,.55)'; g.textAlign = 'center'; g.fillText('CONCERT & EVENT LOG', W / 2, H - 70);
   return cv;
 }
 const shareState = {file:null, url:null, title:''};
@@ -2338,8 +2451,8 @@ function checkNewBadges(){
   if (!store.loaded) return;
   const ids = earnedBadges().map(b => b.id);
   let seen = null;
-  try { seen = JSON.parse(localStorage.getItem('gl.badges') || 'null'); } catch (e) {}
-  try { localStorage.setItem('gl.badges', JSON.stringify(ids)); } catch (e) {}
+  try { seen = JSON.parse(localStorage.getItem('all.badges') || 'null'); } catch (e) {}
+  try { localStorage.setItem('all.badges', JSON.stringify(ids)); } catch (e) {}
   if (!Array.isArray(seen)) return;   /* first look: no fanfare for badges you already had */
   const fresh = BADGES.filter(b => ids.indexOf(b.id) !== -1 && seen.indexOf(b.id) === -1);
   if (fresh.length) toast('New badge' + (fresh.length > 1 ? 's' : '') + ': ' + fresh.map(b => b.icon + ' ' + b.name).join(', '));
@@ -2440,7 +2553,7 @@ function renderSpend(all){
     ${wrapCardHTML()}
     <div class="view-seg sp-toggle" role="tablist" aria-label="Group by">
       <button type="button" role="tab" data-spend-mode="year" aria-selected="${!byName}">By year</button>
-      <button type="button" role="tab" data-spend-mode="couple" aria-selected="${byCouple}">By couple</button>
+      ${byCouple || withPay.some(c => couplesOf(c).length) ? `<button type="button" role="tab" data-spend-mode="couple" aria-selected="${byCouple}">By couple</button>` : ''}
       <button type="button" role="tab" data-spend-mode="artist" aria-selected="${byArtist}">By artist</button>
     </div>
     ${byName ? `<div class="sp-years">${['all'].concat(years).map(y => `<button type="button" class="fchip" data-spend-year="${esc(y)}" aria-pressed="${spendState.year === y}">${y === 'all' ? 'ALL YEARS' : esc(y)}</button>`).join('')}</div>` : ''}
@@ -2557,6 +2670,12 @@ $('#types').innerHTML = CATS.map(c =>
 function renderCoupleChips(sel){
   const set = new Set(sel || []);
   $('#cpls').innerHTML = couplesList().map(x => `<label class="cpl" style="${ccStyle(x)}"><input type="checkbox" name="couple" value="${esc(x.k)}"${set.has(x.k) ? ' checked' : ''}><span><i class="cdot"></i>${esc(x.n)}</span></label>`).join('');
+  syncCoupleExtras();
+}
+/* a couple brings its own two colours (and maybe a logo), so the lightstick colour is only asked for other artists */
+function syncCoupleExtras(){
+  $('#lightFs').hidden = pickedCouples().length > 0;
+  updateLogoUI();
 }
 const pickedCouples = () => Array.from(document.querySelectorAll('#form input[name="couple"]:checked')).map(r => r.value).filter(k => coupleBy(k));
 function syncArtistFromCouples(){
@@ -2566,7 +2685,7 @@ function syncArtistFromCouples(){
   a.value = t; form.autoArtist = t;
   updateFindBtn(); updateSearchLink();
 }
-$('#cpls').addEventListener('change', () => { form.couplesTouched = true; syncArtistFromCouples(); });
+$('#cpls').addEventListener('change', () => { form.couplesTouched = true; syncArtistFromCouples(); syncCoupleExtras(); });
 $('#artistInput').addEventListener('input', () => {
   if (form.couplesTouched) return;
   renderCoupleChips(inferCouples($('#artistInput').value));
@@ -2575,6 +2694,24 @@ function selectedCat(){
   const r = document.querySelector('#form input[name="category"]:checked');
   return r && CATS.some(x => x.k === r.value) ? r.value : 'concert';
 }
+/* lightstick colour */
+$('#chips').innerHTML = '<label class="chip" title="None"><input type="radio" name="color" value="none" aria-label="No lightstick color"><span class="chip-none"></span></label>' + COLORS.map(c =>
+  `<label class="chip" title="${c.n}"><input type="radio" name="color" value="${c.v}" aria-label="${c.n}"><span style="--c:${c.v === 'aurora' ? AURORA.grad : c.v}"></span></label>`
+).join('');
+function updateChipName(){
+  const r = document.querySelector('#form input[name="color"]:checked');
+  const c = r && COLORS.find(x => x.v === r.value);
+  const el = $('#chipName');
+  el.textContent = c ? c.n : '';
+  el.hidden = !c;
+}
+function setLightRadio(c){
+  const f = $('#form');
+  const radio = f.querySelector(`input[name="color"][value="${lightOf(c) || 'none'}"]`) || f.querySelector('input[name="color"]');
+  radio.checked = true;
+  updateChipName();
+}
+$('#chips').addEventListener('change', updateChipName);
 /* ticket price */
 const CURRENCIES = [
   {k:'THB', s:'฿'}, {k:'KRW', s:'₩'}, {k:'JPY', s:'¥'}, {k:'USD', s:'$'}, {k:'SGD', s:'S$'},
@@ -2718,7 +2855,7 @@ function renderPhotoEdit(){
   box.innerHTML = form.photos.map((p, i) => `<div class="ph-cell"><img src="${esc(p.kind === 'new' ? p.url : photoSrc(p.ref))}" alt="Ticket photo ${i + 1}"><button type="button" class="ph-del" data-phdel="${i}" aria-label="Remove photo ${i + 1}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`).join('');
   box.hidden = !form.photos.length;
   const full = form.photos.length >= MAX_PHOTOS;
-  document.querySelectorAll('[data-phadd]').forEach(b => { b.disabled = full; });
+  document.querySelectorAll('[data-phadd]:not([data-phadd="logo"])').forEach(b => { b.disabled = full; });
 }
 async function addPhotoFiles(files){
   const list = Array.from(files || []);
@@ -2927,9 +3064,12 @@ function updateFindBtn(){
   b.setAttribute('aria-disabled', aIn.value.trim() ? 'false' : 'true');
 }
 function buildConcertPrompt(artist, cat){
+  const gl = pickedCouples().length > 0 || inferCouples(artist).length > 0;
   return [
-    "You help fill in a Thai fan's personal diary of GMMTV GL (girls' love) couple events.",
-    'List fan meetings, fancons, concerts, series events, fan signs and screenings featuring this GMMTV couple or artist: ' + JSON.stringify(artist),
+    gl ? "You help fill in a Thai fan's personal diary of concerts and GMMTV GL (girls' love) couple events."
+       : "You help fill in a Thai fan's personal concert and event diary.",
+    gl ? 'List fan meetings, fancons, concerts, series events, fan signs and screenings featuring this GMMTV couple or artist: ' + JSON.stringify(artist)
+       : 'List concerts, tours, fan meetings and fancons by this artist: ' + JSON.stringify(artist),
     'Type of entry being logged: ' + catLabel(cat) + '. Put events of that type first.',
     'Rules:',
     '- Only include events you are confident really happened. Never invent names. If you do not recognize the artist, reply [].',
@@ -3045,7 +3185,128 @@ function pickTitle(i){
   if (r.venue && !vIn.value.trim()) { vIn.value = r.venue; syncLocFromVenue(); }
   hideTitleSug();
 }
-aIn.addEventListener('input', () => { updateFindBtn(); updateSearchLink(); });
+aIn.addEventListener('input', () => { updateFindBtn(); updateSearchLink(); updateLogoUI(); });
+/* ---------- stamp logo per artist ---------- */
+function logoId(artist){
+  let h = 2166136261;
+  for (const ch of norm(artist)) { h ^= ch.codePointAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  return 'logo-' + h.toString(16);
+}
+function updateLogoUI(){
+  const artist = $('#artistInput').value.trim(), ks = pickedCouples();
+  const built = ks.length === 1 && COUPLE_LOGOS[ks[0]] ? coupleBy(ks[0]) : null;
+  if (built) {
+    $('#lgPrev').innerHTML = `<img src="${esc(COUPLE_LOGOS[built.k])}" alt="">`;
+    $('#lgPrev').classList.remove('empty');
+    $('#lgText').textContent = 'The ' + built.n + ' logo is built in, so it is stamped on their tickets.';
+    $('#lgUp').hidden = true; $('#lgDel').hidden = true;
+    return;
+  }
+  const L = artist && store.logos ? store.logos.get(norm(artist)) : null;
+  $('#lgPrev').innerHTML = L ? `<img src="${esc(L.logo)}" alt="">` : '';
+  $('#lgPrev').classList.toggle('empty', !L);
+  $('#lgText').textContent = !artist ? 'Enter the artist, then upload their logo to show it inside the stamp.'
+    : L ? 'This logo is stamped on every ' + artist + ' ticket.'
+    : 'Upload a logo for ' + artist + ' and it replaces the words inside the stamp on all their tickets.';
+  $('#lgUp').hidden = false;
+  $('#lgUp').disabled = !artist;
+  $('#lgUp').textContent = L ? 'Change logo' : 'Upload logo';
+  $('#lgDel').hidden = !L;
+}
+/* any logo becomes white "stamp ink": transparent PNGs keep their shape,
+   logos on a plain background keep their darker (or, on dark backgrounds, lighter) parts */
+async function makeStampLogo(file){
+  const img = await decodeImage(file, 480);
+  const w0 = img.naturalWidth || img.width, h0 = img.naturalHeight || img.height;
+  const s = Math.min(1, 360 / Math.max(w0, h0));
+  const W = Math.max(1, Math.round(w0 * s)), H = Math.max(1, Math.round(h0 * s));
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const g = cv.getContext('2d');
+  g.drawImage(img, 0, 0, W, H);
+  const data = g.getImageData(0, 0, W, H), px = data.data;
+  const lum = k => (0.2126 * px[k] + 0.7152 * px[k + 1] + 0.0722 * px[k + 2]) / 255;
+  let clear = 0;
+  for (let i = 3; i < px.length; i += 4) if (px[i] < 250) clear++;
+  const hasAlpha = clear > (px.length / 4) * 0.02;
+  let edge = 0, n = 0;
+  for (let x = 0; x < W; x++) { edge += lum(x * 4) + lum(((H - 1) * W + x) * 4); n += 2; }
+  for (let y = 0; y < H; y++) { edge += lum(y * W * 4) + lum((y * W + W - 1) * 4); n += 2; }
+  const darkBg = !hasAlpha && edge / n < 0.45;
+  let minX = W, minY = H, maxX = -1, maxY = -1;
+  for (let i = 0, p = 0; i < px.length; i += 4, p++) {
+    let a;
+    if (hasAlpha) a = px[i + 3] / 255;
+    else { const l = lum(i); a = Math.min(1, Math.max(0, ((darkBg ? l : 1 - l) - 0.18) * 1.6)); }
+    px[i] = px[i + 1] = px[i + 2] = 255;
+    px[i + 3] = Math.round(a * 255);
+    if (a > 0.08) { const x = p % W, y = (p / W) | 0; if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+  }
+  if (maxX < 0) throw {code:'empty'};
+  g.putImageData(data, 0, 0);
+  const tw = maxX - minX + 1, th = maxY - minY + 1;
+  const out = document.createElement('canvas');
+  out.width = tw; out.height = th;
+  out.getContext('2d').drawImage(cv, minX, minY, tw, th, 0, 0, tw, th);
+  let url = out.toDataURL('image/png');
+  if (url.length > 180000) {
+    const k = Math.sqrt(180000 / url.length) * 0.9, sm = document.createElement('canvas');
+    sm.width = Math.max(1, Math.round(tw * k)); sm.height = Math.max(1, Math.round(th * k));
+    sm.getContext('2d').drawImage(out, 0, 0, sm.width, sm.height);
+    url = sm.toDataURL('image/png');
+  }
+  return url;
+}
+async function saveStampLogo(artist, logo){
+  const id = logoId(artist), now = Date.now();
+  const rec = {kind:'stampLogo', artist:artist.trim(), logo, createdAt:now, updatedAt:now};
+  if (store.mode === 'cloud') {
+    await retryOnce(() => store.db.collection('concerts').doc(id).set(rec));
+    if (!store.logos) store.logos = new Map();
+    store.logos.set(norm(artist), {id, logo, artist:artist.trim()});
+  } else {
+    await local.put(Object.assign({}, rec, {id}));
+    await reloadLocal();
+  }
+  render();
+}
+async function removeStampLogo(artist){
+  const id = logoId(artist);
+  if (store.mode === 'cloud') {
+    await retryOnce(() => store.db.collection('concerts').doc(id).delete());
+    if (store.logos) store.logos.delete(norm(artist));
+  } else {
+    await local.del(id);
+    await reloadLocal();
+  }
+  render();
+}
+$('#upLogo').addEventListener('change', async e => {
+  const f = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!form.picking) return;
+  form.picking = false;
+  resumeForm();
+  if (!f) return;
+  const artist = aIn.value.trim();
+  $('#lgText').textContent = 'Turning the logo into stamp ink…';
+  try {
+    await saveStampLogo(artist, await makeStampLogo(f));
+    updateLogoUI();
+    $('#lgText').textContent = 'Logo saved. It now shows inside the stamp on every ' + artist + ' ticket.';
+  } catch (err) {
+    updateLogoUI();
+    $('#lgText').textContent = err && err.code === 'empty' ? "Couldn't find a logo shape in that picture. Try a PNG with a see-through background." : "Couldn't save the logo. Try another picture.";
+  }
+});
+$('#upLogo').addEventListener('cancel', () => { form.picking = false; resumeForm(); });
+$('#lgDel').addEventListener('click', async () => {
+  const artist = aIn.value.trim();
+  if (!artist) return;
+  try { await removeStampLogo(artist); } catch (e) {}
+  updateLogoUI();
+});
+
 $('#findConcerts').addEventListener('click', () => {
   if (!aIn.value.trim()) {
     setErr($('#formErr'), 'Enter the artist first, then tap Find shows.');
@@ -3925,6 +4186,7 @@ function openForm(c){
   if (c) ['artist','title','date','time','venue','zone','row','seat','note'].forEach(k => { f.elements[k].value = str(c[k]); });
   const cat = c ? catOf(c) : (filterCat !== 'all' ? filterCat : 'concert');
   f.querySelector(`input[name="category"][value="${cat}"]`).checked = true;
+  setLightRadio(c);
   if (c) renderCoupleChips(couplesOf(c));
   else if (filterCouple !== 'all') { renderCoupleChips([filterCouple]); form.couplesTouched = true; syncArtistFromCouples(); }
   else renderCoupleChips([]);
@@ -3939,7 +4201,7 @@ function openForm(c){
     f.elements.genDate.value = str(gen.date); f.elements.genTime.value = str(gen.time);
   }
   setErr($('#formErr'), '');
-  updateCoverPreview(); fillDatalists(); updateSearchLink(); updateFindBtn();
+  updateCoverPreview(); fillDatalists(); updateSearchLink(); updateFindBtn(); updateLogoUI();
   pz.textContent = '';
   hideVenueSug(); hideTitleSug();
   if (c && validLL(c.lat, c.lng)) form.loc = {lat:c.lat, lng:c.lng, src:'saved', place:str(c.place), label:str(c.place) || 'Saved location'};
@@ -3963,6 +4225,7 @@ async function saveFromForm(f){
     note:f.elements.note.value.trim(),
     category:selectedCat(),
     couples:pickedCouples(),
+    color:(() => { const ch = f.querySelector('input[name="color"]:checked'); return ch && (ch.value === 'aurora' || /^#[0-9a-fA-F]{6}$/.test(ch.value)) ? ch.value : 'none'; })(),
     createdAt:(ex && ex.createdAt) || now, updatedAt:now
   };
   const sales = [['Presale', 'pre'], ['General sale', 'gen']].map(([label, k]) => {
@@ -4154,6 +4417,8 @@ function detailHTML(c, opts){
   if (c.venue) h += tile(DICON.pin, 'Venue', esc(c.venue) + (place ? `<small class="dt-sub">${esc(place)}</small>` : ''), true);
   if (cells.some(x => x[1])) h += `<div class="dt-seats">${cells.map(([l, v]) => `<div class="dt dt-seat"><small>${l}</small><b>${v ? esc(v) : '–'}</b></div>`).join('')}</div>`;
   const small = [tile(DICON.tag, 'Type', esc(catLabel(catOf(c))))];
+  const lv = couplesOf(c).length ? null : lightOf(c);
+  if (lv) small.push(tile('<i class="dt-dot"></i>', 'Lightstick', esc((COLORS.find(x => x.v.toLowerCase() === lv.toLowerCase()) || {n:'Custom'}).n)));
   const money = priceText(c);
   if (money) small.push(c.paid === 'lucky' ? tile(DICON.lucky, 'Ticket', esc(money), false, true) : tile(DICON.coin, c.paid === 'free' ? 'Ticket' : 'Ticket price', esc(money)));
   if (small.length % 2) small[small.length - 1] = small[small.length - 1].replace('<div class="dt">', '<div class="dt wide">');
@@ -4321,7 +4586,7 @@ $('#upCouple').addEventListener('change', async e => {
 $('#upCouple').addEventListener('cancel', () => { if (cpPick && !cpPick.busy) cpReturn(); });
 
 /* ---------- day / night ---------- */
-const THEME_KEY = 'gl.theme';
+const THEME_KEY = 'all.theme';
 const rootEl = document.documentElement;
 const SUNICON = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>';
 const MOONICON = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.6A8.5 8.5 0 1 1 9.4 3.5a6.8 6.8 0 0 0 11.1 11.1z"/></svg>';
@@ -4361,7 +4626,7 @@ $('#themeBtn').addEventListener('click', () => setThemePref(isNight() ? 'day' : 
 applyTheme();
 
 /* ---------- backup and restore ---------- */
-const BK_KEY = 'gl.lastBackup';
+const BK_KEY = 'all.lastBackup';
 const bkState = {pending:null, busy:false, picking:false};
 const lastBackup = () => { try { return Number(localStorage.getItem(BK_KEY)) || 0; } catch (e) { return 0; } };
 const ymd = ts => { const d = new Date(ts); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
@@ -4404,7 +4669,8 @@ async function buildBackup(onProg){
     list.push(o);
   }
   items.push({id:CPL_REC, kind:'coupleSet', list, updatedAt:Date.now()});
-  return {data:{app:'gl-concert-event-log', version:1, exportedAt:new Date().toISOString(), source:store.mode === 'cloud' ? 'claude-artifact' : 'phone', items}, missing};
+  for (const L of (store.logos ? store.logos.values() : [])) items.push({id:L.id || logoId(L.artist), kind:'stampLogo', artist:L.artist, logo:L.logo, updatedAt:Date.now()});
+  return {data:{app:'concert-event-log-all', version:1, exportedAt:new Date().toISOString(), source:store.mode === 'cloud' ? 'claude-artifact' : 'phone', items}, missing};
 }
 /* in Claude the viewer saves the file; on a phone the share sheet can send it to Google Drive */
 async function offerFile(filename, text){
@@ -4440,9 +4706,9 @@ function renderBkPreview(){
   if (!b) { box.hidden = true; box.innerHTML = ''; return; }
   const have = new Set(store.items.map(c => c.id));
   const same = b.tickets.filter(r => have.has(r.id)).length, fresh = b.tickets.length - same;
-  const parts = [fresh ? plural(fresh, 'new ticket') : '', same ? `${same} already here (they’ll be replaced with the backup’s version)` : '', b.cset ? plural(b.cset.list.length, 'couple') : ''].filter(Boolean);
+  const parts = [fresh ? plural(fresh, 'new ticket') : '', same ? `${same} already here (they’ll be replaced with the backup’s version)` : '', b.cset ? plural(b.cset.list.length, 'couple') : '', b.logos && b.logos.length ? plural(b.logos.length, 'stamp logo') : ''].filter(Boolean);
   box.innerHTML = `<div class="bk-prev"><b>${esc(b.name)}</b><p>${esc(parts.join(', ') || 'Nothing to restore')}.</p>
-    <div class="bk-acts"><button type="button" class="btn btn-primary" data-bk-go${b.tickets.length || b.cset ? '' : ' disabled'}>Restore ${plural(b.tickets.length, 'ticket')}</button><button type="button" class="link-btn" data-bk-cancel>Cancel</button></div></div>`;
+    <div class="bk-acts"><button type="button" class="btn btn-primary" data-bk-go${b.tickets.length || b.cset || (b.logos && b.logos.length) ? '' : ' disabled'}>Restore ${plural(b.tickets.length, 'ticket')}</button><button type="button" class="link-btn" data-bk-cancel>Cancel</button></div></div>`;
   box.hidden = false;
 }
 async function readBackupFile(file){
@@ -4452,7 +4718,8 @@ async function readBackupFile(file){
   if (!items) throw {code:'bad_backup'};
   const tickets = items.filter(r => r && typeof r === 'object' && !r.kind).map(r => Object.assign({}, r, {id:typeof r.id === 'string' && r.id ? r.id : newId()}));
   const cset = items.find(r => r && r.kind === 'coupleSet' && Array.isArray(r.list)) || null;
-  return {name:file.name || 'Backup file', tickets, cset};
+  const logos = items.filter(r => r && r.kind === 'stampLogo' && typeof r.logo === 'string' && r.logo.indexOf('data:image/') === 0 && str(r.artist).trim());
+  return {name:file.name || 'Backup file', tickets, cset, logos};
 }
 async function uploadData(d){
   const blob = dataUrlToBlob(d);
@@ -4477,6 +4744,12 @@ async function restoreBackup(b, onProg){
       byK.set(x.k, o);
     }
     await saveCouples(Array.from(byK.values()));
+  }
+  for (const L of (b.logos || [])) {
+    const artist = str(L.artist).trim(), id = logoId(artist), now = Date.now();
+    const rec = {kind:'stampLogo', artist, logo:L.logo, createdAt:Number(L.createdAt) || now, updatedAt:now};
+    if (cloud) await retryOnce(() => store.db.collection('concerts').doc(id).set(rec));
+    else await local.put(Object.assign({}, rec, {id}));
   }
   let n = 0;
   for (const r0 of b.tickets) {
@@ -4508,7 +4781,7 @@ $('#bkSave').addEventListener('click', async () => {
   prog.hidden = false; prog.textContent = 'Preparing the backup…';
   try {
     const {data, missing} = await buildBackup((d, t) => { prog.textContent = `Packing ticket ${d} of ${t}…`; });
-    const how = await offerFile('gl-concert-log-backup-' + todayStr() + '.json', JSON.stringify(data));
+    const how = await offerFile('concert-log-all-backup-' + todayStr() + '.json', JSON.stringify(data));
     try { localStorage.setItem(BK_KEY, String(Date.now())); } catch (e) {}
     prog.textContent = (how === 'shared' ? 'Backup sent.' : 'Backup saved.') + (missing ? ` ${plural(missing, 'photo')} couldn’t be read and ${missing === 1 ? 'was' : 'were'} left out.` : '');
     updateBkInfo();
@@ -4567,21 +4840,13 @@ async function runRestore(){
     bkState.busy = false;
   }
 }
-/* installing as an app (only offered by the phone version's browser) */
-let installEvt = null;
-window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; $('#bkInstall').hidden = false; });
-window.addEventListener('appinstalled', () => { installEvt = null; $('#bkInstall').hidden = true; });
-$('#bkInstallBtn').addEventListener('click', async () => {
-  if (!installEvt) return;
-  installEvt.prompt();
-  try { await installEvt.userChoice; } catch (e) {}
-  installEvt = null; $('#bkInstall').hidden = true;
-});
 
 /* ---------- page events ---------- */
 document.addEventListener('click', e => {
   const close = e.target.closest('[data-close]');
   if (close) { close.closest('dialog').close(); return; }
+  const rmb = e.target.closest('[data-remind]');
+  if (rmb) { toggleRemindField('remind', Number(rmb.getAttribute('data-remind'))); return; }
   const tp = e.target.closest('[data-theme-pick]');
   if (tp) { setThemePref(tp.getAttribute('data-theme-pick')); return; }
   if (e.target.closest('[data-bk-go]')) { runRestore(); return; }
@@ -4701,15 +4966,199 @@ $('#q').addEventListener('input', render);
 /* a show moves from Upcoming to the past list once its day is over */
 document.addEventListener('visibilitychange', () => { if (!document.hidden && store.loaded) render(); });
 
+
+/* ---------- phone app: reminders ---------- */
+async function toggleRemindField(field, min){
+  const c = store.items.find(x => x.id === viewId);
+  if (!c || store.mode !== 'local') return;
+  const cur = Array.isArray(c[field]) ? c[field].slice() : [];
+  const i = cur.indexOf(min), turningOn = i === -1;
+  if (turningOn) cur.push(min); else cur.splice(i, 1);
+  /* ask right away, inside the tap */
+  if (turningOn && 'Notification' in window && Notification.permission === 'default') { try { await Notification.requestPermission(); } catch (e) {} }
+  await local.put(Object.assign({}, c, {[field]:cur.sort((a, b) => b - a)}));
+  await reloadLocal();
+  render();
+  const it = store.items.find(x => x.id === viewId);
+  if (it && $('#viewDlg').open) $('#viewBody').innerHTML = detailHTML(it);
+  if (turningOn) registerPeriodic();
+  scheduleReminders();
+}
+async function checkReminders(){
+  if (!('Notification' in window) || Notification.permission !== 'granted' || !('serviceWorker' in navigator)) return;
+  let reg;
+  try { reg = await navigator.serviceWorker.ready; } catch (e) { return; }
+  const now = Date.now(), cache = await caches.open('cl-fired');
+  for (const c of store.items) {
+    for (const r of remindersOf(c)) {
+      if (r.at > now || r.at < now - 18 * 3600e3) continue;
+      const key = './__fired/' + encodeURIComponent(r.key);
+      if (await cache.match(key)) continue;
+      await cache.put(key, new Response('1'));
+      const msg = reminderMsg(c, r);
+      try { await reg.showNotification(msg.title, {body:msg.body, icon:'bloom-192.png', tag:r.key, data:{id:c.id}}); } catch (e) {}
+    }
+  }
+}
+let remindTimers = [];
+function scheduleReminders(){
+  if (store.mode !== 'local') return;
+  remindTimers.forEach(clearTimeout);
+  remindTimers = [];
+  const now = Date.now();
+  store.items.forEach(c => remindersOf(c).forEach(r => {
+    if (r.at > now && r.at - now < 24 * 3600e3) remindTimers.push(setTimeout(checkReminders, r.at - now + 1000));
+  }));
+  checkReminders().catch(() => {});
+}
+async function registerPeriodic(){
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    if (!('periodicSync' in reg)) return;
+    const st = await navigator.permissions.query({name:'periodic-background-sync'});
+    if (st.state === 'granted') await reg.periodicSync.register('cl-reminders', {minInterval:60 * 60 * 1000});
+  } catch (e) {}
+}
+setInterval(() => { checkReminders().catch(() => {}); }, 60000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) scheduleReminders(); });
+
+/* ---------- phone app: install (asked on the first visit) ---------- */
+const INST_KEY = 'all.installAsked';
+let installEvt = null, instShowing = false;
+const isStandalone = () => { try { return matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true; } catch (e) { return false; } };
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const inAppBrowser = () => /FBAN|FBAV|Instagram|Line\/|Twitter|TikTok|MicroMessenger/i.test(navigator.userAgent);
+function installStepsHTML(){
+  if (inAppBrowser()) return `<b>Open this page in ${isIOS() ? 'Safari' : 'Chrome'} first</b><p>LINE, Facebook, X and similar apps open links in their own browser, which can't install apps and may lose your tickets. Tap the ⋯ menu, choose "Open in browser", then install from there.</p>`;
+  if (isIOS()) return '<b>On iPhone or iPad (Safari)</b><ol><li>Tap the Share button at the bottom of the screen.</li><li>Scroll down and tap <b>Add to Home Screen</b>.</li><li>Tap <b>Add</b>.</li></ol>';
+  return '<b>In Chrome</b><ol><li>Tap the ⋮ menu at the top right.</li><li>Tap <b>Install app</b> (or <b>Add to Home screen</b>).</li><li>Tap <b>Install</b>.</li></ol>';
+}
+function showSteps(){
+  $('#instSteps').innerHTML = installStepsHTML();
+  $('#instSteps').hidden = false;
+  instShowing = true;
+  $('#instGo').textContent = 'Got it';
+}
+function openInstall(){
+  if (isStandalone()) return;
+  instShowing = false;
+  $('#instSteps').hidden = true;
+  $('#instGo').textContent = 'Install app';
+  if (!installEvt && (isIOS() || inAppBrowser())) showSteps();
+  if (!$('#installDlg').open) $('#installDlg').showModal();
+}
+function laterInstall(){ try { localStorage.setItem(INST_KEY, String(Date.now())); } catch (e) {} }
+function shouldAskInstall(){
+  if (isStandalone()) return false;
+  let v = null;
+  try { v = localStorage.getItem(INST_KEY); } catch (e) { return false; }
+  if (v === 'done') return false;
+  return !v || Date.now() - Number(v) > 7 * 864e5;
+}
+function maybeAskInstall(){
+  if (!shouldAskInstall()) return;
+  setTimeout(() => {
+    if (!shouldAskInstall() || document.querySelector('dialog[open]')) return;
+    openInstall();
+  }, 600);
+}
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; if ($('#installDlg').open && instShowing && !isIOS()) { instShowing = false; $('#instSteps').hidden = true; $('#instGo').textContent = 'Install app'; } });
+window.addEventListener('appinstalled', () => {
+  installEvt = null;
+  try { localStorage.setItem(INST_KEY, 'done'); } catch (e) {}
+  if ($('#installDlg').open) $('#installDlg').close();
+  $('#bkInstall').hidden = true;
+  toast('Installed. Open Concert & Event Log from your home screen.');
+});
+$('#instGo').addEventListener('click', async () => {
+  if (instShowing) { laterInstall(); $('#installDlg').close(); return; }
+  if (installEvt) {
+    const ev = installEvt;
+    installEvt = null;
+    ev.prompt();
+    let out = null;
+    try { out = (await ev.userChoice).outcome; } catch (e) {}
+    if (out === 'accepted') { try { localStorage.setItem(INST_KEY, 'done'); } catch (e) {} $('#installDlg').close(); }
+    else showSteps();
+    return;
+  }
+  showSteps();
+});
+$('#instLater').addEventListener('click', () => { laterInstall(); $('#installDlg').close(); });
+$('#installDlg').addEventListener('close', () => { let v = null; try { v = localStorage.getItem(INST_KEY); } catch (e) {} if (!v) laterInstall(); });
+$('#bkInstall').hidden = isStandalone();
+$('#bkInstallBtn').addEventListener('click', () => { $('#bkDlg').close(); openInstall(); });
+
+/* ---------- phone app: bring in tickets from GL Concert & Event Log on this phone (once) ---------- */
+const GL_DB = 'gl-gmmtv-log', GL_FLAG = 'all.glImported';
+function readOtherDb(name){
+  return new Promise(res => {
+    let r;
+    try { r = indexedDB.open(name); } catch (e) { res([]); return; }
+    r.onupgradeneeded = () => { try { r.transaction.abort(); } catch (e) {} };
+    r.onerror = () => res([]);
+    r.onblocked = () => res([]);
+    r.onsuccess = () => {
+      const db = r.result;
+      if (!db.objectStoreNames.contains('concerts')) { db.close(); res([]); return; }
+      const q = db.transaction('concerts').objectStore('concerts').getAll();
+      q.onsuccess = () => { db.close(); res(q.result || []); };
+      q.onerror = () => { db.close(); res([]); };
+    };
+  });
+}
+async function importGlOnce(){
+  if (store.mode !== 'local' || !store.canWrite || !indexedDB.databases) return;
+  try { if (localStorage.getItem(GL_FLAG)) return; } catch (e) { return; }
+  let names = [];
+  try { names = (await indexedDB.databases()).map(d => d.name); } catch (e) { return; }
+  if (names.indexOf(GL_DB) === -1) return;
+  const recs = await readOtherDb(GL_DB);
+  const have = new Map(store.items.map(c => [c.id, c]));
+  let added = 0, updated = 0;
+  for (const r of recs) {
+    if (!r || typeof r.id !== 'string' || !r.id) continue;
+    if (r.kind === 'stampLogo') { if (!(store.logos && store.logos.has(norm(r.artist)))) await local.put(r); continue; }
+    if (r.kind === 'coupleSet') { if (!store.coupleSet && Array.isArray(r.list)) await local.put(r); continue; }
+    if (r.kind) continue;
+    const ex = have.get(r.id);
+    if (!ex) { await local.put(r); added++; }
+    else if ((r.updatedAt || 0) >= (ex.updatedAt || 0)) {
+      /* the same ticket in both apps: the GL copy knows its couples */
+      await local.put(Object.assign({}, ex, r, {color:lightOf(ex) || r.color || 'none'}));
+      updated++;
+    }
+  }
+  try { localStorage.setItem(GL_FLAG, String(Date.now())); } catch (e) {}
+  await reloadLocal(); render();
+  if (added || updated) toast(added ? `Added ${plural(added, 'ticket')} from GL Concert & Event Log` : 'GL couples added to your tickets');
+}
+
+/* ---------- phone app: start-up ---------- */
+function afterLocalBoot(){
+  if (store.mode !== 'local') return;
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
+  importGlOnce().catch(() => {});
+  scheduleReminders();
+  if (store.items.some(c => Array.isArray(c.remind) && c.remind.length)) registerPeriodic();
+  maybeAskInstall();
+}
+
 boot();
 })();
 </script>
 <script>
-/* phone app: works offline and updates itself from GitHub Pages */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
-  let reloaded = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => { if (reloaded) return; reloaded = true; location.reload(); });
+/* phone app: works offline, updates itself from GitHub Pages and offers a one-tap refresh */
+if ('serviceWorker' in navigator && window.isSecureContext) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) reg.update().catch(() => {}); });
+  }).catch(() => {});
+  let hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController) { hadController = true; return; }
+    document.getElementById('updBar').hidden = false;
+  });
+  document.getElementById('updBtn').addEventListener('click', () => location.reload());
 }
 </script>
 </body>
