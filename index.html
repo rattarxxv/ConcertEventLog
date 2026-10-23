@@ -1092,7 +1092,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version 2026.10.23-menu</p>
+    <p class="hint app-ver">App version JE20261023W01EL</p>
   </div>
 </dialog>
 
@@ -1152,15 +1152,18 @@ const CATS = [
 ];
 const catOf = c => CATS.some(x => x.k === (c && c.category)) ? c.category : 'concert';
 const catLabel = k => (CATS.find(x => x.k === k) || CATS[0]).label;
+/* navy: the colour any couple starts with until it gets its own pair */
+const CPL_NAVY = '#1F3268', CPL_NAVY2 = '#4A64A8';
 /* GL couples: the starting list. It can be changed in the app (Edit couples) and is saved as one small record. */
 const COUPLES_DEFAULT = [
   {k:'milklove', n:'MilkLove', c:'#B1D686', c2:'#EE96AC', alt:['มิลค์เลิฟ', 'มิ้ลค์เลิฟ']},
   {k:'namtanfilm', n:'NamtanFilm', c:'#6EBDCD', c2:'#FADD73', alt:['namtarnfilm', 'น้ำตาลฟิล์ม']},
-  {k:'emibonnie', n:'EmiBonnie', c:'#FB6630', c2:'#DB327F', alt:['เอมิบอนนี่']},
+  {k:'emibonnie', n:'EmiBonnie', c:'#FB6630', c2:'#8A4FD0', alt:['เอมิบอนนี่']},
   {k:'janjingjing', n:'JanJingjing', c:'#8E1718', c2:'#EFC4CD', alt:['แจนจิงจิง']},
-  {k:'viewmim', n:'ViewMim', c:'#1FB5A8', c2:'#8FD6EC', alt:['viewnim', 'วิวมิม']},
-  {k:'pahnfond', n:'PahnFond', c:'#FF7849', c2:'#FFC36B', alt:[]},
-  {k:'jaoyingmewnich', n:'JaoyingMewnich', c:'#5DBE5F', c2:'#C3E88D', alt:[]}
+  {k:'viewmim', n:'ViewMim', c:'#8B5A3C', c2:'#FFFFFF', alt:['viewnim', 'วิวมิม']},
+  {k:'pahnfond', n:'PahnFond', c:'#5BB8F0', c2:'#8B5A3C', alt:[]},
+  {k:'jaoyingmewnich', n:'JaoyingMewnich', c:CPL_NAVY, c2:CPL_NAVY2, alt:[]},
+  {k:'kapookciiz', n:'KapookCiiz', c:CPL_NAVY, c2:CPL_NAVY2, alt:[]}
 ];
 /* each couple's logo as white stamp ink (PNG with transparency) */
 const COUPLE_LOGOS = {
@@ -1172,7 +1175,6 @@ const COUPLE_LOGOS = {
 };
 /* first colours used before couples had two; a saved list still holding one of these gets the new pair */
 const OLD_COUPLE_COLORS = {milklove:'#FF5C8A', namtanfilm:'#4A8CFF', emibonnie:'#F2A93B', janjingjing:'#9B6BFF'};
-const NEW_COUPLE_COLORS = ['#E0464E', '#C774E8', '#00A3D9', '#B8860B', '#0E9F6E', '#2E5BD8', '#D9480F', '#8E5A9B', '#E85D9B', '#3FA7F5'];
 const ICON = {
   cal:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>',
   pin:'<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
@@ -1538,7 +1540,7 @@ function couplesList(){
     const def = COUPLES_DEFAULT.find(d => d.k === x.k);
     const alt = (Array.isArray(x.alt) ? x.alt : (def ? def.alt : [])).filter(a => typeof a === 'string');
     const old = def && hexOk(x.c) && OLD_COUPLE_COLORS[x.k] && x.c.toUpperCase() === OLD_COUPLE_COLORS[x.k] && !hexOk(x.c2);
-    const c = hexOk(x.c) && !old ? x.c : (def ? def.c : '#9A93AE');
+    const c = hexOk(x.c) && !old ? x.c : (def ? def.c : CPL_NAVY);
     const c2 = hexOk(x.c2) ? x.c2 : (def && (old || !hexOk(x.c) || x.c.toUpperCase() === def.c.toUpperCase()) ? def.c2 : mixHex(c, '#FFFFFF', 0.45));
     const photoId = typeof x.photoId === 'string' && /^[0-9a-f]{32}$/.test(x.photoId) ? x.photoId : '';
     const photoData = !photoId && typeof x.photo === 'string' && x.photo.indexOf('data:image/') === 0 ? x.photo : '';
@@ -4619,9 +4621,7 @@ $('#cmList').addEventListener('input', e => {
   if (ni != null && cmState.list[+ni]) cmState.list[+ni].n = e.target.value;
 });
 $('#cmAdd').addEventListener('click', () => {
-  const used = new Set(cmState.list.map(x => String(x.c).toUpperCase()));
-  const c = NEW_COUPLE_COLORS.find(v => !used.has(v)) || NEW_COUPLE_COLORS[cmState.list.length % NEW_COUPLE_COLORS.length];
-  cmState.list.push({k:'', n:'', c, c2:mixHex(c, '#FFFFFF', 0.45), alt:[]});
+  cmState.list.push({k:'', n:'', c:CPL_NAVY, c2:CPL_NAVY2, alt:[]});
   renderCm();
   const ins = document.querySelectorAll('#cmList .cm-name');
   if (ins.length) ins[ins.length - 1].focus();
@@ -4636,7 +4636,7 @@ $('#cmSave').addEventListener('click', async () => {
     names.add(kn);
     let k = x.k;
     if (!k) { k = kn && !keys.has(kn) ? kn : newId(); keys.add(k); }
-    const c = hexOk(x.c) ? x.c.toUpperCase() : '#9A93AE';
+    const c = hexOk(x.c) ? x.c.toUpperCase() : CPL_NAVY;
     const keepPhoto = x.photoId ? {photoId:x.photoId} : x.photo ? {photo:x.photo} : {};
     if ((x.photoId || x.photo) && posOk(x.pos)) keepPhoto.pos = posOk(x.pos);
     out.push(Object.assign({k, n, c, c2:hexOk(x.c2) ? x.c2.toUpperCase() : mixHex(c, '#FFFFFF', 0.45), alt:Array.isArray(x.alt) ? x.alt : []}, keepPhoto));
@@ -4834,7 +4834,7 @@ async function restoreBackup(b, onProg){
     for (const x of b.cset.list) {
       if (!x || typeof x.k !== 'string' || !x.k) continue;
       const old = byK.get(x.k) || {};
-      const c = hexOk(x.c) ? x.c : (old.c || '#9A93AE');
+      const c = hexOk(x.c) ? x.c : (old.c || CPL_NAVY);
       const o = {k:x.k, n:str(x.n).trim().slice(0, 40) || old.n || x.k, c, c2:hexOk(x.c2) ? x.c2 : (old.c2 || mixHex(c, '#FFFFFF', 0.45)), alt:Array.isArray(x.alt) ? x.alt : (old.alt || [])};
       const ph = typeof x.photo === 'string' && x.photo.indexOf('data:image/') === 0 ? x.photo : null;
       if (ph && cloud) { const id = await uploadData(ph); if (id) o.photoId = id; }
@@ -5238,11 +5238,30 @@ async function importGlOnce(){
   if (added || updated) toast(added ? `Added ${plural(added, 'ticket')} from GL Concert & Event Log` : 'GL couples added to your tickets');
 }
 
+/* ---------- phone app: couple colours updated in JE20261023W01EL (once per phone) ---------- */
+const CPL_FIX_FLAG = 'all.cplFix.JE20261023W01EL';
+const CPL_FIX = {emibonnie:['#FB6630', '#8A4FD0'], viewmim:['#8B5A3C', '#FFFFFF'], pahnfond:['#5BB8F0', '#8B5A3C'], jaoyingmewnich:[CPL_NAVY, CPL_NAVY2], kapookciiz:[CPL_NAVY, CPL_NAVY2]};
+async function fixCoupleColorsOnce(){
+  if (store.mode !== 'local' || !store.canWrite) return;
+  try { if (localStorage.getItem(CPL_FIX_FLAG)) return; } catch (e) { return; }
+  /* phones still on the built-in list get the new colours anyway; a saved list is brought up to date */
+  if (Array.isArray(store.coupleSet)) {
+    const list = couplesList().map(rawOf);
+    Object.keys(CPL_FIX).forEach(k => {
+      const [c, c2] = CPL_FIX[k], it = list.find(x => x.k === k);
+      if (it) { it.c = c; it.c2 = c2; }
+      else { const d = COUPLES_DEFAULT.find(x => x.k === k); if (d) list.push({k:d.k, n:d.n, c, c2, alt:d.alt.slice()}); }
+    });
+    await saveCouples(list);
+  }
+  try { localStorage.setItem(CPL_FIX_FLAG, '1'); } catch (e) {}
+}
+
 /* ---------- phone app: start-up ---------- */
 function afterLocalBoot(){
   if (store.mode !== 'local') return;
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
-  importGlOnce().catch(() => {});
+  importGlOnce().catch(() => {}).then(() => fixCoupleColorsOnce()).catch(() => {});
   scheduleReminders();
   if (store.items.some(c => Array.isArray(c.remind) && c.remind.length)) registerPeriodic();
   maybeAskInstall();
