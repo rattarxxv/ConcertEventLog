@@ -724,6 +724,12 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 .btn-primary{background:var(--accent-grad)}
 /* ticket notches are real holes now, so the sky shows through them */
 .tix::before,.tix::after{display:none}
+/* the ticket's shadow follows its outline, notches included: a box-shadow stops at the card's
+   rectangle, which left each notch as a pale, unshaded patch next to the perforation */
+:root{--tix-sh:drop-shadow(0 1px 0 rgba(16,42,58,.07)) drop-shadow(0 10px 12px rgba(16,42,58,.22))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--tix-sh:drop-shadow(0 12px 14px rgba(0,0,0,.6))}}
+:root[data-theme="dark"]{--tix-sh:drop-shadow(0 12px 14px rgba(0,0,0,.6))}
+.tix{box-shadow:none;filter:var(--tix-sh)}
 .tix .tix-main{-webkit-mask:radial-gradient(circle 11px at 100% 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle 11px at 100% 100%,#0000 97%,#000) bottom/100% 51% no-repeat;mask:radial-gradient(circle 11px at 100% 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle 11px at 100% 100%,#0000 97%,#000) bottom/100% 51% no-repeat}
 .tix .tix-stub{-webkit-mask:radial-gradient(circle 11px at 0 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle 11px at 0 100%,#0000 97%,#000) bottom/100% 51% no-repeat;mask:radial-gradient(circle 11px at 0 0,#0000 97%,#000) top/100% 51% no-repeat,radial-gradient(circle 11px at 0 100%,#0000 97%,#000) bottom/100% 51% no-repeat}
 .fab{background:var(--accent-grad);box-shadow:0 14px 30px -12px color-mix(in srgb,var(--lilac) 70%,transparent),0 0 0 1px rgba(255,255,255,.18) inset}

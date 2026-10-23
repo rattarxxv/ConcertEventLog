@@ -1,6 +1,6 @@
 /* Concert & Event Log (all fandoms): offline copy of the app + show reminders (ticket sales go to Google Calendar).
    Bump CACHE whenever index.html changes. */
-const CACHE = 'concert-log-local-JE20261023W01EL-lucky';
+const CACHE = 'concert-log-local-JE20261023W01EL-notch';
 const FIRED = 'cl-fired';   // reminders already shown (shared with the page)
 const SHELL = ['./', './index.html', './manifest.webmanifest',
   './bloom-192.png', './bloom-512.png', './bloom-maskable-512.png', './bloom-apple-touch-icon.png', './bloom-favicon-32.png'];
