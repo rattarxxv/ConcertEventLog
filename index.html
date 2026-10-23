@@ -938,9 +938,10 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
           <label class="type"><input type="radio" name="pay" value="lucky"><span>★ LUCKY DRAW</span></label>
         </div>
         <div class="price-row" id="priceRow" hidden>
-          <label><span class="sub">Price</span><input name="price" inputmode="decimal" autocomplete="off" placeholder="3,500"></label>
+          <label><span class="sub" id="priceLbl">Price</span><input name="price" inputmode="decimal" autocomplete="off" placeholder="3,500"></label>
           <label><span class="sub">Currency</span><select name="currency" id="currencySel"></select></label>
         </div>
+        <p class="hint" id="priceHint" hidden>What you bought for a chance to win, like albums or merch. It counts in Spend.</p>
       </fieldset>
       <fieldset class="f">
         <legend class="lbl">Ticket sale (optional)</legend>
@@ -1708,7 +1709,7 @@ function openCouple(k){
     ${photoActs}
     <div class="dv-grid ap-stats">
       ${t(DICON.ticket, 'Events seen', pasts.length)}${t(DICON.clock, 'Coming up', ups.length)}
-      ${t(DICON.pin, 'Venues', venues)}${t(DICON.coin, 'Spent on tickets', sums.size ? esc(spent) : '–')}
+      ${t(DICON.pin, 'Venues', venues)}${t(DICON.coin, 'Spent', sums.size ? esc(spent) : '–')}
       ${joint ? t(DICON.pair, 'With other couples', joint) : ''}${lucky ? t(DICON.lucky, 'Lucky draws won', lucky) : ''}
     </div>
     <ul class="p-list ap-list">${ups.concat(pasts).map(row).join('')}</ul>`;
@@ -2171,7 +2172,7 @@ function openArtist(name){
     </div>
     <div class="dv-grid ap-stats">
       ${t(DICON.ticket, 'Events seen', pasts.length)}${t(DICON.clock, 'Coming up', ups.length)}
-      ${t(DICON.pin, 'Venues', venues)}${t(DICON.coin, 'Spent on tickets', sums.size ? esc(spent) : '–')}
+      ${t(DICON.pin, 'Venues', venues)}${t(DICON.coin, 'Spent', sums.size ? esc(spent) : '–')}
       ${lucky ? t(DICON.lucky, 'Lucky draws won', lucky) : ''}
     </div>
     <ul class="p-list ap-list">${ups.concat(pasts).map(row).join('')}</ul>`;
@@ -2508,10 +2509,12 @@ function checkNewBadges(){
 const spendState = {mode:'year', year:'all', open:null};
 const curOf = c => CURRENCIES.some(x => x.k === c.currency) ? c.currency : 'THB';
 const priced = c => c.paid === 'paid' && typeof c.price === 'number' && isFinite(c.price);
+/* money that went into a show: a paid ticket, or what was bought to enter a lucky draw */
+const hasSpend = c => (c.paid === 'paid' || c.paid === 'lucky') && typeof c.price === 'number' && isFinite(c.price);
 const moneyFmt = (cur, n) => (CURRENCIES.find(x => x.k === cur) || CURRENCIES[0]).s + n.toLocaleString('en-US', {maximumFractionDigits:2});
 function sumByCur(list){
   const m = new Map();
-  list.filter(priced).forEach(c => m.set(curOf(c), (m.get(curOf(c)) || 0) + c.price));
+  list.filter(hasSpend).forEach(c => m.set(curOf(c), (m.get(curOf(c)) || 0) + c.price));
   return m;
 }
 function renderSpend(all){
@@ -2521,15 +2524,19 @@ function renderSpend(all){
     main.innerHTML = '<section class="spend"><p class="status">No ticket prices yet. Open a ticket, tap Edit, then pick FREE, PAID or LUCKY DRAW under Ticket.</p></section>';
     return;
   }
-  const pricedAll = withPay.filter(priced);
+  const pricedAll = withPay.filter(priced), spentAll = withPay.filter(hasSpend);
   const curCount = new Map();
-  pricedAll.forEach(c => curCount.set(curOf(c), (curCount.get(curOf(c)) || 0) + 1));
+  spentAll.forEach(c => curCount.set(curOf(c), (curCount.get(curOf(c)) || 0) + 1));
   /* baht first; otherwise the currency used most */
   const primary = curCount.has('THB') || !curCount.size ? 'THB' : Array.from(curCount.entries()).sort((a, b) => b[1] - a[1])[0][0];
-  const sums = sumByCur(pricedAll);
+  const sums = sumByCur(spentAll);
   const others = Array.from(sums.entries()).filter(([k]) => k !== primary).sort((a, b) => b[1] - a[1]);
   const prim = pricedAll.filter(c => curOf(c) === primary);
   const total = sums.get(primary) || 0;
+  /* average and most expensive are about ticket prices only */
+  const ticketTotal = sumByCur(pricedAll).get(primary) || 0;
+  const luckySums = sumByCur(withPay.filter(c => c.paid === 'lucky'));
+  const luckyText = Array.from(luckySums.entries()).sort((a, b) => (a[0] === primary ? -1 : b[0] === primary ? 1 : 0)).map(([k, v]) => moneyFmt(k, v)).join(' + ');
   const top = prim.slice().sort((a, b) => b.price - a.price)[0];
   const nFree = withPay.filter(c => c.paid === 'free').length;
   const nLucky = withPay.filter(c => c.paid === 'lucky').length;
@@ -2568,7 +2575,7 @@ function renderSpend(all){
   const maxP = Math.max(1, ...rows.map(g => g.prim));
   const countLine = g => [g.nPriced ? plural(g.nPriced, 'paid ticket') : '', g.nFree ? g.nFree + ' free' : '', g.nLucky ? g.nLucky + ' lucky draw' : '', g.nNoPrice ? g.nNoPrice + ' without a price' : ''].filter(Boolean).join(', ');
   const otherLine = m => Array.from(m.entries()).filter(([k]) => k !== primary).map(([k, v]) => '+ ' + moneyFmt(k, v)).join(' ');
-  const shortPrice = c => c.paid === 'lucky' ? '★ Lucky draw' : priceText(c);
+  const shortPrice = c => c.paid === 'lucky' ? (hasSpend(c) ? '★ ' + moneyFmt(curOf(c), c.price) : '★ Lucky draw') : priceText(c);
   const listHTML = rows.map(g => {
     const open = spendState.open === spendState.mode + ':' + g.key;
     const sub = open ? sortedDesc(g.items).map(c => {
@@ -2585,16 +2592,16 @@ function renderSpend(all){
   const tileS = (icon, label, valueHtml) => `<div class="dt"><span class="dt-ic">${icon}</span><div class="dt-tx"><small>${label}</small><b>${valueHtml}</b></div></div>`;
   main.innerHTML = `<section class="spend">
     <div class="sp-hero">
-      <small>Spent on tickets</small>
+      <small>${luckySums.size ? 'Spent on tickets and lucky draws' : 'Spent on tickets'}</small>
       <b class="sp-total">${esc(moneyFmt(primary, total))}</b>
       ${others.length ? `<p class="sp-other">${esc(others.map(([k, v]) => '+ ' + moneyFmt(k, v)).join('   '))}</p><p>Other currencies are shown as they are, not converted.</p>` : ''}
-      <p>${esc([plural(pricedAll.length, 'paid ticket'), noPrice ? noPrice + ' without a price' : ''].filter(Boolean).join(', '))}</p>
+      <p>${esc([plural(pricedAll.length, 'paid ticket'), luckyText ? luckyText + ' on lucky draws' : '', noPrice ? noPrice + ' without a price' : ''].filter(Boolean).join(', '))}</p>
     </div>
     <div class="dv-grid">
-      ${tileS(DICON.coin, 'Average ticket', prim.length ? esc(moneyFmt(primary, Math.round(total / prim.length))) : '–')}
+      ${tileS(DICON.coin, 'Average ticket', prim.length ? esc(moneyFmt(primary, Math.round(ticketTotal / prim.length))) : '–')}
       ${tileS(DICON.ticket, 'Most expensive', top ? esc(moneyFmt(primary, top.price)) + `<small class="dt-sub">${esc(str(top.artist))}</small>` : '–')}
       ${tileS(DICON.tag, 'Free', String(nFree))}
-      ${tileS(DICON.lucky, 'Lucky draw', String(nLucky))}
+      ${tileS(DICON.lucky, 'Lucky draw', String(nLucky) + (luckyText ? `<small class="dt-sub">${esc(luckyText)} spent</small>` : ''))}
     </div>
     ${wrapCardHTML()}
     <div class="view-seg sp-toggle" role="tablist" aria-label="Group by">
@@ -2765,7 +2772,13 @@ const CURRENCIES = [
 ];
 $('#currencySel').innerHTML = CURRENCIES.map(x => `<option value="${x.k}">${x.k} ${x.s}</option>`).join('');
 const payVal = () => { const r = document.querySelector('#form input[name="pay"]:checked'); return r ? r.value : ''; };
-function updatePriceRow(){ $('#priceRow').hidden = payVal() !== 'paid'; }
+function updatePriceRow(){
+  const v = payVal(), lucky = v === 'lucky';
+  $('#priceRow').hidden = v !== 'paid' && !lucky;
+  $('#priceLbl').textContent = lucky ? 'Spent to enter' : 'Price';
+  $('#form').elements.price.placeholder = lucky ? '1,200' : '3,500';
+  $('#priceHint').hidden = !lucky;
+}
 document.querySelectorAll('#payTypes input').forEach(r => {
   r.closest('label').addEventListener('pointerdown', () => { r.dataset.was = r.checked ? '1' : ''; });
   r.addEventListener('click', () => { if (r.dataset.was === '1') r.checked = false; r.dataset.was = ''; updatePriceRow(); });
@@ -4323,7 +4336,7 @@ async function saveFromForm(f){
   if (sales.length) rec.sales = sales;
   /* keep things the form doesn't show, so editing never drops a stamp or a reminder */
   if (ex) ['stamped', 'stampedAt', 'remind', 'saleRemind'].forEach(k => { if (ex[k] != null) rec[k] = ex[k]; });
-  if (rec.paid === 'paid') {
+  if (rec.paid === 'paid' || rec.paid === 'lucky') {
     const pr = parsePrice(f.elements.price.value);
     if (typeof pr === 'number' && isFinite(pr)) rec.price = pr;
     rec.currency = CURRENCIES.some(x => x.k === f.elements.currency.value) ? f.elements.currency.value : 'THB';
@@ -4390,8 +4403,8 @@ $('#form').addEventListener('submit', async e => {
     (latIn.value.trim() && isFinite(Number(latIn.value.trim())) ? lngIn : latIn).focus();
     return;
   }
-  if (payVal() === 'paid' && Number.isNaN(parsePrice(f.elements.price.value))) {
-    setErr($('#formErr'), 'Check the ticket price. Use a number like 3500.');
+  if ((payVal() === 'paid' || payVal() === 'lucky') && Number.isNaN(parsePrice(f.elements.price.value))) {
+    setErr($('#formErr'), payVal() === 'lucky' ? 'Check the amount you spent to enter. Use a number like 1200.' : 'Check the ticket price. Use a number like 3500.');
     f.elements.price.focus();
     return;
   }
@@ -4509,6 +4522,7 @@ function detailHTML(c, opts){
   if (lv) small.push(tile('<i class="dt-dot"></i>', 'Lightstick', esc((COLORS.find(x => x.v.toLowerCase() === lv.toLowerCase()) || {n:'Custom'}).n)));
   const money = priceText(c);
   if (money) small.push(c.paid === 'lucky' ? tile(DICON.lucky, 'Ticket', esc(money), false, true) : tile(DICON.coin, c.paid === 'free' ? 'Ticket' : 'Ticket price', esc(money)));
+  if (c.paid === 'lucky' && hasSpend(c)) small.push(tile(DICON.coin, 'Spent to enter', esc(moneyFmt(curOf(c), c.price))));
   if (small.length % 2) small[small.length - 1] = small[small.length - 1].replace('<div class="dt">', '<div class="dt wide">');
   h += small.join('');
   const pics = photosOf(c);
