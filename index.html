@@ -747,6 +747,22 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 .bk-acts{display:flex;align-items:center;gap:14px;margin-top:12px}
 .bk-acts .btn{width:auto;flex:1}
 #bkProg{margin-top:10px}
+/* view menu: a strip of tear-off ticket stubs (notched ends, perforated between views);
+   the open view glows in the Midnight Bloom gradient and slides when you switch */
+#viewSeg.view-nav{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;max-width:520px;gap:0;margin-top:18px;padding:5px;overflow:visible;border-radius:20px;border:1px solid var(--field-line);
+  -webkit-mask:radial-gradient(circle 7px at 0 50%,#0000 96%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 96%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 7px at 0 50%,#0000 96%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 96%,#000) right/51% 100% no-repeat}
+#viewSeg.view-nav[hidden]{display:none}
+#viewSeg .vn-glow{position:absolute;z-index:0;top:5px;bottom:5px;left:5px;width:calc((100% - 10px) / 4);border-radius:15px;background:var(--accent-grad);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--accent) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.35);transform:translateX(calc(var(--vi,0) * 100%));transition:transform .34s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
+#viewSeg button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:58px;padding:6px 2px 5px;border:0;border-radius:15px;background:none;color:var(--text-soft);font-family:var(--display);font-weight:600;font-size:.8rem;line-height:1.1;cursor:pointer;transition:color .2s}
+#viewSeg button svg{width:22px;height:22px;flex:none;transition:transform .34s cubic-bezier(.3,1.3,.5,1)}
+#viewSeg button+button::before{content:"";position:absolute;left:0;top:13px;bottom:13px;border-left:2px dotted color-mix(in srgb,var(--text) 26%,transparent);transition:opacity .2s}
+#viewSeg button[aria-selected="true"]{background:none;color:var(--accent-ink)}
+#viewSeg button[aria-selected="true"] svg{transform:translateY(-1px) scale(1.1)}
+#viewSeg button[aria-selected="true"]::before,#viewSeg button[aria-selected="true"]+button::before{opacity:0}
+#viewSeg button:not([aria-selected="true"]):hover{color:var(--text)}
+#viewSeg button:focus-visible{outline:3px solid var(--focus);outline-offset:-4px}
+@media (prefers-reduced-motion:reduce){#viewSeg .vn-glow,#viewSeg button svg{transition:none}}
 /* phone app: install sheet, update bar, version */
 .inst-hero{display:flex;align-items:center;gap:16px;margin:6px 0 14px}
 .inst-hero img{width:84px;height:84px;border-radius:22px;box-shadow:var(--shadow)}
@@ -797,11 +813,12 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
     <p class="eyebrow">All fandoms</p>
     <h1>Concert &amp; Event Log</h1>
     <p class="sum" id="sum"></p>
-    <div class="view-seg" id="viewSeg" role="tablist" aria-label="View" hidden>
-      <button type="button" role="tab" data-view="list" aria-selected="true">Tickets</button>
-      <button type="button" role="tab" data-view="map" aria-selected="false">Map</button>
-      <button type="button" role="tab" data-view="cal" aria-selected="false">Calendar</button>
-      <button type="button" role="tab" data-view="spend" aria-selected="false">Spend</button>
+    <div class="view-seg view-nav" id="viewSeg" role="tablist" aria-label="View" hidden>
+      <span class="vn-glow" aria-hidden="true"></span>
+      <button type="button" role="tab" data-view="list" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 6h13A1.5 1.5 0 0 1 20 7.5v2a2.5 2.5 0 0 0 0 5v2a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5v-2a2.5 2.5 0 0 0 0-5v-2A1.5 1.5 0 0 1 5.5 6z"/><path d="M14.5 8.5v1.2M14.5 11.4v1.2M14.5 14.3v1.2"/></svg><span>Tickets</span></button>
+      <button type="button" role="tab" data-view="map" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5 4 7v12l5-2 6 2 5-2V5l-5 2-6-2z"/><path d="M9 5v12M15 7v12"/></svg><span>Map</span></button>
+      <button type="button" role="tab" data-view="cal" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M8.5 14h.01M12 14h.01M15.5 14h.01M8.5 17h.01M12 17h.01" stroke-width="2.6"/></svg><span>Calendar</span></button>
+      <button type="button" role="tab" data-view="spend" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="2.2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5h.01M17.5 14.5h.01" stroke-width="2.6"/></svg><span>Spend</span></button>
     </div>
     <div class="search" id="searchWrap" hidden>
       <input id="q" type="search" placeholder="Search artist, show or venue" aria-label="Search entries" autocomplete="off">
@@ -841,9 +858,9 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
         <div class="types" id="types"></div>
       </fieldset>
       <fieldset class="f">
-        <legend class="lbl">GL & BL couples (optional)</legend>
+        <legend class="lbl">GL couples (optional)</legend>
         <div class="cpls" id="cpls"></div>
-        <p class="hint">For a GL & BL event, pick every couple there and the artist fills in. Skip this for other artists.</p>
+        <p class="hint">For a GL event, pick every couple there and the artist fills in. Skip this for other artists.</p>
         <div class="cpl-tools"><button type="button" class="link-btn" data-couple-edit>Edit couples</button></div>
       </fieldset>
       <div class="f">
@@ -1075,7 +1092,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version J20261022E-W02EL</p>
+    <p class="hint app-ver">App version 2026.10.23-menu</p>
   </div>
 </dialog>
 
@@ -1139,12 +1156,11 @@ const catLabel = k => (CATS.find(x => x.k === k) || CATS[0]).label;
 const COUPLES_DEFAULT = [
   {k:'milklove', n:'MilkLove', c:'#B1D686', c2:'#EE96AC', alt:['มิลค์เลิฟ', 'มิ้ลค์เลิฟ']},
   {k:'namtanfilm', n:'NamtanFilm', c:'#6EBDCD', c2:'#FADD73', alt:['namtarnfilm', 'น้ำตาลฟิล์ม']},
-  {k:'emibonnie', n:'EmiBonnie', c:'#FB6630', c2:'#8E0AC7', alt:['เอมี่บอนนี่']},
-  {k:'janjingjing', n:'JanJingjing', c:'#BD1425', c2:'#FFB6C1', alt:['แจนจิงจิง']},
-  {k:'viewmim', n:'ViewMim', c:'#8B4513', c2:'#FFFAFA', alt:['viewnim', 'วิวมิม']},
-  {k:'pahnfond', n:'PahnFond', c:'#87CEEB', c2:'#A0522D', alt:[]},
-  {k:'jaoyingmewnich', n:'JaoyingMewnich', c:'#6080B0', c2:'#6080B0', alt:[]},
-  {k:'kapookciize', n:'KapookCiize', c:'#6080B0', c2:'#6080B0', alt:[]}
+  {k:'emibonnie', n:'EmiBonnie', c:'#FB6630', c2:'#DB327F', alt:['เอมิบอนนี่']},
+  {k:'janjingjing', n:'JanJingjing', c:'#8E1718', c2:'#EFC4CD', alt:['แจนจิงจิง']},
+  {k:'viewmim', n:'ViewMim', c:'#1FB5A8', c2:'#8FD6EC', alt:['viewnim', 'วิวมิม']},
+  {k:'pahnfond', n:'PahnFond', c:'#FF7849', c2:'#FFC36B', alt:[]},
+  {k:'jaoyingmewnich', n:'JaoyingMewnich', c:'#5DBE5F', c2:'#C3E88D', alt:[]}
 ];
 /* each couple's logo as white stamp ink (PNG with transparency) */
 const COUPLE_LOGOS = {
@@ -1186,7 +1202,7 @@ const VENUES = [
   ['BITEC Bangna','ไบเทค บางนา','Bangkok',[],13.6690,100.6110],
   ['Queen Sirikit National Convention Center','ศูนย์การประชุมแห่งชาติสิริกิติ์','Bangkok',['qsncc'],13.7234,100.5597],
   ['True Icon Hall, ICONSIAM','ทรู ไอคอน ฮอลล์ ไอคอนสยาม','Bangkok',[],13.7265,100.5104],
-  ['Paragon Hall, Siam Paragon','พารากอน ฮอลล์ สยามพารากอน','Bangkok',[],13.7463,100.5348],
+  ['Royal Paragon Hall, Siam Paragon','รอยัล พารากอน ฮอลล์ สยามพารากอน','Bangkok',[],13.7463,100.5348],
   ['Samyan Mitrtown Hall','สามย่าน มิตรทาวน์ ฮอลล์','Bangkok',[],13.7336,100.5286],
   ['MCC Hall, The Mall Bangkapi','เอ็มซีซี ฮอลล์ เดอะมอลล์ บางกะปิ','Bangkok',[],13.7658,100.6432],
   ['Muangthai Rachadalai Theatre','เมืองไทย รัชดาลัย เธียเตอร์','Bangkok',[],13.7655,100.5694],
@@ -1880,7 +1896,12 @@ function render(){
   renderFilters(store.loaded && !store.error ? items : []);
   renderCoupleFilters(store.loaded && !store.error ? items : []);
   $('#viewSeg').hidden = !(store.loaded && !store.error && items.length > 0);
-  document.querySelectorAll('#viewSeg [data-view]').forEach(b => b.setAttribute('aria-selected', b.getAttribute('data-view') === view ? 'true' : 'false'));
+  document.querySelectorAll('#viewSeg [data-view]').forEach((b, i) => {
+    const on = b.getAttribute('data-view') === view;
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+    b.tabIndex = on ? 0 : -1;
+    if (on) $('#viewSeg').style.setProperty('--vi', i);
+  });
 
   const upcoming = items.filter(isUpcoming);
   const past = items.filter(c => !isUpcoming(c));
@@ -4654,6 +4675,16 @@ $('#upCouple').addEventListener('change', async e => {
 });
 $('#upCouple').addEventListener('cancel', () => { if (cpPick && !cpPick.busy) cpReturn(); });
 
+$('#viewSeg').addEventListener('keydown', e => {
+  const tabs = Array.from(document.querySelectorAll('#viewSeg [data-view]'));
+  const i = tabs.indexOf(document.activeElement);
+  if (i === -1) return;
+  const j = e.key === 'ArrowRight' ? (i + 1) % tabs.length : e.key === 'ArrowLeft' ? (i + tabs.length - 1) % tabs.length : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : -1;
+  if (j === -1) return;
+  e.preventDefault();
+  tabs[j].focus();
+  tabs[j].click();
+});
 /* ---------- day / night ---------- */
 const THEME_KEY = 'all.theme';
 const rootEl = document.documentElement;
