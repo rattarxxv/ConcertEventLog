@@ -1150,12 +1150,13 @@ const COLORS = [
 ];
 const DEFAULT_COLOR = COLORS[0].v;
 const CATS = [
-  {k:'concert', label:'CONCERT'},
-  {k:'event', label:'EVENT'},
-  {k:'fancon', label:'FANCON'},
-  {k:'fanmeeting', label:'FAN MEETING'},
-  {k:'fansign', label:'FAN SIGN'},
-  {k:'sf', label:'SF Friends Screening'}
+  {k:'concert', label:'Concert'},
+  {k:'event', label:'Event'},
+  {k:'fancon', label:'Fancon'},
+  {k:'fanmeeting', label:'Fan Meeting'},
+  {k:'fansign', label:'Fan Sign'},
+  {k:'sf', label:'SF Friends Screening'},
+  {k:'musical', label:'Musical'}
 ];
 const catOf = c => CATS.some(x => x.k === (c && c.category)) ? c.category : 'concert';
 const catLabel = k => (CATS.find(x => x.k === k) || CATS[0]).label;
