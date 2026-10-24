@@ -424,7 +424,7 @@ dialog.photo-dlg::backdrop{background:#000}
 .type span{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--field-line);background:var(--field);color:var(--text);font-family:var(--display);font-weight:600;font-size:.86rem;letter-spacing:.02em}
 .type input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .type input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
-.cat{display:inline-block;justify-self:start;margin-bottom:4px;padding:2px 7px;border-radius:5px;background:rgba(6,22,32,.62);border:1px solid rgba(246,184,203,.5);color:var(--tk-pink);font-family:var(--display);font-weight:700;font-size:.68rem;letter-spacing:.06em;line-height:1.4;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.cat{display:inline-block;justify-self:start;margin-bottom:4px;padding:2px 7px;border-radius:5px;background:rgba(6,22,32,.62);border:1px solid rgba(246,184,203,.5);color:var(--tk-pink);font-family:var(--display);font-weight:700;font-size:.7rem;letter-spacing:.02em;line-height:1.4;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .filters{display:flex;gap:8px;overflow-x:auto;margin:14px -18px 0;padding:0 18px 4px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .fchip{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:7px 14px;border-radius:999px;border:1.5px solid var(--field-line);background:transparent;color:var(--text);font-family:var(--display);font-weight:600;font-size:.84rem;letter-spacing:.02em;cursor:pointer;white-space:nowrap}
@@ -939,9 +939,9 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <fieldset class="f">
         <legend class="lbl">Ticket (optional)</legend>
         <div class="types" id="payTypes">
-          <label class="type"><input type="radio" name="pay" value="free"><span>FREE</span></label>
-          <label class="type"><input type="radio" name="pay" value="paid"><span>PAID</span></label>
-          <label class="type"><input type="radio" name="pay" value="lucky"><span>★ LUCKY DRAW</span></label>
+          <label class="type"><input type="radio" name="pay" value="free"><span>Free</span></label>
+          <label class="type"><input type="radio" name="pay" value="paid"><span>Paid</span></label>
+          <label class="type"><input type="radio" name="pay" value="lucky"><span>★ Lucky Draw</span></label>
         </div>
         <div class="price-row" id="priceRow" hidden>
           <label><span class="sub" id="priceLbl">Price</span><input name="price" inputmode="decimal" autocomplete="off" placeholder="3,500"></label>
@@ -1099,7 +1099,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261023W01EL</p>
+    <p class="hint app-ver">App version JE20261024W02EL</p>
   </div>
 </dialog>
 
@@ -1151,12 +1151,12 @@ const COLORS = [
 const DEFAULT_COLOR = COLORS[0].v;
 const CATS = [
   {k:'concert', label:'Concert'},
+  {k:'musical', label:'Musical'},
   {k:'event', label:'Event'},
   {k:'fancon', label:'Fancon'},
   {k:'fanmeeting', label:'Fan Meeting'},
   {k:'fansign', label:'Fan Sign'},
-  {k:'sf', label:'SF Friends Screening'},
-  {k:'musical', label:'Musical'}
+  {k:'sf', label:'SF Friends Screening'}
 ];
 const catOf = c => CATS.some(x => x.k === (c && c.category)) ? c.category : 'concert';
 const catLabel = k => (CATS.find(x => x.k === k) || CATS[0]).label;
@@ -1171,7 +1171,7 @@ const COUPLES_DEFAULT = [
   {k:'viewmim', n:'ViewMim', c:'#8B5A3C', c2:'#FFFFFF', alt:['viewnim', 'วิวมิม']},
   {k:'pahnfond', n:'PahnFond', c:'#5BB8F0', c2:'#8B5A3C', alt:[]},
   {k:'jaoyingmewnich', n:'JaoyingMewnich', c:CPL_NAVY, c2:CPL_NAVY2, alt:[]},
-  {k:'kapookciize', n:'KapookCiize', c:CPL_NAVY, c2:CPL_NAVY2, alt:[]}
+  {k:'kapookciiz', n:'KapookCiiz', c:CPL_NAVY, c2:CPL_NAVY2, alt:[]}
 ];
 /* each couple's logo as white stamp ink (PNG with transparency) */
 const COUPLE_LOGOS = {
@@ -1197,7 +1197,7 @@ const VENUES = [
   ['Rajamangala National Stadium','ราชมังคลากีฬาสถาน','Bangkok',['ราชมัง'],13.7553,100.6221],
   ['UOB LIVE, The EmSphere','ยูโอบี ไลฟ์ ดิ เอ็มสเฟียร์','Bangkok',['emsphere'],13.7316,100.5690],
   ['BITEC LIVE','ไบเทค ไลฟ์','Bangkok',['bangna','บางนา'],13.6698,100.6094],
-  ['Union Hall, Union Mall','ยูเนี่ยน ฮอลล์ ยูเนี่ยน มอลล์','Bangkok',['ladprao','ลาดพร้าว'],13.8133,100.5614],
+  ['Union Hall, Union Mall','ยูเนี่ยน ฮอลล์ ยูเนี่ยน มอลล์','Bangkok',['unionhall','ยูเนี่ยนฮอล','ยูเนี่ยนฮอลล์','ladprao','ลาดพร้าว'],13.8133,100.5614],
   ['IMPACT Challenger Hall 1','อิมแพ็ค ชาเลนเจอร์ ฮอลล์ 1','Nonthaburi',['muangthong','เมืองทอง'],13.9150,100.5505],
   ['IMPACT Challenger Hall 2','อิมแพ็ค ชาเลนเจอร์ ฮอลล์ 2','Nonthaburi',['muangthong','เมืองทอง'],13.9155,100.5517],
   ['IMPACT Challenger Hall 3','อิมแพ็ค ชาเลนเจอร์ ฮอลล์ 3','Nonthaburi',['muangthong','เมืองทอง'],13.9160,100.5529],
@@ -1209,7 +1209,7 @@ const VENUES = [
   ['Nimibutr Stadium','อาคารนิมิบุตร','Bangkok',[],13.7472,100.5280],
   ['Indoor Stadium Huamark','อินดอร์ สเตเดียม หัวหมาก','Bangkok',[],13.7568,100.6189],
   ['Muangthai GMM Live House, centralwOrld','เมืองไทย จีเอ็มเอ็ม ไลฟ์ เฮาส์ เซ็นทรัลเวิลด์','Bangkok',['livehouse','ไลฟ์เฮาส์'],13.7466,100.5392],
-  ['BITEC Bangna','ไบเทค บางนา','Bangkok',[],13.6690,100.6110],
+  ['BITEC Bangna','ไบเทค บางนา','Bangkok',['bitec','bangna','บางนา'],13.6690,100.6110],
   ['Queen Sirikit National Convention Center','ศูนย์การประชุมแห่งชาติสิริกิติ์','Bangkok',['qsncc'],13.7234,100.5597],
   ['True Icon Hall, ICONSIAM','ทรู ไอคอน ฮอลล์ ไอคอนสยาม','Bangkok',[],13.7265,100.5104],
   ['Royal Paragon Hall, Siam Paragon','รอยัล พารากอน ฮอลล์ สยามพารากอน','Bangkok',[],13.7463,100.5348],
@@ -1669,7 +1669,7 @@ function renderCoupleFilters(items){
   if (filterCouple !== 'all' && !counts.has(filterCouple)) filterCouple = 'all';
   if (!counts.size) { box.hidden = true; box.innerHTML = ''; return; }
   const writable = store.canWrite && (store.mode === 'cloud' || store.mode === 'local');
-  box.innerHTML = `<button type="button" class="fchip" data-cpl="all" aria-pressed="${filterCouple === 'all'}">ALL COUPLES</button>`
+  box.innerHTML = `<button type="button" class="fchip" data-cpl="all" aria-pressed="${filterCouple === 'all'}">All Couples</button>`
     + couplesList().filter(x => counts.has(x.k)).map(x => `<button type="button" class="fchip" data-cpl="${esc(x.k)}" aria-pressed="${x.k === filterCouple}">${dotOrAvatar(x, 24)}${esc(x.n)}<small>${counts.get(x.k)}</small></button>`).join('')
     + (writable ? '<button type="button" class="fchip fedit" data-couple-edit>Edit couples</button>' : '');
   box.hidden = false;
@@ -1843,7 +1843,7 @@ function tixHTML(c){
     <div class="tix-main${src ? '' : ' noimg'}">
       ${src ? `<img src="${esc(src)}" alt="" loading="lazy" decoding="async"${coverStyle(c)}>` : ''}
       <div class="tix-txt">
-        <div class="pills"><span class="cat">${esc(catLabel(catOf(c)))}</span>${c.paid === 'lucky' ? '<span class="cat lucky">★ LUCKY WINNER</span>' : ''}</div>
+        <div class="pills"><span class="cat">${esc(catLabel(catOf(c)))}</span>${c.paid === 'lucky' ? '<span class="cat lucky">★ Lucky Winner</span>' : ''}</div>
         <h3>${esc(artist)}</h3>
         ${c.title ? `<p class="tour">${esc(c.title)}</p>` : ''}
         ${(date || c.venue) ? `<div class="when">${date ? `<span>${ICON.cal}<i>${esc(date + (timeOf(c) ? ', ' + timeOf(c) : ''))}</i></span>` : ''}${c.venue ? `<span>${ICON.pin}<i>${esc(c.venue)}</i></span>` : ''}</div>` : ''}
@@ -1892,7 +1892,7 @@ function renderFilters(items){
   items.forEach(c => { const k = catOf(c); counts.set(k, (counts.get(k) || 0) + 1); });
   if (!counts.has(filterCat)) filterCat = 'all';
   if (counts.size < 2) { filterCat = 'all'; box.hidden = true; box.innerHTML = ''; return; }
-  const chips = [{k:'all', label:'ALL', n:items.length}].concat(CATS.filter(x => counts.has(x.k)).map(x => ({k:x.k, label:x.label, n:counts.get(x.k)})));
+  const chips = [{k:'all', label:'All', n:items.length}].concat(CATS.filter(x => counts.has(x.k)).map(x => ({k:x.k, label:x.label, n:counts.get(x.k)})));
   box.innerHTML = chips.map(x => `<button type="button" class="fchip" data-cat="${x.k}" aria-pressed="${x.k === filterCat}">${esc(x.label)}<small>${x.n}</small></button>`).join('');
   box.hidden = false;
 }
@@ -2285,7 +2285,7 @@ async function ticketCanvas(c){
   if (c.title) { g.globalAlpha = 0.9; g.fillText(fitText(g, str(c.title), maxW, 32, '500', FB, 20), tx, y); y -= 52; }
   g.globalAlpha = 1; g.fillText(fitText(g, artist, maxW, 66, '700', FD, 34), tx, y); y -= 70;
   g.shadowBlur = 0;
-  const pill = catLabel(catOf(c)) + (c.paid === 'lucky' ? '  ★ LUCKY WINNER' : '');
+  const pill = catLabel(catOf(c)) + (c.paid === 'lucky' ? '  ★ Lucky Winner' : '');
   g.font = '700 20px ' + FD;
   const pw = g.measureText(pill).width + 28;
   g.fillStyle = 'rgba(8,22,32,.6)'; rr(g, tx, y - 26, pw, 36, 8); g.fill();
@@ -2341,10 +2341,12 @@ async function wrapCanvas(year){
   /* the top couple only takes the spot when no other artist was seen more often */
   const topC = topC0 && (!topA || topC0.n >= topA.n) ? topC0 : null;
   const topX = topC || topA;
-  /* background: the cover of the year's top artist, darkened so the words stay readable */
-  const bgIm = topX ? await loadImg(imgSrc(topX.c)) : null;
+  /* background: the top couple's profile photo when there is one, else the cover of the year's top artist,
+     darkened so the words stay readable */
+  const bgCpl = !!(topC && topC.photo);
+  const bgIm = topX ? await loadImg(bgCpl ? topC.photo : imgSrc(topX.c)) : null;
   if (bgIm) {
-    drawCover(g, bgIm, 0, 0, W, H, topX.c.coverPos);
+    drawCover(g, bgIm, 0, 0, W, H, bgCpl ? topC.pos : topX.c.coverPos);
     let ov = g.createLinearGradient(0, 0, 0, H);
     ov.addColorStop(0, 'rgba(7,21,31,.42)'); ov.addColorStop(0.35, 'rgba(7,21,31,.6)'); ov.addColorStop(1, 'rgba(7,21,31,.9)');
     g.fillStyle = ov; g.fillRect(0, 0, W, H);
@@ -2528,7 +2530,7 @@ function renderSpend(all){
   const main = $('#main');
   const withPay = all.filter(c => c.paid === 'paid' || c.paid === 'free' || c.paid === 'lucky');
   if (!withPay.length) {
-    main.innerHTML = '<section class="spend"><p class="status">No ticket prices yet. Open a ticket, tap Edit, then pick FREE, PAID or LUCKY DRAW under Ticket.</p></section>';
+    main.innerHTML = '<section class="spend"><p class="status">No ticket prices yet. Open a ticket, tap Edit, then pick Free, Paid or Lucky Draw under Ticket.</p></section>';
     return;
   }
   const pricedAll = withPay.filter(priced), spentAll = withPay.filter(hasSpend);
@@ -2616,7 +2618,7 @@ function renderSpend(all){
       ${byCouple || withPay.some(c => couplesOf(c).length) ? `<button type="button" role="tab" data-spend-mode="couple" aria-selected="${byCouple}">By couple</button>` : ''}
       <button type="button" role="tab" data-spend-mode="artist" aria-selected="${byArtist}">By artist</button>
     </div>
-    ${byName ? `<div class="sp-years">${['all'].concat(years).map(y => `<button type="button" class="fchip" data-spend-year="${esc(y)}" aria-pressed="${spendState.year === y}">${y === 'all' ? 'ALL YEARS' : esc(y)}</button>`).join('')}</div>` : ''}
+    ${byName ? `<div class="sp-years">${['all'].concat(years).map(y => `<button type="button" class="fchip" data-spend-year="${esc(y)}" aria-pressed="${spendState.year === y}">${y === 'all' ? 'All Years' : esc(y)}</button>`).join('')}</div>` : ''}
     <ul class="p-list sp-list">${listHTML}</ul>
     <p class="hint">Tap a row to see its tickets.${byCouple && pool.some(c => couplesOf(c).length > 1) ? ' Events with more than one couple count toward each of them.' : ''}</p>
   </section>`;
@@ -2629,7 +2631,7 @@ function dayPanelHTML(ds, evs){
   if (!ds) return '<p class="m-hint">Tap a day to see what\'s on.</p>';
   const rows = sortedAsc(evs).map(c => {
     const right = isUpcoming(c) ? `<span class="soon-pill">${countdown(c.date, timeOf(c))}</span>` : (timeOf(c) ? `<small>${esc(timeOf(c))}</small>` : '');
-    return `<li data-open="${esc(c.id)}" role="button" tabindex="0"><div class="pl-main"><div class="pills"><span class="cat">${esc(catLabel(catOf(c)))}</span>${c.paid === 'lucky' ? '<span class="cat lucky">★ LUCKY WINNER</span>' : ''}</div><b>${esc(str(c.artist) || 'Unknown artist')}</b>${c.title ? `<small>${esc(c.title)}</small>` : ''}${c.venue ? `<small>${esc(c.venue)}</small>` : ''}</div><div class="pl-count">${right}</div></li>`;
+    return `<li data-open="${esc(c.id)}" role="button" tabindex="0"><div class="pl-main"><div class="pills"><span class="cat">${esc(catLabel(catOf(c)))}</span>${c.paid === 'lucky' ? '<span class="cat lucky">★ Lucky Winner</span>' : ''}</div><b>${esc(str(c.artist) || 'Unknown artist')}</b>${c.title ? `<small>${esc(c.title)}</small>` : ''}${c.venue ? `<small>${esc(c.venue)}</small>` : ''}</div><div class="pl-count">${right}</div></li>`;
   }).join('');
   return `<div class="m-panel">
     <div class="m-head"><div><h3>${esc(fmtDate(ds, true))}</h3><p>${evs.length ? plural(evs.length, 'event') : 'Nothing on this day'}</p></div></div>
@@ -3105,10 +3107,10 @@ function venueSuggestions(raw){
   if (!tokens.length) {
     return (out.length ? out : VENUE_INDEX.slice(0, 6).map(x => ({name:x.name, sub:x.th, tag:x.area}))).slice(0, 6);
   }
-  const rest = [];
+  const rest = [], whole = norm(raw);
   for (const x of VENUE_INDEX) {
     if (seen.has(x.keys[0]) || !hit(x.hay)) continue;
-    rest.push({name:x.name, sub:x.th, tag:x.area, score:x.starts.some(s => s.indexOf(tokens[0]) === 0) ? 0 : 1});
+    rest.push({name:x.name, sub:x.th, tag:x.area, score:x.starts.indexOf(whole) !== -1 ? -1 : x.starts.some(s => s.indexOf(tokens[0]) === 0) ? 0 : 1});
   }
   rest.sort((a, b) => a.score - b.score);
   return out.concat(rest).slice(0, 7);
@@ -4492,7 +4494,7 @@ function detailHTML(c, opts){
   const place = str(c.place) || (L0 ? placeOf(L0.lat, L0.lng).label : '');
   let h = `<div class="dv" style="${lcStyle(lc)}">
     <div class="dv-cover${anim ? ' thud' : ''}">${src ? `<img src="${esc(src)}" alt="Cover for ${esc(artist)}" decoding="async"${coverStyle(c)}>` : ''}${isStamped(c) ? stampHTML(c, 'd', anim) : ''}
-      <div class="dv-cover-tx"><div class="pills"><span class="cat">${esc(catLabel(catOf(c)))}</span>${c.paid === 'lucky' ? '<span class="cat lucky">★ LUCKY WINNER</span>' : ''}</div><h3>${esc(artist)}</h3>${c.title ? `<p>${esc(c.title)}</p>` : ''}</div>
+      <div class="dv-cover-tx"><div class="pills"><span class="cat">${esc(catLabel(catOf(c)))}</span>${c.paid === 'lucky' ? '<span class="cat lucky">★ Lucky Winner</span>' : ''}</div><h3>${esc(artist)}</h3>${c.title ? `<p>${esc(c.title)}</p>` : ''}</div>
     </div>
     <div class="dv-grid">`;
   {
