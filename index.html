@@ -1099,7 +1099,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261024W02EL</p>
+    <p class="hint app-ver">App version JE20261024W03EL</p>
   </div>
 </dialog>
 
@@ -1171,7 +1171,7 @@ const COUPLES_DEFAULT = [
   {k:'viewmim', n:'ViewMim', c:'#8B5A3C', c2:'#FFFFFF', alt:['viewnim', 'วิวมิม']},
   {k:'pahnfond', n:'PahnFond', c:'#5BB8F0', c2:'#8B5A3C', alt:[]},
   {k:'jaoyingmewnich', n:'JaoyingMewnich', c:CPL_NAVY, c2:CPL_NAVY2, alt:[]},
-  {k:'kapookciize', n:'KapookCiize', c:CPL_NAVY, c2:CPL_NAVY2, alt:[]}
+  {k:'kapookciiz', n:'KapookCiize', c:CPL_NAVY, c2:CPL_NAVY2, alt:['kapookciiz']}
 ];
 /* each couple's logo as white stamp ink (PNG with transparency) */
 const COUPLE_LOGOS = {
@@ -5280,11 +5280,39 @@ async function fixCoupleColorsOnce(){
   try { localStorage.setItem(CPL_FIX_FLAG, '1'); } catch (e) {}
 }
 
+/* ---------- phone app: KapookCiize was spelled "KapookCiiz" before JE20261024W03EL (fixed once per phone) ---------- */
+async function fixKapookNameOnce(){
+  if (store.mode !== 'local' || !store.canWrite) return;
+  const FLAG = 'all.fix.kapookciize';
+  try { if (localStorage.getItem(FLAG)) return; } catch (e) { return; }
+  const isBad = s => /\bKapookCiiz\b/.test(s), fix = s => s.replace(/\bKapookCiiz\b/g, 'KapookCiize');
+  let changed = false;
+  if (Array.isArray(store.coupleSet)) {
+    const list = couplesList().map(rawOf), it = list.find(x => x.k === 'kapookciiz');
+    if (it && it.n === 'KapookCiiz') {
+      it.n = 'KapookCiize';
+      if (it.alt.indexOf('kapookciiz') === -1) it.alt.push('kapookciiz');
+      await saveCouples(list);
+      changed = true;
+    }
+  }
+  /* tickets whose artist was filled in from the old spelling */
+  for (const c of store.items) {
+    const patch = {};
+    ['artist', 'title'].forEach(f => { if (isBad(str(c[f]))) patch[f] = fix(c[f]); });
+    if (!Object.keys(patch).length) continue;
+    await local.put(Object.assign({}, c, patch));
+    changed = true;
+  }
+  try { localStorage.setItem(FLAG, '1'); } catch (e) {}
+  if (changed) { await reloadLocal(); render(); }
+}
+
 /* ---------- phone app: start-up ---------- */
 function afterLocalBoot(){
   if (store.mode !== 'local') return;
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch (e) {}
-  importGlOnce().catch(() => {}).then(() => fixCoupleColorsOnce()).catch(() => {});
+  importGlOnce().catch(() => {}).then(() => fixCoupleColorsOnce()).catch(() => {}).then(() => fixKapookNameOnce()).catch(() => {});
   scheduleReminders();
   if (store.items.some(c => Array.isArray(c.remind) && c.remind.length)) registerPeriodic();
   maybeAskInstall();
