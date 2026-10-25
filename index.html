@@ -755,12 +755,12 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 #bkProg{margin-top:10px}
 /* view menu: a strip of tear-off ticket stubs (notched ends, perforated between views);
    the open view glows in the Midnight Bloom gradient and slides when you switch */
-#viewSeg.view-nav{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;max-width:520px;gap:0;margin-top:18px;padding:5px;overflow:visible;border-radius:20px;border:1px solid var(--field-line);
+#viewSeg.view-nav{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;max-width:520px;gap:0;margin-top:18px;padding:5px;overflow:visible;border-radius:20px;border:1px solid var(--field-line);
   -webkit-mask:radial-gradient(circle 7px at 0 50%,#0000 96%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 96%,#000) right/51% 100% no-repeat;
   mask:radial-gradient(circle 7px at 0 50%,#0000 96%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 96%,#000) right/51% 100% no-repeat}
 #viewSeg.view-nav[hidden]{display:none}
-#viewSeg .vn-glow{position:absolute;z-index:0;top:5px;bottom:5px;left:5px;width:calc((100% - 10px) / 5);border-radius:15px;background:var(--accent-grad);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--accent) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.35);transform:translateX(calc(var(--vi,0) * 100%));transition:transform .34s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
-#viewSeg button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:58px;padding:6px 1px 5px;border:0;border-radius:15px;background:none;color:var(--text-soft);font-family:var(--display);font-weight:600;font-size:clamp(.68rem,2.9vw,.8rem);line-height:1.1;cursor:pointer;transition:color .2s}
+#viewSeg .vn-glow{position:absolute;z-index:0;top:5px;bottom:5px;left:5px;width:calc((100% - 10px) / 4);border-radius:15px;background:var(--accent-grad);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--accent) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.35);transform:translateX(calc(var(--vi,0) * 100%));transition:transform .34s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
+#viewSeg button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:58px;padding:6px 2px 5px;border:0;border-radius:15px;background:none;color:var(--text-soft);font-family:var(--display);font-weight:600;font-size:.8rem;line-height:1.1;cursor:pointer;transition:color .2s}
 #viewSeg button svg{width:22px;height:22px;flex:none;transition:transform .34s cubic-bezier(.3,1.3,.5,1)}
 #viewSeg button+button::before{content:"";position:absolute;left:0;top:13px;bottom:13px;border-left:2px dotted color-mix(in srgb,var(--text) 26%,transparent);transition:opacity .2s}
 #viewSeg button[aria-selected="true"]{background:none;color:var(--accent-ink)}
@@ -769,57 +769,6 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 #viewSeg button:not([aria-selected="true"]):hover{color:var(--text)}
 #viewSeg button:focus-visible{outline:3px solid var(--focus);outline-offset:-4px}
 @media (prefers-reduced-motion:reduce){#viewSeg .vn-glow,#viewSeg button svg{transition:none}}
-/* ---------- Cards: the photographed tickets as a collection; tap a card to flip it ---------- */
-.cc-intro{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 14px;margin:20px 2px 0;color:var(--text-soft);font-size:.9rem}
-.cc-intro p{margin:0}
-.cc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense;align-items:start;gap:18px 14px;margin-top:8px}
-@media (min-width:720px){.cc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.cc{display:grid;gap:8px;margin:0;min-width:0}
-.cc.wide{grid-column:1/-1}
-.cc-flip{display:block;width:100%;padding:0;border:0;border-radius:14px;background:none;color:inherit;font:inherit;cursor:pointer;perspective:1100px;-webkit-tap-highlight-color:transparent}
-.cc-flip:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
-.cc-inner{position:relative;display:block;width:100%;aspect-ratio:var(--ar,.72);transform-style:preserve-3d;transform:rotateX(var(--ty,0deg)) rotateY(calc(var(--tx,0deg) + var(--flip,0deg)));transition:transform .6s cubic-bezier(.3,1.15,.4,1)}
-.cc.flipped{--flip:180deg}
-.cc-face{position:absolute;inset:0;display:block;padding:4px;border-radius:14px;background:var(--lcg);-webkit-backface-visibility:hidden;backface-visibility:hidden;box-shadow:0 16px 28px -18px rgba(8,18,34,.75),inset 0 0 0 1px rgba(255,255,255,.3)}
-.cc-back{transform:rotateY(180deg)}
-.cc-ph{display:grid;place-items:center;width:100%;height:100%;border-radius:10px;overflow:hidden;background:#0C1D2A}
-.cc-ph img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;pointer-events:none}
-.cc-foil{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.45) 44%,rgba(255,206,232,.28) 50%,rgba(150,220,255,.22) 56%,transparent 68%);background-size:260% 100%;background-position:var(--fx,110%) 0;mix-blend-mode:soft-light;transition:background-position .8s ease}
-.cc.flipped .cc-foil{background-position:-10% 0}
-.cc-plus{position:absolute;top:10px;right:10px;padding:2px 8px;border-radius:999px;background:rgba(8,22,32,.75);color:#fff;font-family:var(--display);font-weight:700;font-size:.72rem}
-.cc-bk{display:flex;flex-direction:column;gap:5px;width:100%;height:100%;padding:12px;border-radius:10px;background:radial-gradient(120% 80% at 100% 0,color-mix(in srgb,var(--lc) 45%,transparent),transparent 62%),linear-gradient(160deg,#10293A,#0A1B27);color:#F6EEF2;text-align:left;overflow:hidden}
-.cc-bk-top{display:flex;justify-content:space-between;gap:6px;font-family:var(--display);font-size:.66rem;font-weight:700;letter-spacing:.03em;color:#F6B8CB}
-.cc-bk b{font-family:var(--display);font-size:1rem;line-height:1.15;overflow-wrap:anywhere}
-.cc-bk-t{font-size:.74rem;line-height:1.3;color:#C9D7E0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.cc-bk-perf{margin:3px -12px;border-top:2px dashed rgba(255,255,255,.22)}
-.cc-bk-m{font-size:.72rem;line-height:1.45;color:#DCE6EC;white-space:pre-line;overflow:hidden}
-.cc-bk small{margin-top:auto;font-size:.64rem;line-height:1.3;color:#9FB4C2}
-.cc-cap{display:flex;align-items:center;gap:6px;margin:0;padding:0 2px}
-.cc-cap>span{flex:1;min-width:0}
-.cc-cap b{display:block;font-family:var(--display);font-size:.9rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cc-cap small{display:block;font-size:.76rem;color:var(--text-soft)}
-.cc-info{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--field-line);background:var(--field);color:var(--text);cursor:pointer}
-.cc-info:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.cc-empty{margin:32px auto;max-width:420px;text-align:center;color:var(--text-soft);line-height:1.5}
-.cc-empty svg{width:56px;height:56px;color:var(--pink-ink)}
-.cc-empty h2{margin:10px 0 6px;font-family:var(--display);color:var(--text);font-size:1.25rem}
-@media (prefers-reduced-motion:reduce){.cc-inner,.cc-foil{transition:none}}
-/* ---------- crop a ticket photo to the ticket ---------- */
-.crop-wrap{position:relative;width:fit-content;max-width:100%;margin:8px auto 0;user-select:none;-webkit-user-select:none}
-#cropCv{display:block;max-width:100%;max-height:56vh;max-height:56dvh;width:auto;height:auto;border-radius:8px;background:#0C1D2A}
-.crop-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.crop-shade{fill:rgba(4,12,20,.58)}
-.crop-line{fill:none;stroke:var(--accent);stroke-width:2.5;vector-effect:non-scaling-stroke;stroke-linejoin:round}
-.crop-h{position:absolute;width:48px;height:48px;margin:-24px 0 0 -24px;padding:0;border:0;border-radius:50%;background:transparent;cursor:grab;touch-action:none;-webkit-tap-highlight-color:transparent}
-.crop-h::before{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.45)}
-.crop-h:active,.crop-h.on{cursor:grabbing}
-.crop-h.on::before{inset:11px}
-.crop-h:focus-visible{outline:3px solid var(--focus);outline-offset:-6px}
-.crop-loupe{position:absolute;top:8px;width:112px;height:112px;border-radius:50%;border:3px solid #fff;box-shadow:0 6px 18px rgba(0,0,0,.45);pointer-events:none;background:#0C1D2A}
-.crop-loupe.l{left:8px}.crop-loupe.r{right:8px}
-.crop-tools{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px}
-#cropDlg .sheet-foot .btn{flex:1}
-.ph-crop{position:absolute;bottom:4px;right:4px;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:0;background:rgba(6,20,30,.72);color:#fff;cursor:pointer}
 /* phone app: install sheet, update bar, version */
 .inst-hero{display:flex;align-items:center;gap:16px;margin:6px 0 14px}
 .inst-hero img{width:84px;height:84px;border-radius:22px;box-shadow:var(--shadow)}
@@ -873,7 +822,6 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
     <div class="view-seg view-nav" id="viewSeg" role="tablist" aria-label="View" hidden>
       <span class="vn-glow" aria-hidden="true"></span>
       <button type="button" role="tab" data-view="list" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 6h13A1.5 1.5 0 0 1 20 7.5v2a2.5 2.5 0 0 0 0 5v2a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5v-2a2.5 2.5 0 0 0 0-5v-2A1.5 1.5 0 0 1 5.5 6z"/><path d="M14.5 8.5v1.2M14.5 11.4v1.2M14.5 14.3v1.2"/></svg><span>Tickets</span></button>
-      <button type="button" role="tab" data-view="cards" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6.2V5a1.8 1.8 0 0 1 1.8-1.8h7.9A1.8 1.8 0 0 1 20 5v10.6a1.8 1.8 0 0 1-1.8 1.8H17"/><rect x="4" y="6.2" width="13" height="14.6" rx="1.8"/><path d="m10.5 10.2.95 1.95 2.15.3-1.55 1.5.37 2.12-1.92-1-1.92 1 .37-2.12-1.55-1.5 2.15-.3z"/></svg><span>Cards</span></button>
       <button type="button" role="tab" data-view="map" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5 4 7v12l5-2 6 2 5-2V5l-5 2-6-2z"/><path d="M9 5v12M15 7v12"/></svg><span>Map</span></button>
       <button type="button" role="tab" data-view="cal" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M8.5 14h.01M12 14h.01M15.5 14h.01M8.5 17h.01M12 17h.01" stroke-width="2.6"/></svg><span>Calendar</span></button>
       <button type="button" role="tab" data-view="spend" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="2.2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5h.01M17.5 14.5h.01" stroke-width="2.6"/></svg><span>Spend</span></button>
@@ -1014,7 +962,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
           <button type="button" class="btn btn-ghost btn-sm" data-phadd="pick">Choose photo</button>
         </div>
         <p class="hint up-msg" id="phStatus" hidden></p>
-        <p class="hint">Snap the real ticket: the first photo is the front, the second is the back (they flip in Cards). Up to 4 photos. If it has a QR code, don't share the photo before the show.</p>
+        <p class="hint">Snap the real ticket, front and back. Up to 4 photos. If it has a QR code, don't share the photo before the show.</p>
       </fieldset>
       <fieldset class="f" id="lightFs">
         <legend class="lbl">Lightstick color (optional)<span class="chip-name" id="chipName" hidden></span></legend>
@@ -1067,36 +1015,6 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
   <div class="sheet-foot">
     <button type="button" class="btn btn-ghost" id="posReset">Reset</button>
     <button type="button" class="btn btn-primary" id="posDone">Done</button>
-  </div>
-</dialog>
-
-<dialog id="cropDlg" class="sheet" aria-labelledby="cropTitle">
-  <div class="sheet-head">
-    <h2 id="cropTitle">Crop to the ticket</h2>
-    <button type="button" class="icon-btn" data-close aria-label="Close">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
-  </div>
-  <div class="sheet-body">
-    <p class="hint" id="cropMsg">Drag the 4 corners onto the corners of the ticket. It is straightened when you crop.</p>
-    <div class="crop-wrap" id="cropWrap">
-      <canvas id="cropCv" aria-label="Ticket photo being cropped"></canvas>
-      <svg class="crop-svg" id="cropSvg" preserveAspectRatio="none" aria-hidden="true"><path class="crop-shade" fill-rule="evenodd"/><polygon class="crop-line"/></svg>
-      <button type="button" class="crop-h" data-ch="0" aria-label="Top left corner"></button>
-      <button type="button" class="crop-h" data-ch="1" aria-label="Top right corner"></button>
-      <button type="button" class="crop-h" data-ch="2" aria-label="Bottom right corner"></button>
-      <button type="button" class="crop-h" data-ch="3" aria-label="Bottom left corner"></button>
-      <canvas class="crop-loupe" id="cropLoupe" width="224" height="224" hidden></canvas>
-    </div>
-    <div class="crop-tools">
-      <button type="button" class="btn btn-ghost btn-sm" id="cropAuto">Find ticket</button>
-      <button type="button" class="btn btn-ghost btn-sm" id="cropFull">Whole photo</button>
-      <button type="button" class="btn btn-ghost btn-sm" id="cropRot">Rotate</button>
-    </div>
-  </div>
-  <div class="sheet-foot">
-    <button type="button" class="btn btn-ghost" id="cropSkip">Keep as is</button>
-    <button type="button" class="btn btn-primary" id="cropGo">Crop</button>
   </div>
 </dialog>
 
@@ -1181,7 +1099,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261025W05EL</p>
+    <p class="hint app-ver">App version JE20261024W03EL</p>
   </div>
 </dialog>
 
@@ -2017,7 +1935,6 @@ function render(){
   const ps = sortedDesc(past.filter(match));
   if (!up.length && !ps.length) { main.innerHTML = `<p class="status">${q ? `Nothing matches “${esc(q)}”` : `No ${esc([filterCouple !== 'all' ? (coupleBy(filterCouple) || {}).n : '', filterCat !== 'all' ? catLabel(filterCat) : ''].filter(Boolean).join(' ') || 'matching')} entries yet`}</p>`; return; }
 
-  if (view === 'cards') { renderCards(up, ps); return; }
   if (view === 'map') { renderMap(up.concat(ps)); return; }
   if (view === 'cal') { renderCal(up.concat(ps)); return; }
   if (view === 'spend') { renderSpend(up.concat(ps)); return; }
@@ -2031,392 +1948,6 @@ function render(){
   html += groups.map(g => sectionHTML('', g.y || 'No date', g.items)).join('');
   main.innerHTML = html;
 }
-
-/* ---------- crop a ticket photo to the ticket: find its edges, then straighten it ---------- */
-const CROP_ICON = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>';
-/* the corners are kept as fractions of the photo, so a re-crop lines up at any size */
-const cropNorm = (q, w, h) => q.map(p => [+(p[0] / w).toFixed(4), +(p[1] / h).toFixed(4)]);
-const cropDenorm = (q, w, h) => q.map(p => [p[0] * w, p[1] * h]);
-const cropFull = (w, h) => [[0, 0], [w, 0], [w, h], [0, h]];
-const cropInset = (w, h) => { const a = w * 0.08, b = h * 0.08; return [[a, b], [w - a, b], [w - a, h - b], [a, h - b]]; };
-function quadOk(q){
-  return Array.isArray(q) && q.length === 4 && q.every(p => Array.isArray(p) && p.length === 2 && p.every(v => typeof v === 'number' && isFinite(v) && v >= -0.01 && v <= 1.01));
-}
-function rotateCanvas(cv){
-  const o = document.createElement('canvas');
-  o.width = cv.height; o.height = cv.width;
-  const g = o.getContext('2d');
-  g.translate(o.width, 0); g.rotate(Math.PI / 2); g.drawImage(cv, 0, 0);
-  return o;
-}
-/* find the ticket: the biggest patch that differs from the colour around the photo's edge */
-function detectQuad(cv){
-  const W = cv.width, H = cv.height, s = Math.min(1, 200 / Math.max(W, H));
-  const w = Math.max(16, Math.round(W * s)), h = Math.max(16, Math.round(H * s));
-  const t = document.createElement('canvas'); t.width = w; t.height = h;
-  const g = t.getContext('2d', {willReadFrequently:true});
-  g.drawImage(cv, 0, 0, w, h);
-  const d = g.getImageData(0, 0, w, h).data;
-  const band = Math.max(2, Math.round(Math.min(w, h) * 0.05));
-  const px = [];
-  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
-    if (x >= band && x < w - band && y >= band && y < h - band) continue;
-    const i = (y * w + x) * 4; px.push([d[i], d[i + 1], d[i + 2]]);
-  }
-  const med = k => { const a = px.map(v => v[k]).sort((p, q) => p - q); return a[a.length >> 1]; };
-  const bg = [med(0), med(1), med(2)];
-  let spread = 0;
-  px.forEach(v => { spread += Math.abs(v[0] - bg[0]) + Math.abs(v[1] - bg[1]) + Math.abs(v[2] - bg[2]); });
-  spread /= px.length;
-  const thr = Math.max(60, spread * 2.5);
-  const raw = new Uint8Array(w * h);
-  for (let p = 0, i = 0; p < w * h; p++, i += 4) raw[p] = Math.abs(d[i] - bg[0]) + Math.abs(d[i + 1] - bg[1]) + Math.abs(d[i + 2] - bg[2]) > thr ? 1 : 0;
-  /* smooth out specks: keep a pixel when most of its neighbours agree */
-  const m = new Uint8Array(w * h);
-  for (let y = 1; y < h - 1; y++) for (let x = 1; x < w - 1; x++) {
-    let n = 0;
-    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) n += raw[(y + dy) * w + x + dx];
-    m[y * w + x] = n >= 5 ? 1 : 0;
-  }
-  /* the biggest connected patch */
-  const lab = new Int32Array(w * h), stack = new Int32Array(w * h);
-  let cur = 0, best = 0, bestN = 0;
-  for (let p0 = 0; p0 < w * h; p0++) {
-    if (!m[p0] || lab[p0]) continue;
-    cur++; let top = 0, n = 0;
-    stack[top++] = p0; lab[p0] = cur;
-    while (top) {
-      const p = stack[--top]; n++;
-      const x = p % w, y = (p - x) / w;
-      if (x > 0 && m[p - 1] && !lab[p - 1]) { lab[p - 1] = cur; stack[top++] = p - 1; }
-      if (x < w - 1 && m[p + 1] && !lab[p + 1]) { lab[p + 1] = cur; stack[top++] = p + 1; }
-      if (y > 0 && m[p - w] && !lab[p - w]) { lab[p - w] = cur; stack[top++] = p - w; }
-      if (y < h - 1 && m[p + w] && !lab[p + w]) { lab[p + w] = cur; stack[top++] = p + w; }
-    }
-    if (n > bestN) { bestN = n; best = cur; }
-  }
-  if (bestN < w * h * 0.08 || bestN > w * h * 0.96) return {quad:cropInset(W, H), ok:false};
-  /* its four corners: the points furthest along each diagonal */
-  let tl = null, tr = null, br = null, bl = null;
-  for (let p = 0; p < w * h; p++) {
-    if (lab[p] !== best) continue;
-    const x = p % w, y = (p - x) / w;
-    if (!tl || x + y < tl[0] + tl[1]) tl = [x, y];
-    if (!br || x + y > br[0] + br[1]) br = [x, y];
-    if (!tr || x - y > tr[0] - tr[1]) tr = [x, y];
-    if (!bl || x - y < bl[0] - bl[1]) bl = [x, y];
-  }
-  const q = [tl, [tr[0] + 1, tr[1]], [br[0] + 1, br[1] + 1], [bl[0], bl[1] + 1]].map(v => [Math.min(W, Math.max(0, v[0] / s)), Math.min(H, Math.max(0, v[1] / s))]);
-  const area = Math.abs(q.reduce((a, v, i) => { const n2 = q[(i + 1) % 4]; return a + v[0] * n2[1] - n2[0] * v[1]; }, 0)) / 2;
-  if (area < W * H * 0.06) return {quad:cropInset(W, H), ok:false};
-  return {quad:q, ok:true};
-}
-/* straighten: map every pixel of the flat result back into the photo (a perspective transform) */
-function solveHomography(dst, src){
-  const A = [], b = [];
-  for (let k = 0; k < 4; k++) {
-    const u = dst[k][0], v = dst[k][1], x = src[k][0], y = src[k][1];
-    A.push([u, v, 1, 0, 0, 0, -u * x, -v * x]); b.push(x);
-    A.push([0, 0, 0, u, v, 1, -u * y, -v * y]); b.push(y);
-  }
-  for (let c = 0; c < 8; c++) {
-    let pv = c;
-    for (let r = c + 1; r < 8; r++) if (Math.abs(A[r][c]) > Math.abs(A[pv][c])) pv = r;
-    [A[c], A[pv]] = [A[pv], A[c]]; [b[c], b[pv]] = [b[pv], b[c]];
-    const dd = A[c][c];
-    if (Math.abs(dd) < 1e-10) return null;
-    for (let r = 0; r < 8; r++) {
-      if (r === c) continue;
-      const f = A[r][c] / dd;
-      if (!f) continue;
-      for (let k = c; k < 8; k++) A[r][k] -= f * A[c][k];
-      b[r] -= f * b[c];
-    }
-  }
-  return b.map((v, i) => v / A[i][i]);
-}
-function warpQuad(cv, q){
-  const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
-  let W = Math.max(dist(q[0], q[1]), dist(q[3], q[2])), H = Math.max(dist(q[0], q[3]), dist(q[1], q[2]));
-  const sc = Math.min(1, 1600 / Math.max(W, H));
-  W = Math.max(8, Math.round(W * sc)); H = Math.max(8, Math.round(H * sc));
-  const hm = solveHomography([[0, 0], [W, 0], [W, H], [0, H]], q);
-  if (!hm) return null;
-  const sw = cv.width, sh = cv.height;
-  const sd = cv.getContext('2d', {willReadFrequently:true}).getImageData(0, 0, sw, sh).data;
-  const out = document.createElement('canvas'); out.width = W; out.height = H;
-  const og = out.getContext('2d'), od = og.createImageData(W, H), o = od.data;
-  for (let v = 0; v < H; v++) {
-    for (let u = 0; u < W; u++) {
-      const uu = u + 0.5, vv = v + 0.5, den = hm[6] * uu + hm[7] * vv + 1;
-      let x = (hm[0] * uu + hm[1] * vv + hm[2]) / den - 0.5, y = (hm[3] * uu + hm[4] * vv + hm[5]) / den - 0.5;
-      x = x < 0 ? 0 : x > sw - 1 ? sw - 1 : x; y = y < 0 ? 0 : y > sh - 1 ? sh - 1 : y;
-      const x0 = x | 0, y0 = y | 0, x1 = Math.min(x0 + 1, sw - 1), y1 = Math.min(y0 + 1, sh - 1), fx = x - x0, fy = y - y0;
-      const a = (y0 * sw + x0) * 4, bq = (y0 * sw + x1) * 4, c2 = (y1 * sw + x0) * 4, e = (y1 * sw + x1) * 4, oi = (v * W + u) * 4;
-      for (let k = 0; k < 3; k++) o[oi + k] = (sd[a + k] * (1 - fx) + sd[bq + k] * fx) * (1 - fy) + (sd[c2 + k] * (1 - fx) + sd[e + k] * fx) * fy;
-      o[oi + 3] = 255;
-    }
-  }
-  og.putImageData(od, 0, 0);
-  return out;
-}
-/* the crop sheet */
-const crop = {base:null, cv:null, rot:0, quad:null, onDone:null, onSkip:null, busy:false, drag:-1, done:false};
-function cropDraw(){
-  const cv = crop.cv, w = cv.width, h = cv.height, q = crop.quad;
-  const svg = $('#cropSvg');
-  svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-  const pts = q.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1));
-  svg.querySelector('.crop-shade').setAttribute('d', `M0 0H${w}V${h}H0Z M${pts.join(' L')}Z`);
-  svg.querySelector('.crop-line').setAttribute('points', pts.join(' '));
-  document.querySelectorAll('#cropWrap .crop-h').forEach((b, i) => {
-    b.style.left = (q[i][0] / w * 100) + '%'; b.style.top = (q[i][1] / h * 100) + '%';
-  });
-}
-function cropSetCanvas(cv){
-  crop.cv = cv;
-  const el = $('#cropCv');
-  el.width = cv.width; el.height = cv.height;
-  el.getContext('2d').drawImage(cv, 0, 0);
-}
-function cropDetect(){
-  let r;
-  try { r = detectQuad(crop.cv); } catch (e) { r = {quad:cropInset(crop.cv.width, crop.cv.height), ok:false}; }
-  crop.quad = r.quad;
-  $('#cropMsg').textContent = r.ok ? 'Found the ticket. Check the corners, then tap Crop.' : "Couldn't find the ticket's edges. Drag the 4 corners onto its corners.";
-  cropDraw();
-}
-async function openCrop(opt){
-  crop.onDone = opt.onDone; crop.onSkip = opt.onSkip || null; crop.done = false; crop.busy = false;
-  $('#cropTitle').textContent = opt.title || 'Crop to the ticket';
-  $('#cropSkip').textContent = opt.skipLabel || 'Keep as is';
-  $('#cropGo').disabled = false;
-  let img = null;
-  try { img = opt.src instanceof Blob ? await decodeImage(opt.src) : await loadImg(opt.src); } catch (e) { img = null; }
-  if (!img) { toast("Couldn't open that photo."); if (crop.onSkip) crop.onSkip(); return; }
-  crop.base = scaleTo(img, 2000);
-  if (img.close) img.close();
-  crop.rot = ((opt.rot | 0) % 360 + 360) % 360;
-  let cv = crop.base;
-  for (let r = 0; r < crop.rot; r += 90) cv = rotateCanvas(cv);
-  cropSetCanvas(cv);
-  if (quadOk(opt.quad)) { crop.quad = cropDenorm(opt.quad, cv.width, cv.height); $('#cropMsg').textContent = 'Drag the 4 corners onto the corners of the ticket. It is straightened when you crop.'; cropDraw(); }
-  else cropDetect();
-  if (!$('#cropDlg').open) $('#cropDlg').showModal();
-}
-$('#cropAuto').addEventListener('click', cropDetect);
-$('#cropFull').addEventListener('click', () => { crop.quad = cropFull(crop.cv.width, crop.cv.height); $('#cropMsg').textContent = 'The whole photo is kept. Tap Crop to use it as it is.'; cropDraw(); });
-$('#cropRot').addEventListener('click', () => {
-  const w = crop.cv.width, h = crop.cv.height;
-  /* turning the photo a quarter clockwise moves each corner, and the old bottom left becomes the top left */
-  const q = crop.quad.map(p => [h - p[1], p[0]]);
-  crop.quad = [q[3], q[0], q[1], q[2]];
-  crop.rot = (crop.rot + 90) % 360;
-  cropSetCanvas(rotateCanvas(crop.cv));
-  cropDraw();
-});
-$('#cropSkip').addEventListener('click', () => { crop.done = true; $('#cropDlg').close(); if (crop.onSkip) crop.onSkip(); });
-$('#cropGo').addEventListener('click', async () => {
-  if (crop.busy) return;
-  const w = crop.cv.width, h = crop.cv.height, q = crop.quad;
-  const full = crop.rot === 0 && q.every((p, i) => Math.abs(p[0] - cropFull(w, h)[i][0]) < 2 && Math.abs(p[1] - cropFull(w, h)[i][1]) < 2);
-  crop.busy = true; $('#cropGo').disabled = true; $('#cropGo').textContent = 'Cropping…';
-  try {
-    let res;
-    if (full) res = {full:true};
-    else {
-      await new Promise(r => setTimeout(r, 30));
-      const out = warpQuad(crop.cv, q);
-      if (!out) throw {code:'crop'};
-      const blob = await new Promise(r => out.toBlob(r, 'image/jpeg', 0.88));
-      if (!blob) throw {code:'crop'};
-      res = {blob, quad:cropNorm(q, w, h), rot:crop.rot};
-    }
-    crop.done = true;
-    $('#cropDlg').close();
-    if (crop.onDone) await crop.onDone(res);
-  } catch (err) { toast(err && err.code === 'crop' ? "Couldn't crop with those corners. Spread them out a little." : errMsg(err)); }
-  finally { crop.busy = false; $('#cropGo').disabled = false; $('#cropGo').textContent = 'Crop'; }
-});
-$('#cropDlg').addEventListener('close', () => { if (!crop.done) { crop.onDone = null; const sk = crop.onSkip; crop.onSkip = null; if (sk) sk(true); } });
-/* dragging a corner, with a magnifier so the finger does not hide it */
-function cropPoint(e){
-  const r = $('#cropCv').getBoundingClientRect(), w = crop.cv.width, h = crop.cv.height;
-  return [Math.min(w, Math.max(0, (e.clientX - r.left) / r.width * w)), Math.min(h, Math.max(0, (e.clientY - r.top) / r.height * h))];
-}
-function cropLoupe(pt){
-  const L = $('#cropLoupe'), g = L.getContext('2d'), el = $('#cropCv');
-  const k = el.getBoundingClientRect().width / crop.cv.width, span = 112 / (k * 2.5);
-  g.fillStyle = '#0C1D2A'; g.fillRect(0, 0, 224, 224);
-  g.drawImage(crop.cv, pt[0] - span / 2, pt[1] - span / 2, span, span, 0, 0, 224, 224);
-  g.strokeStyle = '#EE9DB7'; g.lineWidth = 3;
-  g.beginPath(); g.moveTo(112, 84); g.lineTo(112, 140); g.moveTo(84, 112); g.lineTo(140, 112); g.stroke();
-  const right = pt[0] < crop.cv.width / 2;
-  L.classList.toggle('r', right); L.classList.toggle('l', !right);
-  L.hidden = false;
-}
-document.querySelectorAll('#cropWrap .crop-h').forEach(b => {
-  const i = Number(b.getAttribute('data-ch'));
-  b.addEventListener('pointerdown', e => { e.preventDefault(); crop.drag = i; b.classList.add('on'); try { b.setPointerCapture(e.pointerId); } catch (er) {} cropLoupe(crop.quad[i]); });
-  b.addEventListener('pointermove', e => { if (crop.drag !== i) return; crop.quad[i] = cropPoint(e); cropDraw(); cropLoupe(crop.quad[i]); });
-  const end = () => { if (crop.drag !== i) return; crop.drag = -1; b.classList.remove('on'); $('#cropLoupe').hidden = true; };
-  b.addEventListener('pointerup', end); b.addEventListener('pointercancel', end);
-  b.addEventListener('keydown', e => {
-    const st = Math.max(crop.cv.width, crop.cv.height) / 100, mv = {ArrowLeft:[-st, 0], ArrowRight:[st, 0], ArrowUp:[0, -st], ArrowDown:[0, st]}[e.key];
-    if (!mv) return;
-    e.preventDefault();
-    const p = crop.quad[i];
-    crop.quad[i] = [Math.min(crop.cv.width, Math.max(0, p[0] + mv[0])), Math.min(crop.cv.height, Math.max(0, p[1] + mv[1]))];
-    cropDraw();
-  });
-});
-/* a stored photo, as {assetId} on the cloud or {data} on the phone */
-async function storePhoto(file){
-  if (store.mode === 'cloud' && store.assets) {
-    const blob = await makeJpeg(file, 1600, 0.85);
-    const up = await retryOnce(() => store.assets.upload(blob, {type:'image/jpeg'}));
-    return {assetId:up.id};
-  }
-  if (store.mode === 'cloud') throw {code:'photos_unavailable'};
-  return {data:await makeDataUrl(file, 1400000, 1600)};
-}
-const bareRef = p => p.assetId ? {assetId:p.assetId} : {data:p.data};
-/* what to crop: the untouched original when there is one, with the corners used last time */
-function cropSourceOf(ref){
-  const o = ref.orig && photoSrc(ref.orig) ? ref.orig : null;
-  return {src:photoSrc(o || ref), quad:o ? ref.quad : null, rot:o ? (ref.rot | 0) : 0, orig:o || bareRef(ref)};
-}
-/* Cards: crop the side that is showing, and save straight away */
-function cropFromCards(id, back){
-  const c = store.items.find(x => x.id === id);
-  if (!c || !canEditPhotos()) return;
-  const ph = photosOf(c), idx = back && ph[1] ? 1 : 0, p = ph[idx];
-  if (!p) return;
-  const srcInfo = cropSourceOf(p);
-  openCrop({src:srcInfo.src, quad:srcInfo.quad, rot:srcInfo.rot, title:idx ? 'Crop the back' : 'Crop the front', skipLabel:'Cancel', onDone:async res => {
-    const photos = ph.map(x => Object.assign({}, x));
-    let entry;
-    if (res.full) { if (!p.orig) return; entry = Object.assign({}, p.orig); }
-    else { toast('Saving…'); entry = await storePhoto(res.blob); entry.orig = srcInfo.orig; entry.quad = res.quad; entry.rot = res.rot; }
-    photos[idx] = entry;
-    await savePhotos(c, photos);
-    const keep = new Set([entry.assetId, entry.orig && entry.orig.assetId].filter(Boolean));
-    if (store.assets && p.assetId && !keep.has(p.assetId) && !assetInUse(p.assetId, c.id)) store.assets.delete(p.assetId).catch(() => {});
-    render();
-    toast(res.full ? 'Back to the whole photo' : 'Ticket cropped');
-  }});
-}
-/* the form: crop one photo before saving */
-function cropFormPhoto(i, next){
-  const p = form.photos[i];
-  if (!p) { if (next) next(); return; }
-  let info;
-  if (p.kind === 'existing') { const si = cropSourceOf(p.ref); info = {src:si.src, quad:si.quad, rot:si.rot, base:{ref:si.orig}}; }
-  else if (p.base) info = {src:p.base.ref ? photoSrc(p.base.ref) : p.base.file, quad:p.quad, rot:p.rot | 0, base:p.base};
-  else info = {src:p.file, quad:null, rot:0, base:{file:p.file, url:p.url}};
-  openCrop({src:info.src, quad:info.quad, rot:info.rot, title:'Crop photo ' + (i + 1) + ' to the ticket', onDone:res => {
-    const cur = form.photos[i];
-    if (res.full) form.photos[i] = info.base.ref ? {kind:'existing', ref:info.base.ref} : {kind:'new', file:info.base.file, url:info.base.url};
-    else form.photos[i] = {kind:'new', file:res.blob, url:URL.createObjectURL(res.blob), base:info.base, quad:res.quad, rot:res.rot};
-    if (cur && cur.kind === 'new' && cur.url !== info.base.url && cur.url !== form.photos[i].url) URL.revokeObjectURL(cur.url);
-    renderPhotoEdit();
-    if (next) next();
-  }, onSkip:closed => { if (next && !closed) next(); }});
-}
-/* new photos: offer the crop one after another, with the ticket already found */
-function cropQueue(list){
-  const q = list.slice();
-  const step = () => { if (!q.length) return; cropFormPhoto(q.shift(), step); };
-  step();
-}
-
-/* ---------- Cards: every ticket that has a photo, as a card that flips front / back ---------- */
-const CC_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6.2V5a1.8 1.8 0 0 1 1.8-1.8h7.9A1.8 1.8 0 0 1 20 5v10.6a1.8 1.8 0 0 1-1.8 1.8H17"/><rect x="4" y="6.2" width="13" height="14.6" rx="1.8"/><path d="m10.5 10.2.95 1.95 2.15.3-1.55 1.5.37 2.12-1.92-1-1.92 1 .37-2.12-1.55-1.5 2.15-.3z"/></svg>';
-const CC_INFO = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.01"/></svg>';
-/* each front photo's shape, so a card keeps the real ticket's proportions between renders */
-const ccAR = new Map();
-const ccWide = ar => Number(ar) > 1.15;
-function ccPhoto(src){ return `<span class="cc-ph"><img src="${esc(src)}" alt="" loading="lazy" decoding="async" draggable="false"></span>`; }
-/* the back of a card without a back photo: the ticket's details, printed like the back of a ticket */
-function ccBackHTML(c){
-  const ord = ordinals.get(c.id);
-  const seat = [['Zone', str(c.zone)], ['Row', str(c.row)], ['Seat', str(c.seat)]].filter(x => x[1]).map(x => x[0] + ' ' + x[1]).join(' · ');
-  const when = isDate(c.date) ? fmtDate(c.date, true) + (timeOf(c) ? ', ' + timeOf(c) : '') : '';
-  return `<span class="cc-bk">
-    <span class="cc-bk-top"><span>${isUpcoming(c) ? esc(countdown(c.date, timeOf(c))) : ord ? 'No. ' + ord : ''}</span><span>${esc(catLabel(catOf(c)))}</span></span>
-    <b>${esc(str(c.artist) || 'Unknown artist')}</b>
-    ${c.title ? `<span class="cc-bk-t">${esc(c.title)}</span>` : ''}
-    <span class="cc-bk-perf" aria-hidden="true"></span>
-    <span class="cc-bk-m">${esc([when, str(c.venue), seat].filter(Boolean).join('\n'))}</span>
-    <small>No back photo yet. Add one in Edit.</small>
-  </span>`;
-}
-function ccHTML(c){
-  const ph = photosOf(c), front = photoSrc(ph[0]), back = ph[1] ? photoSrc(ph[1]) : '';
-  const ar = ccAR.get(front), name = str(c.artist) || 'Unknown artist';
-  return `<figure class="cc${ar && ccWide(ar) ? ' wide' : ''}" style="${lcStyle(colorOf(c))}${ar ? ';--ar:' + ar : ''}">
-    <button type="button" class="cc-flip" data-flip data-name="${esc(name)}" aria-pressed="false" aria-label="${esc(name)} ticket, front. Tap to flip">
-      <span class="cc-inner">
-        <span class="cc-face cc-front">${ccPhoto(front)}${ph.length > 2 ? `<span class="cc-plus">+${ph.length - 2}</span>` : ''}<i class="cc-foil"></i></span>
-        <span class="cc-face cc-back">${back ? ccPhoto(back) : ccBackHTML(c)}<i class="cc-foil"></i></span>
-      </span>
-    </button>
-    <figcaption class="cc-cap"><span><b>${esc(name)}</b><small>${esc(isDate(c.date) ? fmtDate(c.date) : 'No date')}</small></span>${canEditPhotos() ? `<button type="button" class="cc-info" data-crop="${esc(c.id)}" aria-label="Crop the ${esc(name)} ticket photo">${CROP_ICON}</button>` : ''}<button type="button" class="cc-info" data-open="${esc(c.id)}" aria-label="Open ${esc(name)} details">${CC_INFO}</button></figcaption>
-  </figure>`;
-}
-function renderCards(up, ps){
-  const main = $('#main');
-  const has = c => photosOf(c).length > 0;
-  const upH = up.filter(has), psH = ps.filter(has), total = upH.length + psH.length;
-  const without = up.length + ps.length - total;
-  if (!total) {
-    main.innerHTML = `<section class="cc-empty">${CC_ICON}<h2>No ticket photos yet</h2><p>Open a ticket, tap Edit, then add photos under Ticket photos. The first photo is the front of the card, the second is the back.</p></section>`;
-    return;
-  }
-  const sec = (label, list) => `<section class="year"><h2><span class="y">${esc(label)}</span><span class="n">${plural(list.length, 'card')}</span></h2><div class="cc-grid">${list.map(ccHTML).join('')}</div></section>`;
-  const groups = []; let cur = null;
-  for (const c of psH) {
-    const y = isDate(c.date) ? c.date.slice(0, 4) : '';
-    if (!cur || cur.y !== y) { cur = {y, items:[]}; groups.push(cur); }
-    cur.items.push(c);
-  }
-  main.innerHTML = `<div class="cc-intro"><p>${plural(total, 'card')} · Tap a card to flip it</p>${without ? `<p>${plural(without, 'ticket')} without a photo</p>` : ''}</div>`
-    + (upH.length ? sec('Upcoming', upH) : '') + groups.map(g => sec(g.y || 'No date', g.items)).join('');
-  /* fit each card to its ticket's real shape once the photo has loaded */
-  main.querySelectorAll('.cc-front img').forEach(img => {
-    const fit = () => {
-      if (!img.naturalWidth) return;
-      const ar = Math.min(2.2, Math.max(0.5, img.naturalWidth / img.naturalHeight)).toFixed(3);
-      ccAR.set(img.getAttribute('src'), ar);
-      const cc = img.closest('.cc');
-      if (cc) { cc.style.setProperty('--ar', ar); cc.classList.toggle('wide', ccWide(ar)); }
-    };
-    if (img.complete) fit(); else img.addEventListener('load', fit, {once:true});
-  });
-}
-function flipCard(btn){
-  const cc = btn.closest('.cc'), on = !cc.classList.contains('flipped');
-  cc.classList.toggle('flipped', on);
-  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  btn.setAttribute('aria-label', btn.getAttribute('data-name') + ' ticket, ' + (on ? 'back' : 'front') + '. Tap to flip');
-}
-/* with a mouse, the card tilts toward the pointer and the foil catches the light */
-$('#main').addEventListener('pointermove', e => {
-  if (e.pointerType !== 'mouse' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const b = e.target.closest('.cc-flip');
-  if (!b) return;
-  const r = b.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-  const cc = b.closest('.cc');
-  cc.style.setProperty('--tx', (x * 14).toFixed(1) + 'deg');
-  cc.style.setProperty('--ty', (-y * 12).toFixed(1) + 'deg');
-  cc.style.setProperty('--fx', (50 - x * 120).toFixed(0) + '%');
-});
-$('#main').addEventListener('pointerout', e => {
-  const b = e.target.closest('.cc-flip');
-  if (!b || (e.relatedTarget && b.contains(e.relatedTarget))) return;
-  const cc = b.closest('.cc');
-  ['--tx', '--ty', '--fx'].forEach(v => cc.style.removeProperty(v));
-});
 
 /* ---------- Photos tab: add ticket photos on a normal page (no pop-up sheet) ---------- */
 const upState = {target:null, busy:null, msg:'', focus:null};
@@ -2545,9 +2076,7 @@ async function resumeFormWith(files){
   const st = $('#phStatus');
   st.textContent = files.length > 1 ? 'Adding ' + files.length + ' photos…' : 'Adding photo…';
   st.hidden = false;
-  let added = [];
-  try { added = await addPhotoFiles(files) || []; } finally { st.hidden = true; }
-  if (added.length) cropQueue(added);
+  try { await addPhotoFiles(files); } finally { st.hidden = true; }
 }
 ['#upCam', '#upPick'].forEach(sel => {
   const inp = $(sel);
@@ -2562,7 +2091,7 @@ async function resumeFormWith(files){
 
 /* ---------- duplicate a show for another day ---------- */
 function assetInUse(id, exceptId){
-  return store.items.some(x => x.id !== exceptId && (x.coverId === id || photosOf(x).some(p => p.assetId === id || (p.orig && p.orig.assetId === id))));
+  return store.items.some(x => x.id !== exceptId && (x.coverId === id || photosOf(x).some(p => p.assetId === id)));
 }
 function openDuplicate(src){
   openForm(null);
@@ -3430,30 +2959,28 @@ function photoSrc(p){
   return null;
 }
 const photosOf = c => Array.isArray(c && c.ticketPhotos) ? c.ticketPhotos.filter(photoSrc) : [];
-function revokePhotoUrls(){ (form.photos || []).forEach(p => { if (p.kind === 'new') { URL.revokeObjectURL(p.url); if (p.base && p.base.url && p.base.url !== p.url) URL.revokeObjectURL(p.base.url); } }); }
+function revokePhotoUrls(){ (form.photos || []).forEach(p => { if (p.kind === 'new') URL.revokeObjectURL(p.url); }); }
 function renderPhotoEdit(){
   const box = $('#phEdit');
-  box.innerHTML = form.photos.map((p, i) => `<div class="ph-cell"><img src="${esc(p.kind === 'new' ? p.url : photoSrc(p.ref))}" alt="Ticket photo ${i + 1}"><button type="button" class="ph-crop" data-phcrop="${i}" aria-label="Crop photo ${i + 1}">${CROP_ICON}</button><button type="button" class="ph-del" data-phdel="${i}" aria-label="Remove photo ${i + 1}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`).join('');
+  box.innerHTML = form.photos.map((p, i) => `<div class="ph-cell"><img src="${esc(p.kind === 'new' ? p.url : photoSrc(p.ref))}" alt="Ticket photo ${i + 1}"><button type="button" class="ph-del" data-phdel="${i}" aria-label="Remove photo ${i + 1}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>`).join('');
   box.hidden = !form.photos.length;
   const full = form.photos.length >= MAX_PHOTOS;
   document.querySelectorAll('[data-phadd]:not([data-phadd="logo"])').forEach(b => { b.disabled = full; });
 }
 async function addPhotoFiles(files){
-  const list = Array.from(files || []), added = [];
+  const list = Array.from(files || []);
   for (const f of list) {
     if (form.photos.length >= MAX_PHOTOS) { setErr($('#formErr'), 'Up to 4 ticket photos per entry.'); break; }
     if (f.type && f.type.indexOf('image/') !== 0) continue;
     try {
       const blob = await makeJpeg(f, 1600, 0.85);
       form.photos.push({kind:'new', file:blob, url:URL.createObjectURL(blob)});
-      added.push(form.photos.length - 1);
     } catch (e) {
       setErr($('#formErr'), "Couldn't read that photo. Try a JPG or PNG.");
     }
     renderPhotoEdit();
   }
   renderPhotoEdit();
-  return added;
 }
 
 $('#formDlg').addEventListener('close', () => { if (form.suspended) return; revokePhotoUrls(); form.photos = []; });
@@ -4853,18 +4380,18 @@ async function saveFromForm(f){
   const keptRefs = form.photos.filter(p => p.kind === 'existing').map(p => p.ref);
   const photos = keptRefs.slice();
   for (const p of form.photos.filter(x => x.kind === 'new')) {
-    const entry = await storePhoto(p.file);
-    if (p.base) {
-      entry.orig = p.base.ref ? p.base.ref : await storePhoto(p.base.file);
-      if (quadOk(p.quad)) entry.quad = p.quad;
-      entry.rot = p.rot | 0;
+    if (store.mode === 'cloud' && store.assets) {
+      const blob = await makeJpeg(p.file, 1600, 0.85);
+      const up = await retryOnce(() => store.assets.upload(blob, {type:'image/jpeg'}));
+      photos.push({assetId:up.id});
+    } else if (store.mode === 'cloud') {
+      throw {code:'photos_unavailable'};
+    } else {
+      photos.push({data:await makeDataUrl(p.file, 1400000, 1600)});
     }
-    photos.push(entry);
   }
   if (photos.length) rec.ticketPhotos = photos;
-  const keepIds = new Set();
-  photos.forEach(r => { if (r.assetId) keepIds.add(r.assetId); if (r.orig && r.orig.assetId) keepIds.add(r.orig.assetId); });
-  const dropPhotos = ex ? [].concat(...photosOf(ex).map(r => [r.assetId, r.orig && r.orig.assetId])).filter(id => id && !keepIds.has(id)) : [];
+  const dropPhotos = ex ? photosOf(ex).filter(r => r.assetId && !keptRefs.some(k => k.assetId === r.assetId)).map(r => r.assetId) : [];
   const cp = form.coverPos;
   if ((rec.coverId || rec.coverData || rec.coverFile) && cp && !(cp.x === 50 && cp.y === 50 && cp.z === 1)) rec.coverPos = {x:cp.x, y:cp.y, z:cp.z};
   await putRecord((ex && ex.id) || newId(), rec);
@@ -5445,10 +4972,6 @@ document.addEventListener('click', e => {
   if (close) { close.closest('dialog').close(); return; }
   const rmb = e.target.closest('[data-remind]');
   if (rmb) { toggleRemindField('remind', Number(rmb.getAttribute('data-remind'))); return; }
-  const flc = e.target.closest('[data-flip]');
-  if (flc) { flipCard(flc); return; }
-  const crb = e.target.closest('[data-crop]');
-  if (crb) { cropFromCards(crb.getAttribute('data-crop'), crb.closest('.cc').classList.contains('flipped')); return; }
   const tp = e.target.closest('[data-theme-pick]');
   if (tp) { setThemePref(tp.getAttribute('data-theme-pick')); return; }
   if (e.target.closest('[data-bk-go]')) { runRestore(); return; }
@@ -5489,9 +5012,7 @@ document.addEventListener('click', e => {
   const pad = e.target.closest('[data-phadd]');
   if (pad) { suspendFormFor(pad.getAttribute('data-phadd')); return; }
   const phd = e.target.closest('[data-phdel]');
-  if (phd) { const i = Number(phd.getAttribute('data-phdel')), p = form.photos[i]; if (p && p.kind === 'new') { URL.revokeObjectURL(p.url); if (p.base && p.base.url && p.base.url !== p.url) URL.revokeObjectURL(p.base.url); } form.photos.splice(i, 1); renderPhotoEdit(); return; }
-  const phc = e.target.closest('[data-phcrop]');
-  if (phc) { cropFormPhoto(Number(phc.getAttribute('data-phcrop'))); return; }
+  if (phd) { const i = Number(phd.getAttribute('data-phdel')), p = form.photos[i]; if (p && p.kind === 'new') URL.revokeObjectURL(p.url); form.photos.splice(i, 1); renderPhotoEdit(); return; }
   const pho = e.target.closest('[data-photo]');
   if (pho) { const c = store.items.find(x => x.id === (pho.getAttribute('data-photo-of') || viewId)); if (c) openPhotos(c, Number(pho.getAttribute('data-photo'))); return; }
   const upb = e.target.closest('[data-up]');
@@ -5504,7 +5025,7 @@ document.addEventListener('click', e => {
   const fc = e.target.closest('.fchip[data-cat]');
   if (fc) { filterCat = fc.getAttribute('data-cat') || 'all'; render(); return; }
   const vb = e.target.closest('[data-view]');
-  if (vb) { const v = vb.getAttribute('data-view'); view = ['cards', 'map', 'cal', 'spend'].indexOf(v) !== -1 ? v : 'list'; render(); return; }
+  if (vb) { const v = vb.getAttribute('data-view'); view = ['map', 'cal', 'spend'].indexOf(v) !== -1 ? v : 'list'; render(); return; }
   const cal = e.target.closest('[data-cal]');
   if (cal) { calNav(cal.getAttribute('data-cal')); return; }
   const dayb = e.target.closest('[data-day]');
