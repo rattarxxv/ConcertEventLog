@@ -755,12 +755,12 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 #bkProg{margin-top:10px}
 /* view menu: a strip of tear-off ticket stubs (notched ends, perforated between views);
    the open view glows in the Midnight Bloom gradient and slides when you switch */
-#viewSeg.view-nav{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;max-width:520px;gap:0;margin-top:18px;padding:5px;overflow:visible;border-radius:20px;border:1px solid var(--field-line);
+#viewSeg.view-nav{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;max-width:520px;gap:0;margin-top:18px;padding:5px;overflow:visible;border-radius:20px;border:1px solid var(--field-line);
   -webkit-mask:radial-gradient(circle 7px at 0 50%,#0000 96%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 96%,#000) right/51% 100% no-repeat;
   mask:radial-gradient(circle 7px at 0 50%,#0000 96%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 96%,#000) right/51% 100% no-repeat}
 #viewSeg.view-nav[hidden]{display:none}
-#viewSeg .vn-glow{position:absolute;z-index:0;top:5px;bottom:5px;left:5px;width:calc((100% - 10px) / 4);border-radius:15px;background:var(--accent-grad);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--accent) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.35);transform:translateX(calc(var(--vi,0) * 100%));transition:transform .34s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
-#viewSeg button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:58px;padding:6px 2px 5px;border:0;border-radius:15px;background:none;color:var(--text-soft);font-family:var(--display);font-weight:600;font-size:.8rem;line-height:1.1;cursor:pointer;transition:color .2s}
+#viewSeg .vn-glow{position:absolute;z-index:0;top:5px;bottom:5px;left:5px;width:calc((100% - 10px) / 5);border-radius:15px;background:var(--accent-grad);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--accent) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.35);transform:translateX(calc(var(--vi,0) * 100%));transition:transform .34s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
+#viewSeg button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:58px;padding:6px 1px 5px;border:0;border-radius:15px;background:none;color:var(--text-soft);font-family:var(--display);font-weight:600;font-size:clamp(.68rem,2.9vw,.8rem);line-height:1.1;cursor:pointer;transition:color .2s}
 #viewSeg button svg{width:22px;height:22px;flex:none;transition:transform .34s cubic-bezier(.3,1.3,.5,1)}
 #viewSeg button+button::before{content:"";position:absolute;left:0;top:13px;bottom:13px;border-left:2px dotted color-mix(in srgb,var(--text) 26%,transparent);transition:opacity .2s}
 #viewSeg button[aria-selected="true"]{background:none;color:var(--accent-ink)}
@@ -769,6 +769,41 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 #viewSeg button:not([aria-selected="true"]):hover{color:var(--text)}
 #viewSeg button:focus-visible{outline:3px solid var(--focus);outline-offset:-4px}
 @media (prefers-reduced-motion:reduce){#viewSeg .vn-glow,#viewSeg button svg{transition:none}}
+/* ---------- Cards: the photographed tickets as a collection; tap a card to flip it ---------- */
+.cc-intro{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 14px;margin:20px 2px 0;color:var(--text-soft);font-size:.9rem}
+.cc-intro p{margin:0}
+.cc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-flow:row dense;align-items:start;gap:18px 14px;margin-top:8px}
+@media (min-width:720px){.cc-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.cc{display:grid;gap:8px;margin:0;min-width:0}
+.cc.wide{grid-column:1/-1}
+.cc-flip{display:block;width:100%;padding:0;border:0;border-radius:14px;background:none;color:inherit;font:inherit;cursor:pointer;perspective:1100px;-webkit-tap-highlight-color:transparent}
+.cc-flip:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
+.cc-inner{position:relative;display:block;width:100%;aspect-ratio:var(--ar,.72);transform-style:preserve-3d;transform:rotateX(var(--ty,0deg)) rotateY(calc(var(--tx,0deg) + var(--flip,0deg)));transition:transform .6s cubic-bezier(.3,1.15,.4,1)}
+.cc.flipped{--flip:180deg}
+.cc-face{position:absolute;inset:0;display:block;padding:4px;border-radius:14px;background:var(--lcg);-webkit-backface-visibility:hidden;backface-visibility:hidden;box-shadow:0 16px 28px -18px rgba(8,18,34,.75),inset 0 0 0 1px rgba(255,255,255,.3)}
+.cc-back{transform:rotateY(180deg)}
+.cc-ph{display:grid;place-items:center;width:100%;height:100%;border-radius:10px;overflow:hidden;background:#0C1D2A}
+.cc-ph img{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;pointer-events:none}
+.cc-foil{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.45) 44%,rgba(255,206,232,.28) 50%,rgba(150,220,255,.22) 56%,transparent 68%);background-size:260% 100%;background-position:var(--fx,110%) 0;mix-blend-mode:soft-light;transition:background-position .8s ease}
+.cc.flipped .cc-foil{background-position:-10% 0}
+.cc-plus{position:absolute;top:10px;right:10px;padding:2px 8px;border-radius:999px;background:rgba(8,22,32,.75);color:#fff;font-family:var(--display);font-weight:700;font-size:.72rem}
+.cc-bk{display:flex;flex-direction:column;gap:5px;width:100%;height:100%;padding:12px;border-radius:10px;background:radial-gradient(120% 80% at 100% 0,color-mix(in srgb,var(--lc) 45%,transparent),transparent 62%),linear-gradient(160deg,#10293A,#0A1B27);color:#F6EEF2;text-align:left;overflow:hidden}
+.cc-bk-top{display:flex;justify-content:space-between;gap:6px;font-family:var(--display);font-size:.66rem;font-weight:700;letter-spacing:.03em;color:#F6B8CB}
+.cc-bk b{font-family:var(--display);font-size:1rem;line-height:1.15;overflow-wrap:anywhere}
+.cc-bk-t{font-size:.74rem;line-height:1.3;color:#C9D7E0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.cc-bk-perf{margin:3px -12px;border-top:2px dashed rgba(255,255,255,.22)}
+.cc-bk-m{font-size:.72rem;line-height:1.45;color:#DCE6EC;white-space:pre-line;overflow:hidden}
+.cc-bk small{margin-top:auto;font-size:.64rem;line-height:1.3;color:#9FB4C2}
+.cc-cap{display:flex;align-items:center;gap:6px;margin:0;padding:0 2px}
+.cc-cap>span{flex:1;min-width:0}
+.cc-cap b{display:block;font-family:var(--display);font-size:.9rem;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cc-cap small{display:block;font-size:.76rem;color:var(--text-soft)}
+.cc-info{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1.5px solid var(--field-line);background:var(--field);color:var(--text);cursor:pointer}
+.cc-info:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.cc-empty{margin:32px auto;max-width:420px;text-align:center;color:var(--text-soft);line-height:1.5}
+.cc-empty svg{width:56px;height:56px;color:var(--pink-ink)}
+.cc-empty h2{margin:10px 0 6px;font-family:var(--display);color:var(--text);font-size:1.25rem}
+@media (prefers-reduced-motion:reduce){.cc-inner,.cc-foil{transition:none}}
 /* phone app: install sheet, update bar, version */
 .inst-hero{display:flex;align-items:center;gap:16px;margin:6px 0 14px}
 .inst-hero img{width:84px;height:84px;border-radius:22px;box-shadow:var(--shadow)}
@@ -822,6 +857,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
     <div class="view-seg view-nav" id="viewSeg" role="tablist" aria-label="View" hidden>
       <span class="vn-glow" aria-hidden="true"></span>
       <button type="button" role="tab" data-view="list" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 6h13A1.5 1.5 0 0 1 20 7.5v2a2.5 2.5 0 0 0 0 5v2a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5v-2a2.5 2.5 0 0 0 0-5v-2A1.5 1.5 0 0 1 5.5 6z"/><path d="M14.5 8.5v1.2M14.5 11.4v1.2M14.5 14.3v1.2"/></svg><span>Tickets</span></button>
+      <button type="button" role="tab" data-view="cards" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6.2V5a1.8 1.8 0 0 1 1.8-1.8h7.9A1.8 1.8 0 0 1 20 5v10.6a1.8 1.8 0 0 1-1.8 1.8H17"/><rect x="4" y="6.2" width="13" height="14.6" rx="1.8"/><path d="m10.5 10.2.95 1.95 2.15.3-1.55 1.5.37 2.12-1.92-1-1.92 1 .37-2.12-1.55-1.5 2.15-.3z"/></svg><span>Cards</span></button>
       <button type="button" role="tab" data-view="map" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5 4 7v12l5-2 6 2 5-2V5l-5 2-6-2z"/><path d="M9 5v12M15 7v12"/></svg><span>Map</span></button>
       <button type="button" role="tab" data-view="cal" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M8.5 14h.01M12 14h.01M15.5 14h.01M8.5 17h.01M12 17h.01" stroke-width="2.6"/></svg><span>Calendar</span></button>
       <button type="button" role="tab" data-view="spend" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="2.2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5h.01M17.5 14.5h.01" stroke-width="2.6"/></svg><span>Spend</span></button>
@@ -962,7 +998,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
           <button type="button" class="btn btn-ghost btn-sm" data-phadd="pick">Choose photo</button>
         </div>
         <p class="hint up-msg" id="phStatus" hidden></p>
-        <p class="hint">Snap the real ticket, front and back. Up to 4 photos. If it has a QR code, don't share the photo before the show.</p>
+        <p class="hint">Snap the real ticket: the first photo is the front, the second is the back (they flip in Cards). Up to 4 photos. If it has a QR code, don't share the photo before the show.</p>
       </fieldset>
       <fieldset class="f" id="lightFs">
         <legend class="lbl">Lightstick color (optional)<span class="chip-name" id="chipName" hidden></span></legend>
@@ -1099,7 +1135,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261024W03EL</p>
+    <p class="hint app-ver">App version JE20261025W04EL</p>
   </div>
 </dialog>
 
@@ -1935,6 +1971,7 @@ function render(){
   const ps = sortedDesc(past.filter(match));
   if (!up.length && !ps.length) { main.innerHTML = `<p class="status">${q ? `Nothing matches “${esc(q)}”` : `No ${esc([filterCouple !== 'all' ? (coupleBy(filterCouple) || {}).n : '', filterCat !== 'all' ? catLabel(filterCat) : ''].filter(Boolean).join(' ') || 'matching')} entries yet`}</p>`; return; }
 
+  if (view === 'cards') { renderCards(up, ps); return; }
   if (view === 'map') { renderMap(up.concat(ps)); return; }
   if (view === 'cal') { renderCal(up.concat(ps)); return; }
   if (view === 'spend') { renderSpend(up.concat(ps)); return; }
@@ -1948,6 +1985,94 @@ function render(){
   html += groups.map(g => sectionHTML('', g.y || 'No date', g.items)).join('');
   main.innerHTML = html;
 }
+
+/* ---------- Cards: every ticket that has a photo, as a card that flips front / back ---------- */
+const CC_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6.2V5a1.8 1.8 0 0 1 1.8-1.8h7.9A1.8 1.8 0 0 1 20 5v10.6a1.8 1.8 0 0 1-1.8 1.8H17"/><rect x="4" y="6.2" width="13" height="14.6" rx="1.8"/><path d="m10.5 10.2.95 1.95 2.15.3-1.55 1.5.37 2.12-1.92-1-1.92 1 .37-2.12-1.55-1.5 2.15-.3z"/></svg>';
+const CC_INFO = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.01"/></svg>';
+/* each front photo's shape, so a card keeps the real ticket's proportions between renders */
+const ccAR = new Map();
+const ccWide = ar => Number(ar) > 1.15;
+function ccPhoto(src){ return `<span class="cc-ph"><img src="${esc(src)}" alt="" loading="lazy" decoding="async" draggable="false"></span>`; }
+/* the back of a card without a back photo: the ticket's details, printed like the back of a ticket */
+function ccBackHTML(c){
+  const ord = ordinals.get(c.id);
+  const seat = [['Zone', str(c.zone)], ['Row', str(c.row)], ['Seat', str(c.seat)]].filter(x => x[1]).map(x => x[0] + ' ' + x[1]).join(' · ');
+  const when = isDate(c.date) ? fmtDate(c.date, true) + (timeOf(c) ? ', ' + timeOf(c) : '') : '';
+  return `<span class="cc-bk">
+    <span class="cc-bk-top"><span>${isUpcoming(c) ? esc(countdown(c.date, timeOf(c))) : ord ? 'No. ' + ord : ''}</span><span>${esc(catLabel(catOf(c)))}</span></span>
+    <b>${esc(str(c.artist) || 'Unknown artist')}</b>
+    ${c.title ? `<span class="cc-bk-t">${esc(c.title)}</span>` : ''}
+    <span class="cc-bk-perf" aria-hidden="true"></span>
+    <span class="cc-bk-m">${esc([when, str(c.venue), seat].filter(Boolean).join('\n'))}</span>
+    <small>No back photo yet. Add one in Edit.</small>
+  </span>`;
+}
+function ccHTML(c){
+  const ph = photosOf(c), front = photoSrc(ph[0]), back = ph[1] ? photoSrc(ph[1]) : '';
+  const ar = ccAR.get(front), name = str(c.artist) || 'Unknown artist';
+  return `<figure class="cc${ar && ccWide(ar) ? ' wide' : ''}" style="${lcStyle(colorOf(c))}${ar ? ';--ar:' + ar : ''}">
+    <button type="button" class="cc-flip" data-flip data-name="${esc(name)}" aria-pressed="false" aria-label="${esc(name)} ticket, front. Tap to flip">
+      <span class="cc-inner">
+        <span class="cc-face cc-front">${ccPhoto(front)}${ph.length > 2 ? `<span class="cc-plus">+${ph.length - 2}</span>` : ''}<i class="cc-foil"></i></span>
+        <span class="cc-face cc-back">${back ? ccPhoto(back) : ccBackHTML(c)}<i class="cc-foil"></i></span>
+      </span>
+    </button>
+    <figcaption class="cc-cap"><span><b>${esc(name)}</b><small>${esc(isDate(c.date) ? fmtDate(c.date) : 'No date')}</small></span><button type="button" class="cc-info" data-open="${esc(c.id)}" aria-label="Open ${esc(name)} details">${CC_INFO}</button></figcaption>
+  </figure>`;
+}
+function renderCards(up, ps){
+  const main = $('#main');
+  const has = c => photosOf(c).length > 0;
+  const upH = up.filter(has), psH = ps.filter(has), total = upH.length + psH.length;
+  const without = up.length + ps.length - total;
+  if (!total) {
+    main.innerHTML = `<section class="cc-empty">${CC_ICON}<h2>No ticket photos yet</h2><p>Open a ticket, tap Edit, then add photos under Ticket photos. The first photo is the front of the card, the second is the back.</p></section>`;
+    return;
+  }
+  const sec = (label, list) => `<section class="year"><h2><span class="y">${esc(label)}</span><span class="n">${plural(list.length, 'card')}</span></h2><div class="cc-grid">${list.map(ccHTML).join('')}</div></section>`;
+  const groups = []; let cur = null;
+  for (const c of psH) {
+    const y = isDate(c.date) ? c.date.slice(0, 4) : '';
+    if (!cur || cur.y !== y) { cur = {y, items:[]}; groups.push(cur); }
+    cur.items.push(c);
+  }
+  main.innerHTML = `<div class="cc-intro"><p>${plural(total, 'card')} · Tap a card to flip it</p>${without ? `<p>${plural(without, 'ticket')} without a photo</p>` : ''}</div>`
+    + (upH.length ? sec('Upcoming', upH) : '') + groups.map(g => sec(g.y || 'No date', g.items)).join('');
+  /* fit each card to its ticket's real shape once the photo has loaded */
+  main.querySelectorAll('.cc-front img').forEach(img => {
+    const fit = () => {
+      if (!img.naturalWidth) return;
+      const ar = Math.min(2.2, Math.max(0.5, img.naturalWidth / img.naturalHeight)).toFixed(3);
+      ccAR.set(img.getAttribute('src'), ar);
+      const cc = img.closest('.cc');
+      if (cc) { cc.style.setProperty('--ar', ar); cc.classList.toggle('wide', ccWide(ar)); }
+    };
+    if (img.complete) fit(); else img.addEventListener('load', fit, {once:true});
+  });
+}
+function flipCard(btn){
+  const cc = btn.closest('.cc'), on = !cc.classList.contains('flipped');
+  cc.classList.toggle('flipped', on);
+  btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  btn.setAttribute('aria-label', btn.getAttribute('data-name') + ' ticket, ' + (on ? 'back' : 'front') + '. Tap to flip');
+}
+/* with a mouse, the card tilts toward the pointer and the foil catches the light */
+$('#main').addEventListener('pointermove', e => {
+  if (e.pointerType !== 'mouse' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const b = e.target.closest('.cc-flip');
+  if (!b) return;
+  const r = b.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+  const cc = b.closest('.cc');
+  cc.style.setProperty('--tx', (x * 14).toFixed(1) + 'deg');
+  cc.style.setProperty('--ty', (-y * 12).toFixed(1) + 'deg');
+  cc.style.setProperty('--fx', (50 - x * 120).toFixed(0) + '%');
+});
+$('#main').addEventListener('pointerout', e => {
+  const b = e.target.closest('.cc-flip');
+  if (!b || (e.relatedTarget && b.contains(e.relatedTarget))) return;
+  const cc = b.closest('.cc');
+  ['--tx', '--ty', '--fx'].forEach(v => cc.style.removeProperty(v));
+});
 
 /* ---------- Photos tab: add ticket photos on a normal page (no pop-up sheet) ---------- */
 const upState = {target:null, busy:null, msg:'', focus:null};
@@ -4972,6 +5097,8 @@ document.addEventListener('click', e => {
   if (close) { close.closest('dialog').close(); return; }
   const rmb = e.target.closest('[data-remind]');
   if (rmb) { toggleRemindField('remind', Number(rmb.getAttribute('data-remind'))); return; }
+  const flc = e.target.closest('[data-flip]');
+  if (flc) { flipCard(flc); return; }
   const tp = e.target.closest('[data-theme-pick]');
   if (tp) { setThemePref(tp.getAttribute('data-theme-pick')); return; }
   if (e.target.closest('[data-bk-go]')) { runRestore(); return; }
@@ -5025,7 +5152,7 @@ document.addEventListener('click', e => {
   const fc = e.target.closest('.fchip[data-cat]');
   if (fc) { filterCat = fc.getAttribute('data-cat') || 'all'; render(); return; }
   const vb = e.target.closest('[data-view]');
-  if (vb) { const v = vb.getAttribute('data-view'); view = ['map', 'cal', 'spend'].indexOf(v) !== -1 ? v : 'list'; render(); return; }
+  if (vb) { const v = vb.getAttribute('data-view'); view = ['cards', 'map', 'cal', 'spend'].indexOf(v) !== -1 ? v : 'list'; render(); return; }
   const cal = e.target.closest('[data-cal]');
   if (cal) { calNav(cal.getAttribute('data-cal')); return; }
   const dayb = e.target.closest('[data-day]');
