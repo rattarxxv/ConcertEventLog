@@ -424,7 +424,7 @@ dialog.photo-dlg::backdrop{background:#000}
 .type span{display:inline-flex;align-items:center;min-height:44px;padding:8px 14px;border-radius:999px;border:1.5px solid var(--field-line);background:var(--field);color:var(--text);font-family:var(--display);font-weight:600;font-size:.86rem;letter-spacing:.02em}
 .type input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .type input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
-.cat{display:inline-block;justify-self:start;margin-bottom:4px;padding:2px 7px;border-radius:5px;background:rgba(6,22,32,.62);border:1px solid rgba(246,184,203,.5);color:var(--tk-pink);font-family:var(--display);font-weight:700;font-size:.7rem;letter-spacing:.02em;line-height:1.4;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.cat{display:inline-block;justify-self:start;margin-bottom:4px;padding:2px 7px;border-radius:5px;background:rgba(6,22,32,.62);border:1px solid rgba(246,184,203,.5);color:var(--tk-pink);font-family:var(--display);font-weight:700;font-size:.68rem;letter-spacing:.06em;line-height:1.4;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .filters{display:flex;gap:8px;overflow-x:auto;margin:14px -18px 0;padding:0 18px 4px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .fchip{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:7px 14px;border-radius:999px;border:1.5px solid var(--field-line);background:transparent;color:var(--text);font-family:var(--display);font-weight:600;font-size:.84rem;letter-spacing:.02em;cursor:pointer;white-space:nowrap}
@@ -1099,7 +1099,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261024W03EL</p>
+    <p class="hint app-ver">App version JE20261025W07EL</p>
   </div>
 </dialog>
 
@@ -1150,13 +1150,13 @@ const COLORS = [
 ];
 const DEFAULT_COLOR = COLORS[0].v;
 const CATS = [
-  {k:'concert', label:'Concert'},
-  {k:'musical', label:'Musical'},
-  {k:'event', label:'Event'},
-  {k:'fancon', label:'Fancon'},
-  {k:'fanmeeting', label:'Fan Meeting'},
-  {k:'fansign', label:'Fan Sign'},
-  {k:'sf', label:'SF Friends Screening'}
+  {k:'concert', label:'CONCERT'},
+  {k:'musical', label:'MUSICAL'},
+  {k:'event', label:'EVENT'},
+  {k:'fancon', label:'FANCON'},
+  {k:'fanmeeting', label:'FAN MEETING'},
+  {k:'fansign', label:'FAN SIGN'},
+  {k:'sf', label:'SF FRIENDS SCREENING'}
 ];
 const catOf = c => CATS.some(x => x.k === (c && c.category)) ? c.category : 'concert';
 const catLabel = k => (CATS.find(x => x.k === k) || CATS[0]).label;
@@ -1669,7 +1669,7 @@ function renderCoupleFilters(items){
   if (filterCouple !== 'all' && !counts.has(filterCouple)) filterCouple = 'all';
   if (!counts.size) { box.hidden = true; box.innerHTML = ''; return; }
   const writable = store.canWrite && (store.mode === 'cloud' || store.mode === 'local');
-  box.innerHTML = `<button type="button" class="fchip" data-cpl="all" aria-pressed="${filterCouple === 'all'}">All Couples</button>`
+  box.innerHTML = `<button type="button" class="fchip" data-cpl="all" aria-pressed="${filterCouple === 'all'}">ALL COUPLES</button>`
     + couplesList().filter(x => counts.has(x.k)).map(x => `<button type="button" class="fchip" data-cpl="${esc(x.k)}" aria-pressed="${x.k === filterCouple}">${dotOrAvatar(x, 24)}${esc(x.n)}<small>${counts.get(x.k)}</small></button>`).join('')
     + (writable ? '<button type="button" class="fchip fedit" data-couple-edit>Edit couples</button>' : '');
   box.hidden = false;
@@ -1892,7 +1892,7 @@ function renderFilters(items){
   items.forEach(c => { const k = catOf(c); counts.set(k, (counts.get(k) || 0) + 1); });
   if (!counts.has(filterCat)) filterCat = 'all';
   if (counts.size < 2) { filterCat = 'all'; box.hidden = true; box.innerHTML = ''; return; }
-  const chips = [{k:'all', label:'All', n:items.length}].concat(CATS.filter(x => counts.has(x.k)).map(x => ({k:x.k, label:x.label, n:counts.get(x.k)})));
+  const chips = [{k:'all', label:'ALL', n:items.length}].concat(CATS.filter(x => counts.has(x.k)).map(x => ({k:x.k, label:x.label, n:counts.get(x.k)})));
   box.innerHTML = chips.map(x => `<button type="button" class="fchip" data-cat="${x.k}" aria-pressed="${x.k === filterCat}">${esc(x.label)}<small>${x.n}</small></button>`).join('');
   box.hidden = false;
 }
