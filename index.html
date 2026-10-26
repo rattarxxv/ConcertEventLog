@@ -729,6 +729,26 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 .upd-bar:not([hidden]){display:flex}
 .upd-bar span{flex:1;font-size:.92rem}
 .app-ver{text-align:center;margin:18px 0 0}
+/* year and venue pickers: pills like the type chips, but native selects so long lists scroll the phone's own way */
+.frow{display:flex;gap:8px;max-width:520px;margin-top:12px}
+.frow[hidden]{display:none}
+.fsel{position:relative;flex:none;display:inline-flex;align-items:center;min-width:0;min-height:40px;border-radius:999px;border:1.5px solid var(--field-line);background:var(--field);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.fsel.fv{flex:1 1 0}
+.fsel select{-webkit-appearance:none;appearance:none;width:100%;min-width:0;min-height:40px;padding:7px 34px 7px 14px;border:0;border-radius:999px;background:transparent;color:var(--text);font-family:var(--display);font-weight:600;font-size:.84rem;text-overflow:ellipsis;cursor:pointer}
+.fsel select option{color:var(--text);background:var(--sheet)}
+.fsel svg{position:absolute;right:12px;width:14px;height:14px;color:var(--text-soft);pointer-events:none}
+.fsel.on{background:var(--text);border-color:var(--text)}
+.fsel.on select,.fsel.on svg{color:var(--bg)}
+.fsel select:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+.fres{display:flex;align-items:center;gap:12px;margin:12px 0 0;color:var(--text-soft);font-size:.9rem}
+.fres[hidden]{display:none}
+.status .btn{margin-top:14px}
+/* keeping tickets safe on a phone */
+.safe-card{margin-top:22px;padding:14px 16px 12px;border-radius:18px;background:var(--sheet);border:1.5px solid color-mix(in srgb,var(--accent) 50%,var(--field-line));box-shadow:0 0 34px -16px color-mix(in srgb,var(--accent) 70%,transparent)}
+.safe-card h2{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-family:var(--display);font-size:1.05rem;color:var(--pink-ink)}
+.safe-card h2 svg{width:20px;height:20px;flex:none}
+.safe-card p{margin:0;color:var(--text-soft);font-size:.92rem;line-height:1.5;max-width:62ch}
+.safe-acts{display:flex;align-items:center;gap:16px;margin-top:12px}
 </style>
 </head>
 <body>
@@ -772,10 +792,12 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" role="tab" data-view="spend" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="2.2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5h.01M17.5 14.5h.01" stroke-width="2.6"/></svg><span>Spend</span></button>
     </div>
     <div class="search" id="searchWrap" hidden>
-      <input id="q" type="search" placeholder="Search artist, show or venue" aria-label="Search entries" autocomplete="off">
+      <input id="q" type="search" placeholder="Search artist, show, venue, seat, memories" aria-label="Search entries" autocomplete="off">
     </div>
+    <div class="frow" id="frow" role="group" aria-label="Filter by year and venue" hidden></div>
     <div class="filters" id="filters" role="group" aria-label="Filter by type" hidden></div>
     <div class="filters" id="cfilters" role="group" aria-label="Filter by couple" hidden></div>
+    <p class="fres" id="fres" role="status" hidden></p>
   </header>
   <main id="main" aria-live="polite"></main>
   <p class="foot-note" id="footNote" hidden>Saved in this browser only</p>
@@ -1025,6 +1047,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
     <section class="bk-sec" id="bkSaveSec">
       <h3 class="lbl">Back up</h3>
       <p class="hint" id="bkInfo"></p>
+      <p class="hint" id="bkStore" hidden></p>
       <button type="button" class="btn btn-primary" id="bkSave">Back up to a file</button>
       <p class="hint" id="bkProg" role="status" hidden></p>
     </section>
@@ -1044,7 +1067,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261026W10EL</p>
+    <p class="hint app-ver">App version JE20261026W11EL</p>
   </div>
 </dialog>
 
@@ -1435,7 +1458,7 @@ async function boot(){
     } catch (e) {}
   }
   store.mode = 'local';
-  try { await reloadLocal(); store.canWrite = true; }
+  try { await reloadLocal(); store.canWrite = true; if (store.items.length) askPersist(); }
   catch (e) { store.mode = 'none'; store.canWrite = false; }
   store.loaded = true;
   render();
@@ -1466,6 +1489,7 @@ async function putRecord(id, rec){
   } else {
     await local.put(Object.assign({}, rec, {id}));
     await reloadLocal(); render();
+    askPersist();
   }
 }
 async function removeRecord(c){
@@ -1813,6 +1837,58 @@ function sectionHTML(cls, label, list){
 }
 let filterCat = 'all';
 let view = 'list';
+/* year and venue filters */
+let filterYear = 'all', filterVenue = 'all';
+const CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+const yearOf = c => isDate(c.date) ? c.date.slice(0, 4) : 'none';
+/* the same hall typed two ways ("IMPACT Arena", "อิมแพ็ค อารีน่า") counts as one venue when the venue list knows it */
+function venueKey(c){
+  const v = str(c.venue).trim();
+  if (!v) return '';
+  const b = builtinByName(v);
+  return b ? 'b:' + norm(b.name) : 'v:' + norm(v);
+}
+function venueGroups(items){
+  const m = new Map();
+  items.forEach(c => {
+    const k = venueKey(c);
+    if (!k) return;
+    let g = m.get(k);
+    if (!g) { const b = builtinByName(c.venue); g = {k, n:0, b:b ? b.name : '', names:new Map()}; m.set(k, g); }
+    const v = str(c.venue).trim();
+    g.n++; g.names.set(v, (g.names.get(v) || 0) + 1);
+  });
+  return Array.from(m.values())
+    .map(g => ({k:g.k, n:g.n, label:g.b || Array.from(g.names).sort((a, b) => b[1] - a[1])[0][0]}))
+    .sort((a, b) => b.n - a.n || a.label.localeCompare(b.label));
+}
+function renderYearVenue(items){
+  const box = $('#frow');
+  const years = new Map();
+  items.forEach(c => { const y = yearOf(c); years.set(y, (years.get(y) || 0) + 1); });
+  const venues = venueGroups(items);
+  if (filterYear !== 'all' && !years.has(filterYear)) filterYear = 'all';
+  if (filterVenue !== 'all' && !venues.some(v => v.k === filterVenue)) filterVenue = 'all';
+  const ys = Array.from(years.keys()).filter(y => y !== 'none').sort().reverse();
+  if (years.has('none')) ys.push('none');
+  let h = '';
+  if (ys.length > 1) h += `<label class="fsel${filterYear !== 'all' ? ' on' : ''}"><span class="vh">Year</span><select id="fYear"><option value="all">ALL YEARS</option>`
+    + ys.map(y => `<option value="${y}"${y === filterYear ? ' selected' : ''}>${y === 'none' ? 'NO DATE' : y} (${years.get(y)})</option>`).join('') + `</select>${CHEV}</label>`;
+  if (venues.length > 1) h += `<label class="fsel fv${filterVenue !== 'all' ? ' on' : ''}"><span class="vh">Venue</span><select id="fVenue"><option value="all">ALL VENUES</option>`
+    + venues.map(v => `<option value="${esc(v.k)}"${v.k === filterVenue ? ' selected' : ''}>${esc(v.label)} (${v.n})</option>`).join('') + `</select>${CHEV}</label>`;
+  box.innerHTML = h;
+  box.hidden = !h;
+}
+/* search reads every field, ignoring case, spaces and Thai tone marks; a venue the list knows also answers to its other name */
+function hayOf(c){
+  const b = c.venue ? builtinByName(c.venue) : null;
+  return [c.artist, c.title, c.venue, b && b.name, b && b.th, b && b.area, c.place, catLabel(catOf(c)), c.paid === 'lucky' ? 'lucky winner draw' : '',
+    coupleNames(couplesOf(c)), c.zone, c.row, c.seat, c.note, c.date, fmtDate(c.date, true)].map(v => norm(str(v))).join('|');
+}
+function clearFilters(){
+  filterCat = 'all'; filterCouple = 'all'; filterYear = 'all'; filterVenue = 'all';
+  $('#q').value = '';
+}
 function renderFilters(items){
   const box = $('#filters');
   const counts = new Map();
@@ -1832,6 +1908,8 @@ function render(){
   $('#footNote').hidden = !(store.loaded && store.mode === 'local');
   renderFilters(store.loaded && !store.error ? items : []);
   renderCoupleFilters(store.loaded && !store.error ? items : []);
+  renderYearVenue(store.loaded && !store.error ? items : []);
+  $('#fres').hidden = true;
   $('#viewSeg').hidden = !(store.loaded && !store.error && items.length > 0);
   document.querySelectorAll('#viewSeg [data-view]').forEach((b, i) => {
     const on = b.getAttribute('data-view') === view;
@@ -1855,17 +1933,24 @@ function render(){
   computeOrdinals(past);
   if (!items.length) { main.innerHTML = emptyHTML(writable); return; }
 
-  const q = ($('#q').value || '').trim().toLowerCase();
+  const qRaw = ($('#q').value || '').trim();
+  const q = norm(qRaw);
   const match = c => (filterCat === 'all' || catOf(c) === filterCat) && (filterCouple === 'all' || couplesOf(c).indexOf(filterCouple) !== -1)
-    && (!q || [c.artist, c.title, c.venue, catLabel(catOf(c)), c.paid === 'lucky' ? 'lucky winner draw' : '', coupleNames(couplesOf(c))].some(s => str(s).toLowerCase().includes(q)));
+    && (filterYear === 'all' || yearOf(c) === filterYear) && (filterVenue === 'all' || venueKey(c) === filterVenue)
+    && (!q || hayOf(c).includes(q));
   const up = sortedAsc(upcoming.filter(match));
   const ps = sortedDesc(past.filter(match));
-  if (!up.length && !ps.length) { main.innerHTML = `<p class="status">${q ? `Nothing matches “${esc(q)}”` : `No ${esc([filterCouple !== 'all' ? (coupleBy(filterCouple) || {}).n : '', filterCat !== 'all' ? catLabel(filterCat) : ''].filter(Boolean).join(' ') || 'matching')} entries yet`}</p>`; return; }
+  const filtered = !!q || filterCat !== 'all' || filterCouple !== 'all' || filterYear !== 'all' || filterVenue !== 'all';
+  if (filtered && (up.length || ps.length)) {
+    $('#fres').innerHTML = `<span>Showing ${up.length + ps.length} of ${plural(items.length, 'ticket')}</span><button type="button" class="link-btn" data-fclear>Clear filters</button>`;
+    $('#fres').hidden = false;
+  }
+  if (!up.length && !ps.length) { main.innerHTML = `<div class="status"><p>${q ? `Nothing matches “${esc(qRaw)}”` : 'No tickets match these filters'}</p><button type="button" class="btn btn-ghost btn-sm" data-fclear>Clear search and filters</button></div>`; return; }
 
   if (view === 'map') { renderMap(up.concat(ps)); return; }
   if (view === 'cal') { renderCal(up.concat(ps)); return; }
   if (view === 'spend') { renderSpend(up.concat(ps)); return; }
- let html = (filterCouple !== 'all' ? coupleCardHTML(filterCouple) : '') + salesCardHTML(up.concat(ps)) + (up.length ? nextUpHTML(up[0]) + sectionHTML('upcoming', 'Upcoming', up) : '');
+ let html = safetyCardHTML() + (filterCouple !== 'all' ? coupleCardHTML(filterCouple) : '') + salesCardHTML(up.concat(ps)) + (up.length ? nextUpHTML(up[0]) + sectionHTML('upcoming', 'Upcoming', up) : '');
   const groups = []; let cur = null;
   for (const c of ps) {
     const y = isDate(c.date) ? c.date.slice(0, 4) : '';
@@ -4600,7 +4685,7 @@ function updateBkInfo(){
   $('#bkRestoreSec').hidden = !store.canWrite;
 }
 function openBackup(){
-  updateThemeUI(); updateBkInfo(); renderBkPreview(); renderVenueInfo();
+  updateThemeUI(); updateBkInfo(); renderBkPreview(); renderVenueInfo(); updateStoreInfo();
   if (!$('#bkDlg').open) $('#bkDlg').showModal();
 }
 function renderBkPreview(){
@@ -4688,7 +4773,7 @@ $('#bkSave').addEventListener('click', async () => {
     const how = await offerFile('concert-log-all-backup-' + todayStr() + '.json', JSON.stringify(data));
     try { localStorage.setItem(BK_KEY, String(Date.now())); } catch (e) {}
     prog.textContent = (how === 'shared' ? 'Backup sent.' : 'Backup saved.') + (missing ? ` ${plural(missing, 'photo')} couldn’t be read and ${missing === 1 ? 'was' : 'were'} left out.` : '');
-    updateBkInfo();
+    updateBkInfo(); render();
   } catch (err) {
     if (err && err.code === 'declined') prog.hidden = true;
     else { prog.hidden = true; setErr($('#bkErr'), errMsg(err)); }
@@ -4745,6 +4830,67 @@ async function runRestore(){
   }
 }
 
+/* ---------- keeping tickets safe on a phone ---------- */
+/* Tickets in the phone version live only in this browser. Ask it to keep them (installed apps usually get
+   a yes), show how much space they take, and nudge for a backup when there is a lot to lose. */
+let persistAsked = false;
+async function askPersist(){
+  if (persistAsked || store.mode !== 'local') return;
+  persistAsked = true;
+  try {
+    if (!navigator.storage || !navigator.storage.persist) return;
+    if (await navigator.storage.persisted()) return;
+    await navigator.storage.persist();
+  } catch (e) {}
+}
+const fmtBytes = b => b < 1048576 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1048576).toFixed(b < 10485760 ? 1 : 0) + ' MB';
+const onIPhone = () => /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const runsAsApp = () => { try { return matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches || navigator.standalone === true; } catch (e) { return false; } };
+async function updateStoreInfo(){
+  const el = $('#bkStore');
+  if (!el) return;
+  if (store.mode !== 'local' || !navigator.storage || !navigator.storage.estimate) { el.hidden = true; return; }
+  try {
+    const [est, kept] = await Promise.all([navigator.storage.estimate(), navigator.storage.persisted ? navigator.storage.persisted() : false]);
+    el.textContent = `This app uses ${fmtBytes(est.usage || 0)} on this phone. `
+      + (kept ? 'The browser has agreed not to clear it to free up space.'
+        : 'The browser may clear it if the phone runs low on space' + (runsAsApp() ? ', so keep a recent backup.' : '. Installing the app makes that less likely.'));
+    el.hidden = false;
+  } catch (e) { el.hidden = true; }
+}
+const SNOOZE_KEY = 'all.safeSnooze.';
+const snoozed = k => { try { return Number(localStorage.getItem(SNOOZE_KEY + k)) > Date.now(); } catch (e) { return false; } };
+function snooze(k, days){ try { localStorage.setItem(SNOOZE_KEY + k, String(Date.now() + days * 864e5)); } catch (e) {} }
+function safetyNotice(){
+  if (store.mode !== 'local' || !store.canWrite || !store.items.length) return null;
+  if (onIPhone() && !runsAsApp() && !snoozed('ios')) return {k:'ios', title:'Add this app to your Home Screen',
+    body:'On iPhone, Safari can clear data from websites you haven’t opened for 7 days, tickets included. Add the app to your Home Screen and open it from there to keep them.'};
+  if (snoozed('bk')) return null;
+  const last = lastBackup(), n = store.items.length;
+  if (!last) return n < 3 ? null : {k:'bk', backup:true, title:'Back up your tickets',
+    body:`Your ${n} tickets are saved only on this phone. Keep a backup in Google Drive so a lost or reset phone doesn’t take them with it.`};
+  const ch = store.items.filter(c => (c.updatedAt || c.createdAt || 0) > last).length;
+  const days = Math.floor((Date.now() - last) / 864e5);
+  if (days >= 30 && ch) return {k:'bk', backup:true, title:`Last backup was ${days} days ago`,
+    body:`${plural(ch, 'ticket')} added or changed since then. Save a fresh backup to Google Drive.`};
+  if (ch >= 10) return {k:'bk', backup:true, title:`${ch} tickets aren’t backed up`,
+    body:`They were added or changed after your last backup on ${fmtDate(ymd(last))}. Save a fresh backup to Google Drive.`};
+  return null;
+}
+function safetyCardHTML(){
+  const x = safetyNotice();
+  if (!x) return '';
+  return `<section class="safe-card" aria-label="Keep your tickets safe">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${x.k === 'ios'
+      ? '<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8.5v7M8.5 12h7"/>'
+      : '<path d="M7 18h10a4 4 0 0 0 .6-7.96A6 6 0 0 0 6.1 9.2 4.4 4.4 0 0 0 7 18z"/><path d="M12 16v-5M9.8 13.2 12 11l2.2 2.2"/>'}</svg><span>${esc(x.title)}</span></h2>
+    <p>${esc(x.body)}</p>
+    <div class="safe-acts">${x.backup ? '<button type="button" class="btn btn-primary btn-sm" data-safe-backup>Back up now</button><button type="button" class="link-btn" data-safe-later="bk">Later</button>'
+      : typeof openInstall === 'function' ? '<button type="button" class="btn btn-primary btn-sm" data-safe-install>Show me how</button><button type="button" class="link-btn" data-safe-later="ios">Later</button>'
+      : '<button type="button" class="btn btn-ghost btn-sm" data-safe-later="ios">Got it</button>'}</div>
+  </section>`;
+}
+
 /* ---------- page events ---------- */
 document.addEventListener('click', e => {
   const close = e.target.closest('[data-close]');
@@ -4754,6 +4900,11 @@ document.addEventListener('click', e => {
   const tp = e.target.closest('[data-theme-pick]');
   if (tp) { setThemePref(tp.getAttribute('data-theme-pick')); return; }
   if (e.target.closest('[data-bk-go]')) { runRestore(); return; }
+  if (e.target.closest('[data-fclear]')) { clearFilters(); render(); return; }
+  if (e.target.closest('[data-safe-backup]')) { openBackup(); $('#bkSave').click(); return; }
+  if (e.target.closest('[data-safe-install]') && typeof openInstall === 'function') { openInstall(); return; }
+  const sl = e.target.closest('[data-safe-later]');
+  if (sl) { snooze(sl.getAttribute('data-safe-later'), 7); render(); return; }
   if (e.target.closest('[data-bk-cancel]')) { if (!bkState.busy) { bkState.pending = null; renderBkPreview(); } return; }
   const cpb = e.target.closest('[data-couple-page]');
   if (cpb) { const k = cpb.getAttribute('data-couple-page'); if ($('#viewDlg').open) $('#viewDlg').close(); if ($('#artistDlg').open) $('#artistDlg').close(); openCouple(k); return; }
@@ -4843,7 +4994,7 @@ document.addEventListener('click', e => {
     $('#viewDlg').close();
     if (it) {
       const L = getLoc(it);
-      view = 'map'; filterCat = 'all'; filterCouple = 'all'; $('#q').value = '';
+      view = 'map'; clearFilters();
       render();
       if (L) selectPlace(locKey(L), true);
     }
@@ -4864,6 +5015,12 @@ document.querySelectorAll('dialog.sheet').forEach(d => {
   d.addEventListener('click', e => { if (e.target === d) d.close(); });
 });
 $('#q').addEventListener('input', render);
+$('#frow').addEventListener('change', e => {
+  if (e.target.id === 'fYear') filterYear = e.target.value;
+  else if (e.target.id === 'fVenue') filterVenue = e.target.value;
+  else return;
+  render();
+});
 /* a show moves from Upcoming to the past list once its day is over */
 document.addEventListener('visibilitychange', () => { if (!document.hidden && store.loaded) render(); });
 
