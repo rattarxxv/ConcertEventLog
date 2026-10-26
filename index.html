@@ -714,9 +714,6 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 #viewSeg button:not([aria-selected="true"]):hover{color:var(--text)}
 #viewSeg button:focus-visible{outline:3px solid var(--focus);outline-offset:-4px}
 @media (prefers-reduced-motion:reduce){#viewSeg .vn-glow,#viewSeg button svg{transition:none}}
-/* venue list in Backup & display */
-.vn-btns{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
-#vnMsg{white-space:pre-line}
 /* phone app: install sheet, update bar, version */
 .inst-hero{display:flex;align-items:center;gap:16px;margin:6px 0 14px}
 .inst-hero img{width:84px;height:84px;border-radius:22px;box-shadow:var(--shadow)}
@@ -789,7 +786,6 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 <input type="file" id="upCouple" accept="image/*" class="vh" tabindex="-1" aria-hidden="true">
 <input type="file" id="upLogo" accept="image/*" class="vh" tabindex="-1" aria-hidden="true">
 <input type="file" id="upBackup" accept=".json,.txt,application/json,text/plain" class="vh" tabindex="-1" aria-hidden="true">
-<input type="file" id="upVenues" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="vh" tabindex="-1" aria-hidden="true">
 <div class="fab-wrap" id="fabWrap" hidden>
   <div class="fab-inner">
     <button class="fab" type="button" data-act="add">
@@ -1041,11 +1037,6 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
     <section class="bk-sec" id="bkVenues">
       <h3 class="lbl">Venue list</h3>
       <p class="hint" id="vnInfo"></p>
-      <div class="vn-btns" id="vnBtns">
-        <button type="button" class="btn btn-ghost" id="vnPick">Update from Excel</button>
-        <button type="button" class="link-btn" id="vnReset" hidden>Use the built-in list</button>
-      </div>
-      <p class="hint" id="vnMsg" role="status" hidden></p>
     </section>
     <section class="bk-sec" id="bkInstall" hidden>
       <h3 class="lbl">App</h3>
@@ -1053,7 +1044,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261025W09EL</p>
+    <p class="hint app-ver">App version JE20261026W10EL</p>
   </div>
 </dialog>
 
@@ -1144,8 +1135,8 @@ const ICON = {
   search:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>'
 };
 /* The venue list: [English name, Thai name, area, extra search words, latitude, longitude, country].
-   This built-in copy is the fallback. The phone app reads venues.xlsx from the website instead,
-   and the Claude version can be updated from that Excel file (Backup & display → Venue list). */
+   The phone app reads venues.xlsx from the website instead (the developer updates it through GitHub);
+   this built-in copy is its fallback, and the list the Claude version uses. */
 const VENUES_BUILTIN = [
   ['IMPACT Arena, Muang Thong Thani','อิมแพ็ค อารีน่า เมืองทองธานี','Nonthaburi',['arena','เมืองทอง'],13.9126,100.5474],
   ['Thunder Dome, Muang Thong Thani','ธันเดอร์โดม เมืองทองธานี','Nonthaburi',['thunderdome','เมืองทอง'],13.9094,100.5431],
@@ -1454,9 +1445,9 @@ async function reloadLocal(){ setItems((await local.all()) || []); }
 /* stamp logos and the couple list live beside the tickets as small records; keep them out of the ticket list */
 function setItems(list){
   const items = [], logos = new Map();
-  let cset = null, vlist = null;
+  let cset = null;
   for (const r of list) {
-    if (r && r.kind === 'venueList') { vlist = r; continue; }
+    if (r && r.kind === 'venueList') continue;
     if (r && r.kind === 'stampLogo') {
       if (typeof r.logo === 'string' && r.logo.indexOf('data:image/') === 0 && str(r.artist).trim()) logos.set(norm(r.artist), {id:r.id, logo:r.logo, artist:str(r.artist).trim()});
       continue;
@@ -1466,8 +1457,6 @@ function setItems(list){
   }
   store.coupleSet = cset;
   store.logos = logos;
-  store.venueSaved = vlist;
-  if (store.venueSrc !== 'file') setVenueList(vlist ? venueRowsOf(vlist.list) : null, 'saved');
   cplCache = null;
   store.items = items;
 }
@@ -2862,140 +2851,22 @@ function optionHTML(prefix, i, o){
   return `<li role="option" id="${prefix}${i}" data-i="${i}" aria-selected="false"><span class="s-th">${esc(o.name)}</span>${o.tag ? `<span class="s-tag${o.own ? ' own' : ''}">${esc(o.tag)}</span>` : ''}${o.sub ? `<span class="s-en">${esc(o.sub)}</span>` : ''}</li>`;
 }
 
-/* ---------- venue list from an Excel file ---------- */
-async function unzipXlsx(buf){
-  const u8 = new Uint8Array(buf), dv = new DataView(buf);
-  let eocd = -1;
-  for (let i = u8.length - 22; i >= Math.max(0, u8.length - 65600); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
-  if (eocd < 0) throw {code:'bad_xlsx'};
-  const n = dv.getUint16(eocd + 10, true), files = new Map(), td = new TextDecoder();
-  let p = dv.getUint32(eocd + 16, true);
-  for (let k = 0; k < n && dv.getUint32(p, true) === 0x02014b50; k++) {
-    const nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true);
-    files.set(td.decode(u8.subarray(p + 46, p + 46 + nl)), {method:dv.getUint16(p + 10, true), size:dv.getUint32(p + 20, true), at:dv.getUint32(p + 42, true)});
-    p += 46 + nl + xl + cl;
-  }
-  return async name => {
-    const f = files.get(name);
-    if (!f) return null;
-    const start = f.at + 30 + dv.getUint16(f.at + 26, true) + dv.getUint16(f.at + 28, true), data = u8.subarray(start, start + f.size);
-    if (f.method === 0) return td.decode(data);
-    if (f.method !== 8 || typeof DecompressionStream === 'undefined') throw {code:'bad_xlsx'};
-    return td.decode(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());
-  };
-}
-/* the rows of one sheet as arrays of text (the sheet named like `want`, else the first) */
-async function readXlsxRows(buf, want){
-  const read = await unzipXlsx(buf);
-  const xml = t => new DOMParser().parseFromString(t || '<x/>', 'application/xml');
-  const all = (node, tag) => Array.from(node.getElementsByTagNameNS('*', tag));
-  const wb = xml(await read('xl/workbook.xml')), rels = xml(await read('xl/_rels/workbook.xml.rels'));
-  const sheets = all(wb, 'sheet');
-  if (!sheets.length) throw {code:'bad_xlsx'};
-  const sh = sheets.find(x => (x.getAttribute('name') || '').trim().toLowerCase() === want) || sheets[0];
-  const rid = sh.getAttribute('r:id') || Array.from(sh.attributes).find(a => a.localName === 'id' && a.prefix).value;
-  const rel = all(rels, 'Relationship').find(r => r.getAttribute('Id') === rid);
-  if (!rel) throw {code:'bad_xlsx'};
-  const tgt = rel.getAttribute('Target'), path = tgt.charAt(0) === '/' ? tgt.slice(1) : 'xl/' + tgt.replace(/^\.\//, '');
-  const shared = all(xml(await read('xl/sharedStrings.xml')), 'si').map(si => all(si, 't').filter(t => t.parentNode.localName !== 'rPh').map(t => t.textContent).join(''));
-  const colOf = ref => { let c = 0; for (const ch of ref.replace(/[^A-Z]/gi, '').toUpperCase()) c = c * 26 + ch.charCodeAt(0) - 64; return c - 1; };
-  return all(xml(await read(path)), 'row').map(row => {
-    const r = [];
-    all(row, 'c').forEach((c, i) => {
-      const t = c.getAttribute('t'), v = all(c, 'v')[0], ref = c.getAttribute('r');
-      const val = t === 's' ? (v ? shared[Number(v.textContent)] || '' : '') : t === 'inlineStr' ? all(c, 't').map(x => x.textContent).join('') : (v ? v.textContent : '');
-      r[ref ? colOf(ref) : i] = val;
-    });
-    return r;
-  });
-}
-/* turn the sheet into venue rows: columns are found by their header names */
-function venuesFromRows(rows){
-  const head = (rows[0] || []).map(h => String(h == null ? '' : h).trim().toLowerCase());
-  const col = (...keys) => head.findIndex(h => h && keys.some(k => h.indexOf(k) === 0));
-  const ci = {name:col('name', 'english', 'venue', 'hall'), th:col('thai', 'ชื่อไทย'), area:col('area', 'province', 'city', 'จังหวัด'), country:col('country', 'ประเทศ'),
-    alias:col('other', 'alias', 'search', 'คำค้น'), lat:col('lat', 'ละติจูด'), lng:col('lng', 'lon', 'ลองจิจูด'), link:col('google', 'map', 'link', 'ลิงก์')};
-  if (ci.name === -1) throw {code:'no_name_col'};
-  const list = [], problems = [], seen = new Set();
-  rows.slice(1).forEach((r, i) => {
-    const get = k => ci[k] === -1 ? '' : String(r[ci[k]] == null ? '' : r[ci[k]]).trim();
-    const name = get('name');
-    if (!name) return;
-    if (seen.has(norm(name))) { problems.push('Row ' + (i + 2) + ': ' + name + ' is listed twice, the first one is used'); return; }
-    let lat = parseFloat(cleanNum(get('lat'))), lng = parseFloat(cleanNum(get('lng')));
-    if (!validLL(lat, lng)) { const c = parseCoords(get('link')); if (c) { lat = c.lat; lng = c.lng; } }
-    if (!validLL(lat, lng)) { problems.push('Row ' + (i + 2) + ': ' + name + ' has no location (add Latitude and Longitude, or a Google Maps link with the pin in it)'); return; }
-    seen.add(norm(name));
-    list.push([name, get('th'), get('area'), get('alias').split(/[,;\n]+/).map(x => x.trim()).filter(Boolean), +lat.toFixed(6), +lng.toFixed(6), get('country') || 'Thailand']);
-  });
-  return {list, problems};
-}
-/* the saved record keeps each venue as an object (the database can't hold lists inside lists) */
-const venueObjOf = v => ({n:v[0], th:v[1], area:v[2], alias:v[3], lat:v[4], lng:v[5], country:v[6] || 'Thailand'});
-const venueRowsOf = list => Array.isArray(list) ? list.filter(o => o && str(o.n).trim() && validLL(o.lat, o.lng)).map(o => [str(o.n), str(o.th), str(o.area), Array.isArray(o.alias) ? o.alias.map(str).filter(Boolean) : [], o.lat, o.lng, str(o.country) || 'Thailand']) : null;
-/* phone app: true, the list comes from venues.xlsx on the website and can't be swapped in the app */
+/* ---------- venue list: where it comes from ---------- */
+/* phone app: true, the list comes from venues.xlsx on the website (updated through GitHub only) */
 store.venueFromSite = false;
 function renderVenueInfo(){
-  const n = VENUES.length, saved = store.venueSaved;
-  let info;
-  if (store.venueSrc === 'file') info = plural(n, 'venue') + ' from venues.xlsx on the website. It updates when the file there changes.';
-  else if (store.venueSrc === 'saved' && saved) info = plural(n, 'venue') + ' from ' + (str(saved.file) || 'an Excel file') + (saved.updatedAt ? ', updated ' + fmtDate(new Date(saved.updatedAt).toISOString().slice(0, 10)) : '') + '.';
-  else info = plural(n, 'venue') + ' from the built-in list.' + (store.venueFromSite ? ' Put venues.xlsx on the website to use your own.' : '');
-  $('#vnInfo').textContent = info + (store.venueFromSite ? '' : ' Venue names and map locations used for suggestions and map pins.');
-  $('#vnBtns').hidden = store.venueFromSite || !store.canWrite;
-  $('#vnReset').hidden = !(store.venueSrc === 'saved' && saved);
+  const n = plural(VENUES.length, 'venue');
+  $('#vnInfo').textContent = store.venueSrc === 'file'
+    ? n + ' from venues.xlsx on the website. It updates when the file there changes.'
+    : n + ' from the built-in list.' + (store.venueFromSite ? ' Put venues.xlsx on the website to use your own.' : '');
 }
-function venueMsg(text, isErr){ const m = $('#vnMsg'); m.textContent = text || ''; m.hidden = !text; m.classList.toggle('err', !!isErr); }
-const vnState = {picking:false};
-$('#vnPick').addEventListener('click', () => {
-  vnState.picking = true;
-  $('#bkDlg').close();
-  const inp = $('#upVenues');
-  inp.value = '';
-  inp.click();
-  const onFocus = () => {
-    window.removeEventListener('focus', onFocus);
-    setTimeout(() => { if (vnState.picking) { vnState.picking = false; openBackup(); } }, 1500);
-  };
-  window.addEventListener('focus', onFocus);
-});
-$('#upVenues').addEventListener('cancel', () => { if (vnState.picking) { vnState.picking = false; openBackup(); } });
-$('#upVenues').addEventListener('change', async e => {
-  const f = e.target.files && e.target.files[0];
-  e.target.value = '';
-  vnState.picking = false;
-  openBackup();
-  if (!f) return;
-  venueMsg('Reading ' + f.name + '…');
-  try {
-    const {list, problems} = venuesFromRows(await readXlsxRows(await f.arrayBuffer(), 'venues'));
-    if (!list.length) { venueMsg('No venues with a location were found in ' + f.name + '.' + (problems.length ? '\n' + problems.slice(0, 5).join('\n') : ''), true); return; }
-    await putRecord('venue-list', {kind:'venueList', list:list.map(venueObjOf), file:f.name, updatedAt:Date.now()});
-    store.venueSaved = {list:list.map(venueObjOf), file:f.name, updatedAt:Date.now()};
-    setVenueList(list, 'saved');
-    render(); renderVenueInfo();
-    venueMsg('Updated: ' + plural(list.length, 'venue') + '.' + (problems.length ? '\nSkipped ' + problems.length + ':\n' + problems.slice(0, 8).join('\n') : ''), false);
-  } catch (err) {
-    venueMsg(err && err.code === 'no_name_col' ? 'The first row needs a Name column (see the How to use sheet in venues.xlsx).' : err && err.code === 'bad_xlsx' ? 'That file isn’t an Excel (.xlsx) workbook this browser can read.' : errMsg(err), true);
-  }
-});
-$('#vnReset').addEventListener('click', async () => {
-  try {
-    if (store.mode === 'cloud') await retryOnce(() => store.db.collection('concerts').doc('venue-list').delete());
-    else { await local.del('venue-list'); await reloadLocal(); }
-    store.venueSaved = null;
-    setVenueList(null);
-    render(); renderVenueInfo();
-    venueMsg('Back to the built-in list.');
-  } catch (err) { venueMsg(errMsg(err), true); }
-});
 
 /* ---------- venue autocomplete ---------- */
 let VENUE_INDEX = [];
 /* switch to another venue list (null goes back to the built-in one) */
 function setVenueList(list, src){
   VENUES = Array.isArray(list) && list.length ? list : VENUES_BUILTIN;
-  store.venueSrc = VENUES === VENUES_BUILTIN ? 'builtin' : (src || 'saved');
+  store.venueSrc = VENUES === VENUES_BUILTIN ? 'builtin' : (src || 'file');
   VENUE_INDEX = VENUES.map(v => ({
     name:v[0], th:v[1] || '', area:v[2] || '', country:v[6] || 'Thailand', lat:v[4], lng:v[5],
     keys:[norm(v[0]), norm(v[1] || '')].filter(Boolean),
@@ -5212,6 +5083,74 @@ async function fixKapookNameOnce(){
 }
 
 /* ---------- phone app: the venue list comes from venues.xlsx next to the app on the website ---------- */
+/* reading venues.xlsx: an .xlsx is a zip of XML files, so no library is needed */
+async function unzipXlsx(buf){
+  const u8 = new Uint8Array(buf), dv = new DataView(buf);
+  let eocd = -1;
+  for (let i = u8.length - 22; i >= Math.max(0, u8.length - 65600); i--) if (dv.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  if (eocd < 0) throw {code:'bad_xlsx'};
+  const n = dv.getUint16(eocd + 10, true), files = new Map(), td = new TextDecoder();
+  let p = dv.getUint32(eocd + 16, true);
+  for (let k = 0; k < n && dv.getUint32(p, true) === 0x02014b50; k++) {
+    const nl = dv.getUint16(p + 28, true), xl = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true);
+    files.set(td.decode(u8.subarray(p + 46, p + 46 + nl)), {method:dv.getUint16(p + 10, true), size:dv.getUint32(p + 20, true), at:dv.getUint32(p + 42, true)});
+    p += 46 + nl + xl + cl;
+  }
+  return async name => {
+    const f = files.get(name);
+    if (!f) return null;
+    const start = f.at + 30 + dv.getUint16(f.at + 26, true) + dv.getUint16(f.at + 28, true), data = u8.subarray(start, start + f.size);
+    if (f.method === 0) return td.decode(data);
+    if (f.method !== 8 || typeof DecompressionStream === 'undefined') throw {code:'bad_xlsx'};
+    return td.decode(await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());
+  };
+}
+/* the rows of one sheet as arrays of text (the sheet named like `want`, else the first) */
+async function readXlsxRows(buf, want){
+  const read = await unzipXlsx(buf);
+  const xml = t => new DOMParser().parseFromString(t || '<x/>', 'application/xml');
+  const all = (node, tag) => Array.from(node.getElementsByTagNameNS('*', tag));
+  const wb = xml(await read('xl/workbook.xml')), rels = xml(await read('xl/_rels/workbook.xml.rels'));
+  const sheets = all(wb, 'sheet');
+  if (!sheets.length) throw {code:'bad_xlsx'};
+  const sh = sheets.find(x => (x.getAttribute('name') || '').trim().toLowerCase() === want) || sheets[0];
+  const rid = sh.getAttribute('r:id') || Array.from(sh.attributes).find(a => a.localName === 'id' && a.prefix).value;
+  const rel = all(rels, 'Relationship').find(r => r.getAttribute('Id') === rid);
+  if (!rel) throw {code:'bad_xlsx'};
+  const tgt = rel.getAttribute('Target'), path = tgt.charAt(0) === '/' ? tgt.slice(1) : 'xl/' + tgt.replace(/^\.\//, '');
+  const shared = all(xml(await read('xl/sharedStrings.xml')), 'si').map(si => all(si, 't').filter(t => t.parentNode.localName !== 'rPh').map(t => t.textContent).join(''));
+  const colOf = ref => { let c = 0; for (const ch of ref.replace(/[^A-Z]/gi, '').toUpperCase()) c = c * 26 + ch.charCodeAt(0) - 64; return c - 1; };
+  return all(xml(await read(path)), 'row').map(row => {
+    const r = [];
+    all(row, 'c').forEach((c, i) => {
+      const t = c.getAttribute('t'), v = all(c, 'v')[0], ref = c.getAttribute('r');
+      const val = t === 's' ? (v ? shared[Number(v.textContent)] || '' : '') : t === 'inlineStr' ? all(c, 't').map(x => x.textContent).join('') : (v ? v.textContent : '');
+      r[ref ? colOf(ref) : i] = val;
+    });
+    return r;
+  });
+}
+/* turn the sheet into venue rows: columns are found by their header names */
+function venuesFromRows(rows){
+  const head = (rows[0] || []).map(h => String(h == null ? '' : h).trim().toLowerCase());
+  const col = (...keys) => head.findIndex(h => h && keys.some(k => h.indexOf(k) === 0));
+  const ci = {name:col('name', 'english', 'venue', 'hall'), th:col('thai', 'ชื่อไทย'), area:col('area', 'province', 'city', 'จังหวัด'), country:col('country', 'ประเทศ'),
+    alias:col('other', 'alias', 'search', 'คำค้น'), lat:col('lat', 'ละติจูด'), lng:col('lng', 'lon', 'ลองจิจูด'), link:col('google', 'map', 'link', 'ลิงก์')};
+  if (ci.name === -1) throw {code:'no_name_col'};
+  const list = [], problems = [], seen = new Set();
+  rows.slice(1).forEach((r, i) => {
+    const get = k => ci[k] === -1 ? '' : String(r[ci[k]] == null ? '' : r[ci[k]]).trim();
+    const name = get('name');
+    if (!name) return;
+    if (seen.has(norm(name))) { problems.push('Row ' + (i + 2) + ': ' + name + ' is listed twice, the first one is used'); return; }
+    let lat = parseFloat(cleanNum(get('lat'))), lng = parseFloat(cleanNum(get('lng')));
+    if (!validLL(lat, lng)) { const c = parseCoords(get('link')); if (c) { lat = c.lat; lng = c.lng; } }
+    if (!validLL(lat, lng)) { problems.push('Row ' + (i + 2) + ': ' + name + ' has no location (add Latitude and Longitude, or a Google Maps link with the pin in it)'); return; }
+    seen.add(norm(name));
+    list.push([name, get('th'), get('area'), get('alias').split(/[,;\n]+/).map(x => x.trim()).filter(Boolean), +lat.toFixed(6), +lng.toFixed(6), get('country') || 'Thailand']);
+  });
+  return {list, problems};
+}
 const VENUE_CACHE = 'all.venues';
 store.venueFromSite = true;
 function quickSig(buf){
