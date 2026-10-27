@@ -932,6 +932,10 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 .sp-tx small{color:var(--text-soft);font-size:.82rem}
 .sp-ck{flex:none;width:22px;height:22px;color:var(--accent);visibility:hidden}
 .sp-opt[aria-pressed="true"] .sp-ck{visibility:visible}
+/* Android Chrome paints a translucent blue box on whatever is tapped, before the app's own styles react; the menu tabs
+   showed it ahead of the sliding pill. Every control already has its own selected, pressed and keyboard-focus look. */
+html{-webkit-tap-highlight-color:transparent}
+#viewSeg button:active svg{transform:scale(.9)}
 </style>
 <script>
 /* special theme picked earlier, put on before the page paints (it ends by itself after its date) */
@@ -1260,7 +1264,7 @@ try { var sp = JSON.parse(localStorage.getItem('all.special') || 'null'), d = ne
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261027W27EL</p>
+    <p class="hint app-ver">App version JE20261027W28EL</p>
   </div>
 </dialog>
 
