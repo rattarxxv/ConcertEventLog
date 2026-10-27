@@ -19,7 +19,7 @@
 <style>
 :root{
   /* Midnight Bloom: midnight teal, blush and rose gold, after the Blush Blossom Fan Fest 2026 poster.
-     One log for every fandom: concerts by any artist plus GL couple events. */
+     One log for every fandom: concerts by any artist plus GL/BL couple events. */
   --bg:#F3EEF7;
   --text:#102A3A;
   --text-soft:#566B78;
@@ -1019,9 +1019,9 @@ try { var sp = JSON.parse(localStorage.getItem('all.special') || 'null'), d = ne
         <div class="types" id="types"></div>
       </fieldset>
       <fieldset class="f">
-        <legend class="lbl">GL couples (optional)</legend>
+        <legend class="lbl">GL/BL couples (optional)</legend>
         <div class="cpls" id="cpls"></div>
-        <p class="hint">For a GL event, pick every couple there and the artist fills in. Skip this for other artists.</p>
+        <p class="hint">For a GL/BL event, pick every couple there and the artist fills in. Skip this for other artists.</p>
         <div class="cpl-tools"><button type="button" class="link-btn" data-couple-edit>Edit couples</button></div>
       </fieldset>
       <div class="f">
@@ -1260,7 +1260,7 @@ try { var sp = JSON.parse(localStorage.getItem('all.special') || 'null'), d = ne
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261027W26EL</p>
+    <p class="hint app-ver">App version JE20261027W27EL</p>
   </div>
 </dialog>
 
@@ -1322,7 +1322,7 @@ const catOf = c => CATS.some(x => x.k === (c && c.category)) ? c.category : 'con
 const catLabel = k => (CATS.find(x => x.k === k) || CATS[0]).label;
 /* navy: the colour any couple starts with until it gets its own pair */
 const CPL_NAVY = '#1F3268', CPL_NAVY2 = '#4A64A8';
-/* GL couples: the starting list. It can be changed in the app (Edit couples) and is saved as one small record. */
+/* GL/BL couples: the starting list. It can be changed in the app (Edit couples) and is saved as one small record. */
 const COUPLES_DEFAULT = [
   {k:'milklove', n:'MilkLove', c:'#B1D686', c2:'#EE96AC', alt:['มิลค์เลิฟ', 'มิ้ลค์เลิฟ']},
   {k:'namtanfilm', n:'NamtanFilm', c:'#6EBDCD', c2:'#FADD73', alt:['namtarnfilm', 'น้ำตาลฟิล์ม']},
@@ -3246,7 +3246,7 @@ function updateFindBtn(){
 function buildConcertPrompt(artist, cat){
   const gl = pickedCouples().length > 0 || inferCouples(artist).length > 0;
   return [
-    gl ? "You help fill in a Thai fan's personal diary of concerts and GMMTV GL (girls' love) couple events."
+    gl ? "You help fill in a Thai fan's personal diary of concerts and GMMTV GL/BL (girls' love and boys' love) couple events."
        : "You help fill in a Thai fan's personal concert and event diary.",
     gl ? 'List fan meetings, fancons, concerts, series events, fan signs and screenings featuring this GMMTV couple or artist: ' + JSON.stringify(artist)
        : 'List concerts, tours, fan meetings and fancons by this artist: ' + JSON.stringify(artist),
@@ -5437,7 +5437,7 @@ async function importGlOnce(){
   }
   try { localStorage.setItem(GL_FLAG, String(Date.now())); } catch (e) {}
   await reloadLocal(); render();
-  if (added || updated) toast(added ? `Added ${plural(added, 'ticket')} from GL Concert & Event Log` : 'GL couples added to your tickets');
+  if (added || updated) toast(added ? `Added ${plural(added, 'ticket')} from GL Concert & Event Log` : 'GL/BL couples added to your tickets');
 }
 
 /* ---------- phone app: couple colours updated in JE20261023W01EL (once per phone) ---------- */
