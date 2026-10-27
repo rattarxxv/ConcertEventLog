@@ -749,7 +749,143 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 .safe-card h2 svg{width:20px;height:20px;flex:none}
 .safe-card p{margin:0;color:var(--text-soft);font-size:.92rem;line-height:1.5;max-width:62ch}
 .safe-acts{display:flex;align-items:center;gap:16px;margin-top:12px}
+/* ---------- special themes: limited-time looks on top of Midnight Bloom, each with a day and a night version ---------- */
+:root[data-special="glam"]{
+  --bg:#F6EFE6;--text:#3A1218;--text-soft:#77584E;--sheet:#FFFAF3;--field:rgba(255,251,245,.8);--field-line:#E2CDB4;
+  --accent:#9E1B2C;--accent-ink:#FFF7EC;--on-chip:#9E1B2C;--pink-ink:#9A2232;--focus:#8A5E10;
+  --shadow:0 1px 0 rgba(58,18,24,.06),0 14px 30px -16px rgba(58,18,24,.5);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 13% 18%,rgba(176,128,42,.55),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 31% 12%,rgba(176,128,42,.55),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 57% 15%,rgba(176,128,42,.55),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(176,128,42,.55),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 89% 4%,rgba(176,128,42,.55),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 8% 31%,rgba(176,128,42,.55),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 52% 24%,rgba(176,128,42,.55),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(176,128,42,.55),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 15% 48%,rgba(176,128,42,.55),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 63% 52%,rgba(176,128,42,.55),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(176,128,42,.55),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 29% 71%,rgba(176,128,42,.55),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 76% 74%,rgba(176,128,42,.55),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(176,128,42,.55),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 44% 92%,rgba(176,128,42,.55),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(176,128,42,.55),transparent),radial-gradient(1px 1px at 88% 95%,rgba(176,128,42,.55),transparent),radial-gradient(120% 60% at 50% -10%,rgba(232,200,150,.55),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(158,27,44,.13),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(214,166,84,.3),transparent 70%),radial-gradient(90% 38% at 50% 110%,rgba(158,27,44,.16),transparent 70%),repeating-linear-gradient(90deg,rgba(255,255,255,0) 0 26px,rgba(176,128,42,.045) 26px 34px,rgba(255,255,255,0) 34px 52px),linear-gradient(180deg,#F3E6D2 0%,#F6EFE6 45%,#F5E6E0 100%);
+  --spark:#C49A3E;--moon2:#E2B867;--lilac:#A8701E;
+  --accent-grad:linear-gradient(120deg,#8E1526 0%,#A3302F 50%,#A8701E 100%);
+  --head:linear-gradient(100deg,#4A0E18 0%,#8E1526 55%,#A8701E 100%);
+  --title:linear-gradient(100deg,#6E0F1E 0%,#9E1B2C 38%,#A8701E 72%,#B8822E 100%);
+  --tk:#4A0E18;--tk-ink:#FFF3E2;--tk-soft:#DDBFA6;--tk-line:rgba(255,236,200,.22);--tk-pink:#EBC77E;
+  --map-sea:#E6DACB;--map-land:#F3EBDF;--map-th:#FFF9F0;--map-visit:#E9C7B4;--map-line:#CDB497;--map-line2:#E0D0BC;--map-text:#77584E;--map-halo:#FFF9F0;--pin:#9E1B2C;--vw-soft:#5E443B;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root[data-special="glam"]:not([data-theme="light"]){
+  --bg:#1E0A0F;--text:#FBEFE0;--text-soft:#D4B9A6;--sheet:#2A0F16;--field:rgba(74,24,34,.6);--field-line:#5E2A33;
+  --accent:#EBC77E;--accent-ink:#2A0C10;--on-chip:#9E1B2C;--pink-ink:#F0CB86;--focus:#F3D58F;
+  --shadow:0 18px 34px -18px rgba(0,0,0,.85);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 13% 18%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 31% 12%,rgba(250,226,170,.8),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 57% 15%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(250,226,170,.8),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 89% 4%,rgba(250,226,170,.8),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 8% 31%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 52% 24%,rgba(250,226,170,.8),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 15% 48%,rgba(250,226,170,.8),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 63% 52%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(250,226,170,.8),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 29% 71%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 76% 74%,rgba(250,226,170,.8),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 44% 92%,rgba(250,226,170,.8),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 88% 95%,rgba(250,226,170,.8),transparent),radial-gradient(120% 60% at 50% -10%,rgba(214,166,84,.3),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(158,27,44,.38),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(158,27,44,.32),transparent 70%),radial-gradient(90% 38% at 50% 112%,rgba(130,18,36,.5),transparent 70%),repeating-linear-gradient(90deg,rgba(0,0,0,0) 0 26px,rgba(250,226,170,.03) 26px 34px,rgba(0,0,0,0) 34px 52px),linear-gradient(180deg,#2C1014 0%,#1E0A0F 45%,#2E0B13 100%);
+  --spark:#F6DDA0;--moon2:#E2B867;--lilac:#D9A54E;
+  --accent-grad:linear-gradient(120deg,#F3D58F 0%,#E9B565 50%,#DD9460 100%);
+  --head:linear-gradient(100deg,#FFF1D8 0%,#F3D58F 50%,#E9A46A 100%);
+  --title:linear-gradient(100deg,#FFF0D2 0%,#F6D48A 35%,#E9AE5E 70%,#DD9460 100%);
+  --tk:#3A0C15;--tk-ink:#FFF3E2;--tk-soft:#DDBFA6;--tk-line:rgba(255,236,200,.2);--tk-pink:#EBC77E;
+  --map-sea:#160709;--map-land:#3A1219;--map-th:#4A1A22;--map-visit:#5A4022;--map-line:#6A3A35;--map-line2:#4E2229;--map-text:#D4B9A6;--map-halo:#1E0A0F;--pin:#EBC77E;--tile:rgba(20,4,8,.32);--chip-on:#FFF3E2;--vw-top:rgba(30,8,12,.16);--vw-bot:rgba(30,8,12,.52);--vw-soft:#EAD3C0;
+  color-scheme:dark;
+}}
+:root[data-special="glam"][data-theme="dark"]{
+  --bg:#1E0A0F;--text:#FBEFE0;--text-soft:#D4B9A6;--sheet:#2A0F16;--field:rgba(74,24,34,.6);--field-line:#5E2A33;
+  --accent:#EBC77E;--accent-ink:#2A0C10;--on-chip:#9E1B2C;--pink-ink:#F0CB86;--focus:#F3D58F;
+  --shadow:0 18px 34px -18px rgba(0,0,0,.85);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 13% 18%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 31% 12%,rgba(250,226,170,.8),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 57% 15%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(250,226,170,.8),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 89% 4%,rgba(250,226,170,.8),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 8% 31%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 52% 24%,rgba(250,226,170,.8),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 15% 48%,rgba(250,226,170,.8),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 63% 52%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(250,226,170,.8),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 29% 71%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 76% 74%,rgba(250,226,170,.8),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(250,226,170,.8),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 44% 92%,rgba(250,226,170,.8),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(250,226,170,.8),transparent),radial-gradient(1px 1px at 88% 95%,rgba(250,226,170,.8),transparent),radial-gradient(120% 60% at 50% -10%,rgba(214,166,84,.3),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(158,27,44,.38),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(158,27,44,.32),transparent 70%),radial-gradient(90% 38% at 50% 112%,rgba(130,18,36,.5),transparent 70%),repeating-linear-gradient(90deg,rgba(0,0,0,0) 0 26px,rgba(250,226,170,.03) 26px 34px,rgba(0,0,0,0) 34px 52px),linear-gradient(180deg,#2C1014 0%,#1E0A0F 45%,#2E0B13 100%);
+  --spark:#F6DDA0;--moon2:#E2B867;--lilac:#D9A54E;
+  --accent-grad:linear-gradient(120deg,#F3D58F 0%,#E9B565 50%,#DD9460 100%);
+  --head:linear-gradient(100deg,#FFF1D8 0%,#F3D58F 50%,#E9A46A 100%);
+  --title:linear-gradient(100deg,#FFF0D2 0%,#F6D48A 35%,#E9AE5E 70%,#DD9460 100%);
+  --tk:#3A0C15;--tk-ink:#FFF3E2;--tk-soft:#DDBFA6;--tk-line:rgba(255,236,200,.2);--tk-pink:#EBC77E;
+  --map-sea:#160709;--map-land:#3A1219;--map-th:#4A1A22;--map-visit:#5A4022;--map-line:#6A3A35;--map-line2:#4E2229;--map-text:#D4B9A6;--map-halo:#1E0A0F;--pin:#EBC77E;--tile:rgba(20,4,8,.32);--chip-on:#FFF3E2;--vw-top:rgba(30,8,12,.16);--vw-bot:rgba(30,8,12,.52);--vw-soft:#EAD3C0;
+  color-scheme:dark;
+}
+:root[data-special="whim"]{
+  --bg:#FBEFF5;--text:#2C2F55;--text-soft:#66618A;--sheet:#FFFAFD;--field:rgba(255,255,255,.8);--field-line:#F1CADC;
+  --accent:#D6297A;--accent-ink:#FFFFFF;--on-chip:#C2246E;--pink-ink:#C2246E;--focus:#0F7F78;
+  --shadow:0 1px 0 rgba(44,47,85,.06),0 14px 30px -16px rgba(44,47,85,.45);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 13% 18%,rgba(31,160,150,.55),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 31% 12%,rgba(31,160,150,.55),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 57% 15%,rgba(31,160,150,.55),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(31,160,150,.55),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 89% 4%,rgba(31,160,150,.55),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 8% 31%,rgba(31,160,150,.55),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 52% 24%,rgba(31,160,150,.55),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(31,160,150,.55),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 15% 48%,rgba(31,160,150,.55),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 63% 52%,rgba(31,160,150,.55),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(31,160,150,.55),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 29% 71%,rgba(31,160,150,.55),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 76% 74%,rgba(31,160,150,.55),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(31,160,150,.55),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 44% 92%,rgba(31,160,150,.55),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(31,160,150,.55),transparent),radial-gradient(1px 1px at 88% 95%,rgba(31,160,150,.55),transparent),radial-gradient(120% 60% at 50% -10%,rgba(120,150,210,.42),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(255,160,200,.5),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(255,130,185,.42),transparent 70%),radial-gradient(90% 38% at 50% 110%,rgba(255,255,255,.85),transparent 70%),linear-gradient(180deg,#DCE5F5 0%,#F7EAF3 45%,#FCEFF6 100%);
+  --spark:#2FB3A8;--moon2:#F49AC4;--lilac:#1F9E95;
+  --accent-grad:linear-gradient(120deg,#D6297A 0%,#C64B9E 50%,#1C9A90 100%);
+  --head:linear-gradient(100deg,#0F8A82 0%,#5A6FB0 50%,#D6297A 100%);
+  --title:linear-gradient(100deg,#0F8A82 0%,#1FA398 34%,#E0479A 64%,#C81F70 100%);
+  --tk:#2E3B66;--tk-ink:#FFF4FA;--tk-soft:#BCC5E4;--tk-line:rgba(255,255,255,.22);--tk-pink:#86EADD;
+  --map-sea:#DCEFF2;--map-land:#FBF3F8;--map-th:#FFFFFF;--map-visit:#F9C7DE;--map-line:#C9B9D6;--map-line2:#E6D9E8;--map-text:#66618A;--map-halo:#FFFFFF;--pin:#D6297A;--vw-soft:#4A4670;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root[data-special="whim"]:not([data-theme="light"]){
+  --bg:#1B1D3A;--text:#FFF0F7;--text-soft:#C3C0DE;--sheet:#24274A;--field:rgba(46,50,96,.6);--field-line:#45487A;
+  --accent:#FF8CC0;--accent-ink:#2A0F22;--on-chip:#C2246E;--pink-ink:#FF9FCB;--focus:#86EADD;
+  --shadow:0 18px 34px -18px rgba(0,0,0,.85);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 13% 18%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 31% 12%,rgba(214,250,245,.85),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 57% 15%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(214,250,245,.85),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 89% 4%,rgba(214,250,245,.85),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 8% 31%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 52% 24%,rgba(214,250,245,.85),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 15% 48%,rgba(214,250,245,.85),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 63% 52%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(214,250,245,.85),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 29% 71%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 76% 74%,rgba(214,250,245,.85),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 44% 92%,rgba(214,250,245,.85),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 88% 95%,rgba(214,250,245,.85),transparent),radial-gradient(120% 60% at 50% -10%,rgba(110,130,205,.38),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(255,120,180,.24),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(94,214,201,.2),transparent 70%),radial-gradient(90% 38% at 50% 112%,rgba(255,150,200,.24),transparent 70%),linear-gradient(180deg,#283059 0%,#1B1D3A 45%,#2A1E46 100%);
+  --spark:#B4F4EC;--moon2:#FFA6CF;--lilac:#6FD8CC;
+  --accent-grad:linear-gradient(120deg,#FF9AC8 0%,#E8A8E0 50%,#86E3D8 100%);
+  --head:linear-gradient(100deg,#B8F3EB 0%,#FFC2DD 55%,#FF8CC0 100%);
+  --title:linear-gradient(100deg,#9BEFE4 0%,#C6F6EF 30%,#FFB3D6 62%,#FF7FB8 100%);
+  --tk:#2C3266;--tk-ink:#FFF4FA;--tk-soft:#BCC5E4;--tk-line:rgba(255,255,255,.2);--tk-pink:#86EADD;
+  --map-sea:#13152C;--map-land:#2C2F58;--map-th:#383C6C;--map-visit:#6A3A68;--map-line:#4E4F86;--map-line2:#36396A;--map-text:#C3C0DE;--map-halo:#1B1D3A;--pin:#FF8CC0;--tile:rgba(10,10,30,.32);--chip-on:#FFF0F7;--vw-top:rgba(20,20,48,.16);--vw-bot:rgba(20,20,48,.52);--vw-soft:#E4E2F5;
+  color-scheme:dark;
+}}
+:root[data-special="whim"][data-theme="dark"]{
+  --bg:#1B1D3A;--text:#FFF0F7;--text-soft:#C3C0DE;--sheet:#24274A;--field:rgba(46,50,96,.6);--field-line:#45487A;
+  --accent:#FF8CC0;--accent-ink:#2A0F22;--on-chip:#C2246E;--pink-ink:#FF9FCB;--focus:#86EADD;
+  --shadow:0 18px 34px -18px rgba(0,0,0,.85);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 13% 18%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 31% 12%,rgba(214,250,245,.85),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 57% 15%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(214,250,245,.85),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 89% 4%,rgba(214,250,245,.85),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 8% 31%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 52% 24%,rgba(214,250,245,.85),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 15% 48%,rgba(214,250,245,.85),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 63% 52%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(214,250,245,.85),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 29% 71%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 76% 74%,rgba(214,250,245,.85),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(214,250,245,.85),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 44% 92%,rgba(214,250,245,.85),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(214,250,245,.85),transparent),radial-gradient(1px 1px at 88% 95%,rgba(214,250,245,.85),transparent),radial-gradient(120% 60% at 50% -10%,rgba(110,130,205,.38),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(255,120,180,.24),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(94,214,201,.2),transparent 70%),radial-gradient(90% 38% at 50% 112%,rgba(255,150,200,.24),transparent 70%),linear-gradient(180deg,#283059 0%,#1B1D3A 45%,#2A1E46 100%);
+  --spark:#B4F4EC;--moon2:#FFA6CF;--lilac:#6FD8CC;
+  --accent-grad:linear-gradient(120deg,#FF9AC8 0%,#E8A8E0 50%,#86E3D8 100%);
+  --head:linear-gradient(100deg,#B8F3EB 0%,#FFC2DD 55%,#FF8CC0 100%);
+  --title:linear-gradient(100deg,#9BEFE4 0%,#C6F6EF 30%,#FFB3D6 62%,#FF7FB8 100%);
+  --tk:#2C3266;--tk-ink:#FFF4FA;--tk-soft:#BCC5E4;--tk-line:rgba(255,255,255,.2);--tk-pink:#86EADD;
+  --map-sea:#13152C;--map-land:#2C2F58;--map-th:#383C6C;--map-visit:#6A3A68;--map-line:#4E4F86;--map-line2:#36396A;--map-text:#C3C0DE;--map-halo:#1B1D3A;--pin:#FF8CC0;--tile:rgba(10,10,30,.32);--chip-on:#FFF0F7;--vw-top:rgba(20,20,48,.16);--vw-bot:rgba(20,20,48,.52);--vw-soft:#E4E2F5;
+  color-scheme:dark;
+}
+:root[data-special="bewitch"]{
+  --bg:#FBEFF3;--text:#3A0F24;--text-soft:#77526A;--sheet:#FFF8FA;--field:rgba(255,255,255,.78);--field-line:#EFC6D4;
+  --accent:#C0143C;--accent-ink:#FFF5F8;--on-chip:#B3123A;--pink-ink:#B3123A;--focus:#8E2A6E;
+  --shadow:0 1px 0 rgba(58,15,36,.06),0 14px 30px -16px rgba(58,15,36,.5);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 13% 18%,rgba(214,80,140,.5),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 31% 12%,rgba(214,80,140,.5),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 57% 15%,rgba(214,80,140,.5),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(214,80,140,.5),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 89% 4%,rgba(214,80,140,.5),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 8% 31%,rgba(214,80,140,.5),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 52% 24%,rgba(214,80,140,.5),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(214,80,140,.5),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 15% 48%,rgba(214,80,140,.5),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 63% 52%,rgba(214,80,140,.5),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(214,80,140,.5),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 29% 71%,rgba(214,80,140,.5),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 76% 74%,rgba(214,80,140,.5),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(214,80,140,.5),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 44% 92%,rgba(214,80,140,.5),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(214,80,140,.5),transparent),radial-gradient(1px 1px at 88% 95%,rgba(214,80,140,.5),transparent),radial-gradient(circle at calc(100% + 34px) 340px,rgba(246,176,208,.6) 0 104px,rgba(246,176,208,.22) 114px,transparent 200px),radial-gradient(120% 60% at 50% -10%,rgba(240,160,195,.42),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(255,180,205,.5),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(200,30,80,.14),transparent 70%),radial-gradient(90% 38% at 50% 110%,rgba(255,255,255,.8),transparent 70%),linear-gradient(180deg,#F4DFEB 0%,#FBEFF3 45%,#F8E6EE 100%);
+  --spark:#E0609A;--moon2:#F3A0C0;--lilac:#A0306E;
+  --accent-grad:linear-gradient(120deg,#C0143C 0%,#C42D6E 50%,#9E3A8E 100%);
+  --head:linear-gradient(100deg,#5A0F30 0%,#B3123A 55%,#C42D6E 100%);
+  --title:linear-gradient(100deg,#7A0F2E 0%,#B3123A 36%,#C9366F 70%,#A83478 100%);
+  --tk:#3A0F2A;--tk-ink:#FFF0F5;--tk-soft:#E4B8CB;--tk-line:rgba(255,255,255,.2);--tk-pink:#FF9FC2;
+  --map-sea:#F2DCE6;--map-land:#FBF2F6;--map-th:#FFFFFF;--map-visit:#F6BCD0;--map-line:#D9AFC2;--map-line2:#EBD3DD;--map-text:#77526A;--map-halo:#FFFFFF;--pin:#C0143C;--vw-soft:#5E3A50;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root[data-special="bewitch"]:not([data-theme="light"]){
+  --bg:#170A1C;--text:#FFEFF5;--text-soft:#D6B5CA;--sheet:#22102A;--field:rgba(62,22,62,.58);--field-line:#5A2A5A;
+  --accent:#FF6FA6;--accent-ink:#2A0716;--on-chip:#B3123A;--pink-ink:#FF8FB9;--focus:#FFB3D0;
+  --shadow:0 18px 34px -18px rgba(0,0,0,.85);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 13% 18%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 31% 12%,rgba(255,214,232,.85),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 57% 15%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(255,214,232,.85),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 89% 4%,rgba(255,214,232,.85),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 8% 31%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 52% 24%,rgba(255,214,232,.85),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 15% 48%,rgba(255,214,232,.85),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 63% 52%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(255,214,232,.85),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 29% 71%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 76% 74%,rgba(255,214,232,.85),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 44% 92%,rgba(255,214,232,.85),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 88% 95%,rgba(255,214,232,.85),transparent),radial-gradient(circle at calc(100% + 34px) 340px,rgba(255,170,206,.5) 0 104px,rgba(255,140,190,.2) 114px,transparent 210px),radial-gradient(120% 60% at 50% -10%,rgba(200,40,110,.32),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(240,120,170,.22),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(220,30,70,.22),transparent 70%),radial-gradient(90% 38% at 50% 112%,rgba(130,30,95,.38),transparent 70%),linear-gradient(180deg,#261033 0%,#170A1C 45%,#2A0C20 100%);
+  --spark:#FFD3E6;--moon2:#FF9FC8;--lilac:#E05A9C;
+  --accent-grad:linear-gradient(120deg,#FF5C8E 0%,#FF7FB5 50%,#E8A0D8 100%);
+  --head:linear-gradient(100deg,#FFE3EE 0%,#FFB0CC 50%,#FF6FA6 100%);
+  --title:linear-gradient(100deg,#FFE6F0 0%,#FFB8D2 35%,#FF7EAE 70%,#F25A90 100%);
+  --tk:#2E0E2A;--tk-ink:#FFF0F5;--tk-soft:#E4B8CB;--tk-line:rgba(255,255,255,.18);--tk-pink:#FF9FC2;
+  --map-sea:#10060F;--map-land:#2E1230;--map-th:#3C1A3E;--map-visit:#7A2A50;--map-line:#5A2E5C;--map-line2:#3E1E42;--map-text:#D6B5CA;--map-halo:#170A1C;--pin:#FF6FA6;--tile:rgba(16,4,14,.32);--chip-on:#FFEFF5;--vw-top:rgba(24,6,22,.16);--vw-bot:rgba(24,6,22,.52);--vw-soft:#EED6E2;
+  color-scheme:dark;
+}}
+:root[data-special="bewitch"][data-theme="dark"]{
+  --bg:#170A1C;--text:#FFEFF5;--text-soft:#D6B5CA;--sheet:#22102A;--field:rgba(62,22,62,.58);--field-line:#5A2A5A;
+  --accent:#FF6FA6;--accent-ink:#2A0716;--on-chip:#B3123A;--pink-ink:#FF8FB9;--focus:#FFB3D0;
+  --shadow:0 18px 34px -18px rgba(0,0,0,.85);
+  --sky:radial-gradient(1.4px 1.4px at 4% 6%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 13% 18%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 22% 4%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 31% 12%,rgba(255,214,232,.85),transparent),radial-gradient(1.6px 1.6px at 46% 7%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 57% 15%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 66% 5%,rgba(255,214,232,.85),transparent),radial-gradient(1.5px 1.5px at 78% 11%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 89% 4%,rgba(255,214,232,.85),transparent),radial-gradient(1.3px 1.3px at 95% 16%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 8% 31%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 27% 27%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 52% 24%,rgba(255,214,232,.85),transparent),radial-gradient(1.1px 1.1px at 71% 30%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 92% 34%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 15% 48%,rgba(255,214,232,.85),transparent),radial-gradient(1.3px 1.3px at 38% 44%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 63% 52%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 84% 47%,rgba(255,214,232,.85),transparent),radial-gradient(1.1px 1.1px at 6% 66%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 29% 71%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 55% 63%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 76% 74%,rgba(255,214,232,.85),transparent),radial-gradient(1.3px 1.3px at 94% 62%,rgba(255,214,232,.85),transparent),radial-gradient(1.2px 1.2px at 18% 86%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 44% 92%,rgba(255,214,232,.85),transparent),radial-gradient(1.3px 1.3px at 68% 88%,rgba(255,214,232,.85),transparent),radial-gradient(1px 1px at 88% 95%,rgba(255,214,232,.85),transparent),radial-gradient(circle at calc(100% + 34px) 340px,rgba(255,170,206,.5) 0 104px,rgba(255,140,190,.2) 114px,transparent 210px),radial-gradient(120% 60% at 50% -10%,rgba(200,40,110,.32),transparent 62%),radial-gradient(60% 45% at -10% 36%,rgba(240,120,170,.22),transparent 70%),radial-gradient(55% 40% at 110% 58%,rgba(220,30,70,.22),transparent 70%),radial-gradient(90% 38% at 50% 112%,rgba(130,30,95,.38),transparent 70%),linear-gradient(180deg,#261033 0%,#170A1C 45%,#2A0C20 100%);
+  --spark:#FFD3E6;--moon2:#FF9FC8;--lilac:#E05A9C;
+  --accent-grad:linear-gradient(120deg,#FF5C8E 0%,#FF7FB5 50%,#E8A0D8 100%);
+  --head:linear-gradient(100deg,#FFE3EE 0%,#FFB0CC 50%,#FF6FA6 100%);
+  --title:linear-gradient(100deg,#FFE6F0 0%,#FFB8D2 35%,#FF7EAE 70%,#F25A90 100%);
+  --tk:#2E0E2A;--tk-ink:#FFF0F5;--tk-soft:#E4B8CB;--tk-line:rgba(255,255,255,.18);--tk-pink:#FF9FC2;
+  --map-sea:#10060F;--map-land:#2E1230;--map-th:#3C1A3E;--map-visit:#7A2A50;--map-line:#5A2E5C;--map-line2:#3E1E42;--map-text:#D6B5CA;--map-halo:#170A1C;--pin:#FF6FA6;--tile:rgba(16,4,14,.32);--chip-on:#FFEFF5;--vw-top:rgba(24,6,22,.16);--vw-bot:rgba(24,6,22,.52);--vw-soft:#EED6E2;
+  color-scheme:dark;
+}
+/* the picker in Backup & display */
+#spSec{margin-top:24px}
+.sp-list{display:grid;gap:8px;margin-top:10px}
+.sp-opt{display:flex;align-items:center;gap:12px;width:100%;min-height:62px;padding:8px 14px 8px 8px;border-radius:16px;border:1.5px solid var(--field-line);background:var(--field);color:var(--text);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.sp-opt[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.sp-opt:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sp-sw{position:relative;flex:none;width:46px;height:46px;border-radius:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3),0 4px 10px -6px rgba(0,0,0,.5)}
+.sp-sw i{position:absolute;right:7px;top:7px;width:11px;height:11px;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%)}
+.sp-tx{flex:1;min-width:0;display:grid;gap:1px;line-height:1.3}
+.sp-tx b{font-family:var(--display);font-weight:700}
+.sp-tx small{color:var(--text-soft);font-size:.82rem}
+.sp-ck{flex:none;width:22px;height:22px;color:var(--accent);visibility:hidden}
+.sp-opt[aria-pressed="true"] .sp-ck{visibility:visible}
 </style>
+<script>
+/* special theme picked earlier, put on before the page paints (it ends by itself after its date) */
+try { var sp = JSON.parse(localStorage.getItem('all.special') || 'null'), d = new Date(), day = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+  if (sp && sp.id && sp.until >= day) document.documentElement.setAttribute('data-special', sp.id); } catch (e) {}
+</script>
 </head>
 <body>
 <div class="dream" aria-hidden="true">
@@ -1043,6 +1179,11 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
         <button type="button" data-theme-pick="day" aria-pressed="false">Day</button>
         <button type="button" data-theme-pick="night" aria-pressed="false">Night</button>
       </div>
+      <div id="spSec" hidden>
+        <h3 class="lbl sp-lbl">Special theme</h3>
+        <p class="hint">Here for a limited time. Each one goes away by itself after its last day, and the app goes back to Midnight Bloom. Day and Night still work with every theme.</p>
+        <div class="sp-list" id="spList" role="group" aria-label="Special theme"></div>
+      </div>
     </section>
     <section class="bk-sec" id="bkSaveSec">
       <h3 class="lbl">Back up</h3>
@@ -1067,7 +1208,7 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261026W12EL</p>
+    <p class="hint app-ver">App version JE20261027W13EL</p>
   </div>
 </dialog>
 
@@ -4572,6 +4713,57 @@ $('#viewSeg').addEventListener('keydown', e => {
   tabs[j].focus();
   tabs[j].click();
 });
+/* ---------- special themes ----------
+   Limited-time looks for events, picked in Backup & display, separate from the main theme (Midnight Bloom).
+   To add one: give it colours in the CSS (:root[data-special="id"], day and night) and a line here.
+   `until` is the last day it can be used, by the phone's own date. After that it leaves the picker,
+   and phones using it go back to Midnight Bloom by themselves. */
+const SPECIAL_THEMES = [
+  {id:'glam', name:'Glamorous', who:'NamtanFilm Glamorous Fancon', until:'2026-11-21', bar:['#F3E6D2', '#2C1014'],
+    sw:'linear-gradient(140deg,#F3E2C4 0%,#D9A54E 38%,#9E1B2C 72%,#4A0E18 100%)'},
+  {id:'whim', name:'Whimsical House', who:'MilkLove Whimsical House Fancon', until:'2026-11-22', bar:['#DCE5F5', '#283059'],
+    sw:'linear-gradient(140deg,#7C9AD6 0%,#FFC2DD 38%,#FF6FAE 64%,#4FD3C4 100%)'},
+  {id:'bewitch', name:'Bewitch You', who:'JanJingjing Bewitch You Fancon', until:'2026-11-28', bar:['#F4DFEB', '#261033'],
+    sw:'radial-gradient(circle at 30% 30%,#FFD0E3 0 7px,transparent 8px),linear-gradient(140deg,#3A1240 0%,#B3123A 60%,#FF8FB9 100%)'},
+];
+const SPECIAL_KEY = 'all.special';
+const MAIN_SW = 'linear-gradient(140deg,#123A4E 0%,#5A4F94 48%,#F4A9C1 100%)';
+const spToday = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const spLive = t => !!t && spToday() <= t.until && (!t.from || spToday() >= t.from);
+function specialPref(){ try { const v = JSON.parse(localStorage.getItem(SPECIAL_KEY) || 'null'); return (v && v.id) || ''; } catch (e) { return ''; } }
+function activeSpecial(){ const t = SPECIAL_THEMES.find(x => x.id === specialPref()); return spLive(t) ? t : null; }
+function applySpecial(){
+  const id = specialPref(), t = SPECIAL_THEMES.find(x => x.id === id);
+  if (id && !spLive(t)) {
+    try { localStorage.removeItem(SPECIAL_KEY); } catch (e) {}
+    if (t) setTimeout(() => toast(`The ${t.name} theme has ended. Back to Midnight Bloom.`), 900);
+  }
+  const a = activeSpecial();
+  if (a) document.documentElement.setAttribute('data-special', a.id); else document.documentElement.removeAttribute('data-special');
+  /* keep the remembered end date in step with the list above, in case it was moved */
+  if (a) try { localStorage.setItem(SPECIAL_KEY, JSON.stringify({id:a.id, until:a.until})); } catch (e) {}
+}
+function setSpecial(id){
+  const t = SPECIAL_THEMES.find(x => x.id === id);
+  try { if (spLive(t)) localStorage.setItem(SPECIAL_KEY, JSON.stringify({id:t.id, until:t.until})); else localStorage.removeItem(SPECIAL_KEY); } catch (e) {}
+  applySpecial(); applyTheme(); renderSpecialPicker();
+}
+function renderSpecialPicker(){
+  const sec = $('#spSec');
+  if (!sec) return;
+  const live = SPECIAL_THEMES.filter(spLive);
+  sec.hidden = !live.length;
+  if (!live.length) return;
+  const cur = activeSpecial(), cid = cur ? cur.id : '';
+  const opt = (id, name, sub, sw) => `<button type="button" class="sp-opt" data-sp-pick="${id}" aria-pressed="${id === cid}">
+    <span class="sp-sw" style="background:${sw}" aria-hidden="true"><i></i></span><span class="sp-tx"><b>${esc(name)}</b><small>${esc(sub)}</small></span>
+    <svg class="sp-ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></button>`;
+  $('#spList').innerHTML = opt('', 'Midnight Bloom', 'Main theme', MAIN_SW)
+    + live.map(t => opt(t.id, t.name, `${t.who}. Until ${fmtDate(t.until)}`, t.sw)).join('');
+}
+/* the app may stay open past midnight on the last day */
+document.addEventListener('visibilitychange', () => { if (!document.hidden && specialPref() && !activeSpecial()) { applySpecial(); applyTheme(); renderSpecialPicker(); } });
+
 /* ---------- day / night ---------- */
 const THEME_KEY = 'all.theme';
 const rootEl = document.documentElement;
@@ -4586,7 +4778,8 @@ function applyTheme(){
   if (want) rootEl.setAttribute('data-theme', want); else rootEl.removeAttribute('data-theme');
   document.querySelectorAll('meta[name="theme-color"]').forEach(m => {
     if (!m.dataset.orig) m.dataset.orig = m.getAttribute('content');
-    m.setAttribute('content', p === 'auto' ? m.dataset.orig : (p === 'night' ? '#0B2333' : '#EAF0F7'));
+    const sp = activeSpecial(), lc = sp ? sp.bar[0] : '#EAF0F7', dc = sp ? sp.bar[1] : '#0B2333';
+    m.setAttribute('content', p === 'auto' ? (sp ? (/dark/.test(m.getAttribute('media') || '') ? dc : lc) : m.dataset.orig) : (p === 'night' ? dc : lc));
   });
   updateThemeUI();
 }
@@ -4610,6 +4803,7 @@ new MutationObserver(() => {
 }).observe(rootEl, {attributes:true, attributeFilter:['data-theme']});
 try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateThemeUI); } catch (e) {}
 $('#themeBtn').addEventListener('click', () => setThemePref(isNight() ? 'day' : 'night'));
+applySpecial();
 applyTheme();
 
 /* ---------- backup and restore ---------- */
@@ -4685,7 +4879,7 @@ function updateBkInfo(){
   $('#bkRestoreSec').hidden = !store.canWrite;
 }
 function openBackup(){
-  updateThemeUI(); updateBkInfo(); renderBkPreview(); renderVenueInfo(); updateStoreInfo();
+  updateThemeUI(); renderSpecialPicker(); updateBkInfo(); renderBkPreview(); renderVenueInfo(); updateStoreInfo();
   if (!$('#bkDlg').open) $('#bkDlg').showModal();
 }
 function renderBkPreview(){
@@ -4897,6 +5091,8 @@ document.addEventListener('click', e => {
   if (close) { close.closest('dialog').close(); return; }
   const rmb = e.target.closest('[data-remind]');
   if (rmb) { toggleRemindField('remind', Number(rmb.getAttribute('data-remind'))); return; }
+  const spk = e.target.closest('[data-sp-pick]');
+  if (spk) { setSpecial(spk.getAttribute('data-sp-pick')); return; }
   const tp = e.target.closest('[data-theme-pick]');
   if (tp) { setThemePref(tp.getAttribute('data-theme-pick')); return; }
   if (e.target.closest('[data-bk-go]')) { runRestore(); return; }
