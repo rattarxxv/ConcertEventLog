@@ -700,11 +700,11 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
 #bkProg{margin-top:10px}
 /* view menu: a strip of tear-off ticket stubs (notched ends, perforated between views);
    the open view glows in the Midnight Bloom gradient and slides when you switch */
-#viewSeg.view-nav{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;max-width:520px;gap:0;margin-top:18px;padding:5px;overflow:visible;border-radius:20px;border:1px solid var(--field-line);
+#viewSeg.view-nav{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;max-width:560px;gap:0;margin-top:18px;padding:5px;overflow:visible;border-radius:20px;border:1px solid var(--field-line);
   -webkit-mask:radial-gradient(circle 7px at 0 50%,#0000 96%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 96%,#000) right/51% 100% no-repeat;
   mask:radial-gradient(circle 7px at 0 50%,#0000 96%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 96%,#000) right/51% 100% no-repeat}
 #viewSeg.view-nav[hidden]{display:none}
-#viewSeg .vn-glow{position:absolute;z-index:0;top:5px;bottom:5px;left:5px;width:calc((100% - 10px) / 4);border-radius:15px;background:var(--accent-grad);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--accent) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.35);transform:translateX(calc(var(--vi,0) * 100%));transition:transform .34s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
+#viewSeg .vn-glow{position:absolute;z-index:0;top:5px;bottom:5px;left:5px;width:calc((100% - 10px) / 5);border-radius:15px;background:var(--accent-grad);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--accent) 80%,transparent),inset 0 1px 0 rgba(255,255,255,.35);transform:translateX(calc(var(--vi,0) * 100%));transition:transform .34s cubic-bezier(.3,1.3,.5,1);pointer-events:none}
 #viewSeg button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:58px;padding:6px 2px 5px;border:0;border-radius:15px;background:none;color:var(--text-soft);font-family:var(--display);font-weight:600;font-size:.8rem;line-height:1.1;cursor:pointer;transition:color .2s}
 #viewSeg button svg{width:22px;height:22px;flex:none;transition:transform .34s cubic-bezier(.3,1.3,.5,1)}
 #viewSeg button+button::before{content:"";position:absolute;left:0;top:13px;bottom:13px;border-left:2px dotted color-mix(in srgb,var(--text) 26%,transparent);transition:opacity .2s}
@@ -936,6 +936,49 @@ dialog.sheet{background:radial-gradient(130% 260px at 50% -40px,color-mix(in srg
    showed it ahead of the sliding pill. Every control already has its own selected, pressed and keyboard-focus look. */
 html{-webkit-tap-highlight-color:transparent}
 #viewSeg button:active svg{transform:scale(.9)}
+/* ---------- passport ---------- */
+@media (max-width:400px){#viewSeg button{font-size:.72rem}}
+.pp{margin-top:22px}
+.pp-book{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 18px;scrollbar-width:none;-webkit-overflow-scrolling:touch;outline:none}
+.pp-book::-webkit-scrollbar{display:none}
+.pp-book:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:12px}
+.pp-page{position:relative;isolation:isolate;flex:0 0 min(100%,360px);aspect-ratio:88/125;scroll-snap-align:center;overflow:hidden;border-radius:6px 14px 14px 6px;color:#3D3A52;
+  background:radial-gradient(120% 70% at 50% 45%,rgba(255,255,255,.55),transparent 70%),repeating-radial-gradient(circle at 50% 46%,transparent 0 9px,var(--pp-g) 9px 10px),repeating-linear-gradient(35deg,transparent 0 5px,var(--pp-l) 5px 6px),repeating-linear-gradient(-35deg,transparent 0 5px,var(--pp-l) 5px 6px),var(--pp-bg);
+  box-shadow:0 18px 34px -18px rgba(0,0,0,.6),0 0 0 1px rgba(60,50,40,.08)}
+.pp-t0{--pp-bg:#F6EFE0;--pp-g:rgba(196,120,150,.09);--pp-l:rgba(150,130,190,.05)}
+.pp-t1{--pp-bg:#EEF2EA;--pp-g:rgba(90,150,140,.1);--pp-l:rgba(120,150,190,.05)}
+.pp-t2{--pp-bg:#F3EEF6;--pp-g:rgba(140,110,190,.09);--pp-l:rgba(190,130,150,.05)}
+.pp-page::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(40,30,20,.16),rgba(40,30,20,0) 22px)}
+.pp-hd{position:absolute;top:4.2%;left:0;right:0;text-align:center;font:700 .62rem/1 var(--display);letter-spacing:.5em;color:rgba(61,58,82,.38)}
+.pp-no{position:absolute;bottom:3.4%;right:7%;font:700 .72rem/1 var(--display);color:rgba(61,58,82,.42)}
+.pp-st{position:absolute;z-index:1;left:var(--x);top:var(--y);width:58%;transform:translate(-50%,-50%) rotate(var(--r));padding:0;border:0;background:none;color:var(--ink);font-family:var(--display);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pp-st:focus-visible{outline:2px dashed var(--ink);outline-offset:6px;border-radius:6px}
+.pp-st:active .pp-ink{transform:scale(.97)}
+.pp-ink{display:flex;flex-direction:column;align-items:center;gap:3px;opacity:var(--op,.9);mix-blend-mode:multiply;transition:transform .12s;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -9 6.6'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E") var(--mx) var(--my)/160px 160px repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -9 6.6'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E") var(--mx) var(--my)/160px 160px repeat}
+.pp-d{font-weight:700;font-size:.74rem;line-height:1.1;letter-spacing:.16em;white-space:nowrap}
+.pp-box{position:relative;display:grid;place-items:center;width:100%;min-height:70px;padding:9px 12px;border:2.6px solid currentColor;border-radius:5px}
+.pp-box::before{content:"";position:absolute;inset:3.5px;border:1px solid currentColor;border-radius:3px}
+.pp-lg{display:block;width:100%;height:50px;background:currentColor;-webkit-mask-position:center;-webkit-mask-size:contain;-webkit-mask-repeat:no-repeat;mask-position:center;mask-size:contain;mask-repeat:no-repeat}
+.pp-nm{max-width:100%;font-weight:800;font-size:1.22rem;line-height:1.05;letter-spacing:.04em;text-transform:uppercase;text-align:center;overflow-wrap:anywhere}
+.pp-nm.sm{font-size:.98rem}
+.pp-nm.xs{font-size:.8rem}
+.pp-ev{max-width:100%;font-weight:700;font-size:.6rem;line-height:1.2;letter-spacing:.1em;text-transform:uppercase;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pp-cover{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4%;color:#E2C27E;text-align:center;
+  background:radial-gradient(130% 90% at 30% 15%,rgba(255,255,255,.12),transparent 55%),radial-gradient(90% 70% at 80% 100%,rgba(0,0,0,.35),transparent 70%),var(--tk)}
+.pp-cover::after{background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,0) 26px)}
+.pp-cover>*{filter:drop-shadow(0 1px 0 rgba(0,0,0,.45)) drop-shadow(0 -1px 0 rgba(255,240,200,.18))}
+.pp-cv-top{font:700 .7rem/1 var(--display);letter-spacing:.5em;margin-left:.5em}
+.pp-crest{width:40%;height:auto}
+.pp-cv-t{font:800 1.5rem/1.12 var(--display);letter-spacing:.22em;margin-left:.22em}
+.pp-cv-sub{font:600 .78rem/1.2 var(--display);letter-spacing:.12em;opacity:.85}
+.pp-chip{width:18%;height:auto;opacity:.85}
+.pp-nav{display:flex;align-items:center;justify-content:center;gap:14px;color:var(--text-soft);font-size:.9rem}
+.pp-arw{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;border:1.5px solid var(--field-line);background:var(--field);color:var(--text);cursor:pointer}
+.pp-arw svg{width:20px;height:20px}
+.pp-arw:disabled{opacity:.35;cursor:default}
+.pp-arw:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.pp-empty{padding-top:18px}
 </style>
 <script>
 /* special theme picked earlier, put on before the page paints (it ends by itself after its date) */
@@ -982,6 +1025,7 @@ try { var sp = JSON.parse(localStorage.getItem('all.special') || 'null'), d = ne
       <button type="button" role="tab" data-view="map" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5 4 7v12l5-2 6 2 5-2V5l-5 2-6-2z"/><path d="M9 5v12M15 7v12"/></svg><span>Map</span></button>
       <button type="button" role="tab" data-view="cal" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/><path d="M8.5 14h.01M12 14h.01M15.5 14h.01M8.5 17h.01M12 17h.01" stroke-width="2.6"/></svg><span>Calendar</span></button>
       <button type="button" role="tab" data-view="spend" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="2.2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5h.01M17.5 14.5h.01" stroke-width="2.6"/></svg><span>Spend</span></button>
+      <button type="button" role="tab" data-view="passport" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.2"/><circle cx="12" cy="10.5" r="3.3"/><path d="M8.7 10.5h6.6M12 7.2c.9 1 1.3 2.1 1.3 3.3s-.4 2.3-1.3 3.3c-.9-1-1.3-2.1-1.3-3.3s.4-2.3 1.3-3.3zM9 17.2h6"/></svg><span>Passport</span></button>
     </div>
     <div class="search" id="searchWrap" hidden>
       <input id="q" type="search" placeholder="Search artist, show, venue, seat, memories" aria-label="Search entries" autocomplete="off">
@@ -1264,7 +1308,7 @@ try { var sp = JSON.parse(localStorage.getItem('all.special') || 'null'), d = ne
       <button type="button" class="btn btn-ghost" id="bkInstallBtn">Install app on this phone</button>
     </section>
     <p class="form-err" id="bkErr" role="alert" hidden></p>
-    <p class="hint app-ver">App version JE20261027W29EL</p>
+    <p class="hint app-ver">App version JE20261102W30EL</p>
   </div>
 </dialog>
 
@@ -2147,6 +2191,7 @@ function render(){
   if (view === 'map') { renderMap(up.concat(ps)); return; }
   if (view === 'cal') { renderCal(up.concat(ps)); return; }
   if (view === 'spend') { renderSpend(up.concat(ps)); return; }
+  if (view === 'passport') { renderPassport(up.concat(ps)); return; }
  let html = safetyCardHTML() + (filterCouple !== 'all' ? coupleCardHTML(filterCouple) : '') + salesCardHTML(up.concat(ps)) + (up.length ? nextUpHTML(up[0]) + sectionHTML('upcoming', 'Upcoming', up) : '');
   const groups = []; let cur = null;
   for (const c of ps) {
@@ -4769,6 +4814,93 @@ $('#viewSeg').addEventListener('keydown', e => {
   tabs[j].focus();
   tabs[j].click();
 });
+/* ---------- passport: every show you've been to is an entry stamp, three to a page ---------- */
+/* each artist or couple stamps in its own ink, like each country has its own stamp */
+const PP_INKS = ['#B0243A', '#1F3F8F', '#1D6B52', '#5B2E8C', '#8A4B12', '#2E2A36', '#A0346E', '#0F6170'];
+const PP_MON = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const ppHash = t => { let h = 2166136261; for (const ch of String(t)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; } return h; };
+/* the same "random" placement every time a page is drawn */
+function ppRand(seed){
+  let t = seed >>> 0;
+  return () => { t = (t + 0x6D2B79F5) >>> 0; let r = Math.imul(t ^ (t >>> 15), 1 | t); r ^= r + Math.imul(r ^ (r >>> 7), 61 | r); return ((r ^ (r >>> 14)) >>> 0) / 4294967296; };
+}
+const ppDate = d => { const [y, m, dd] = d.split('-'); return `${+dd} ${PP_MON[+m - 1]} ${y}`; };
+let ppPage = 0;
+function renderPassport(all){
+  const main = $('#main');
+  const st = all.filter(c => isDate(c.date) && isStamped(c)).sort((a, b) => (a.date + timeOf(a)).localeCompare(b.date + timeOf(b)));
+  const pages = [];
+  for (let i = 0; i < st.length; i += 3) pages.push(st.slice(i, i + 3));
+  /* logos become ink through a mask; each logo is written into the page once and shared by its stamps */
+  const lgCls = new Map();
+  let css = '';
+  const lgOf = c => {
+    const L = logoFor(c);
+    if (!L || !L.logo) return '';
+    let k = lgCls.get(L.logo);
+    if (!k) { k = 'pplg' + lgCls.size; lgCls.set(L.logo, k); css += `.${k}{-webkit-mask-image:url("${L.logo}");mask-image:url("${L.logo}")}`; }
+    return k;
+  };
+  const stampHTMLpp = (c, i, rnd, flip) => {
+    const ink = PP_INKS[ppHash(couplesOf(c)[0] || norm(c.artist) || c.id) % PP_INKS.length];
+    /* three bands down the page, zig-zagging left and right, each tilted its own way */
+    const y = [24, 53, 81][i] + (rnd() - .5) * 6;
+    const side = (i % 2 === 0) !== flip ? -1 : 1;
+    const x = 50 + side * (5 + rnd() * 11);
+    let r = (rnd() - .5) * 22;
+    if (Math.abs(r) < 2.5) r = r < 0 ? -3 : 3;
+    const mx = Math.round(rnd() * 160), my = Math.round(rnd() * 160);
+    const name = str(c.artist) || coupleNames(couplesOf(c)) || 'Unknown artist';
+    const title = str(c.title) || catLabel(catOf(c));
+    const lg = lgOf(c);
+    const len = name.length;
+    return `<button type="button" class="pp-st" data-open="${esc(c.id)}" style="--x:${x.toFixed(1)}%;--y:${y.toFixed(1)}%;--r:${r.toFixed(1)}deg;--ink:${ink};--mx:${mx}px;--my:${my}px;--op:${(.84 + rnd() * .12).toFixed(2)}" aria-label="${esc(name + ', ' + title + ', ' + fmtDate(c.date))}">
+      <span class="pp-ink"><span class="pp-d">${ppDate(c.date)}</span><span class="pp-box">${lg ? `<i class="pp-lg ${lg}"></i>` : `<b class="pp-nm${len > 18 ? ' xs' : len > 11 ? ' sm' : ''}">${esc(name)}</b>`}</span><span class="pp-ev">${esc(title)}</span></span></button>`;
+  };
+  const pagesHTML = pages.map((pg, p) => {
+    const rnd = ppRand(ppHash(pg.map(c => c.id).join('|')) ^ Math.imul(p + 1, 2654435761));
+    const flip = rnd() < .5;
+    return `<article class="pp-page pp-t${p % 3}" aria-label="Page ${p + 1}"><span class="pp-hd" aria-hidden="true">ENTRIES</span>${pg.map((c, i) => stampHTMLpp(c, i, rnd, flip)).join('')}<span class="pp-no" aria-hidden="true">${p + 1}</span></article>`;
+  }).join('');
+  const first = st.length ? st[0].date.slice(0, 4) : '';
+  const cover = `<article class="pp-page pp-cover" aria-label="Passport cover">
+    <span class="pp-cv-top">ALL FANDOMS</span>
+    <svg class="pp-crest" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" stroke-width="2.4"/><circle cx="50" cy="50" r="37" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 3"/>
+      <path d="M31 40h38a3 3 0 0 1 3 3v3a4 4 0 0 0 0 8v3a3 3 0 0 1-3 3H31a3 3 0 0 1-3-3v-3a4 4 0 0 0 0-8v-3a3 3 0 0 1 3-3z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+      <path d="M58 42.5v15" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2.4"/><path d="M44 45.2l1.6 3.4 3.7.4-2.8 2.5.8 3.6-3.3-1.9-3.3 1.9.8-3.6-2.8-2.5 3.7-.4z" fill="currentColor"/>
+      <path d="M50 14l1.2 2.6 2.8.3-2.1 1.9.6 2.8-2.5-1.5-2.5 1.5.6-2.8-2.1-1.9 2.8-.3zM50 79l1.2 2.6 2.8.3-2.1 1.9.6 2.8-2.5-1.5-2.5 1.5.6-2.8-2.1-1.9 2.8-.3z" fill="currentColor"/></svg>
+    <span class="pp-cv-t">CONCERT<br>PASSPORT</span>
+    <span class="pp-cv-sub">${st.length ? plural(st.length, 'stamp') + (first ? ' since ' + first : '') : 'No stamps yet'}</span>
+    <svg class="pp-chip" viewBox="0 0 40 26" aria-hidden="true"><rect x="1" y="1" width="38" height="24" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 1v24M26 1v24M1 9h13M26 9h13M1 17h13M26 17h13" stroke="currentColor" stroke-width="1.2"/><circle cx="20" cy="13" r="4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+  </article>`;
+  const total = pages.length + 1;
+  ppPage = Math.min(ppPage, total - 1);
+  main.innerHTML = `<style>${css}</style><section class="pp" aria-label="Passport">
+    <div class="pp-book" id="ppBook" tabindex="0" aria-label="Passport pages">${cover}${pagesHTML}</div>
+    <div class="pp-nav"><button type="button" class="pp-arw" data-pp="-1" aria-label="Previous page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg></button>
+      <span id="ppPg" aria-live="polite"></span>
+      <button type="button" class="pp-arw" data-pp="1" aria-label="Next page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button></div>
+    ${st.length ? '' : '<p class="status pp-empty">Stamps land here after each show day, three to a page. Check in at a show to stamp it on the day.</p>'}
+  </section>`;
+  const bk = $('#ppBook');
+  const step = () => { const pg = bk.querySelector('.pp-page'); return pg ? pg.getBoundingClientRect().width + 14 : 1; };
+  const label = () => {
+    const i = Math.max(0, Math.min(total - 1, Math.round(bk.scrollLeft / step())));
+    ppPage = i;
+    $('#ppPg').textContent = i === 0 ? (pages.length ? 'Cover. Swipe to open' : 'Cover') : `Page ${i} of ${pages.length}`;
+    document.querySelectorAll('.pp-arw').forEach(b => { b.disabled = b.getAttribute('data-pp') === '-1' ? i === 0 : bk.scrollLeft + bk.clientWidth >= bk.scrollWidth - 4; });
+  };
+  bk.scrollLeft = ppPage * step();
+  label();
+  bk.addEventListener('scroll', () => requestAnimationFrame(label), {passive:true});
+}
+function ppTurn(dir){
+  const bk = $('#ppBook');
+  if (!bk) return;
+  const pg = bk.querySelector('.pp-page');
+  bk.scrollBy({left:dir * (pg ? pg.getBoundingClientRect().width + 14 : bk.clientWidth), behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+}
+
 /* ---------- special themes ----------
    Limited-time looks for events, picked in Backup & display, separate from the main theme (Midnight Bloom).
    To add one: give it colours in the CSS (:root[data-special="id"], day and night) and a line here.
@@ -5202,7 +5334,7 @@ document.addEventListener('click', e => {
   const fc = e.target.closest('.fchip[data-cat]');
   if (fc) { filterCat = fc.getAttribute('data-cat') || 'all'; render(); return; }
   const vb = e.target.closest('[data-view]');
-  if (vb) { const v = vb.getAttribute('data-view'); view = ['map', 'cal', 'spend'].indexOf(v) !== -1 ? v : 'list'; render(); return; }
+  if (vb) { const v = vb.getAttribute('data-view'); view = ['map', 'cal', 'spend', 'passport'].indexOf(v) !== -1 ? v : 'list'; render(); return; }
   const cal = e.target.closest('[data-cal]');
   if (cal) { calNav(cal.getAttribute('data-cal')); return; }
   const dayb = e.target.closest('[data-day]');
@@ -5223,6 +5355,8 @@ document.addEventListener('click', e => {
     else animateTo(fitAll());
     return;
   }
+  const ppb = e.target.closest('[data-pp]');
+  if (ppb) { ppTurn(Number(ppb.getAttribute('data-pp'))); return; }
   const op = e.target.closest('[data-open]');
   if (op) { openView(op.getAttribute('data-open')); return; }
   const pl = e.target.closest('[data-place]');
